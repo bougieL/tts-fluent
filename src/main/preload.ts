@@ -1,10 +1,11 @@
+import IpcEvents from 'constants/IpcEvents';
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels = 'ipc-example' | IpcEvents;
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
+    send(channel: Channels, args: unknown[]) {
       ipcRenderer.send(channel, args);
     },
     on(channel: Channels, func: (...args: unknown[]) => void) {
@@ -17,5 +18,15 @@ contextBridge.exposeInMainWorld('electron', {
     once(channel: Channels, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
+  },
+  dialog: {
+    showOpenDialog: (...args: any[]) =>
+      ipcRenderer.invoke('electron.dialog.showOpenDialog', ...args),
+    showOpenDialogSync: (...args: any[]) =>
+      ipcRenderer.invoke('electron.dialog.showOpenDialogSync', ...args),
+  },
+  app: {
+    getPath: (...args: any[]) =>
+      ipcRenderer.invoke('electron.app.getPath', ...args),
   },
 });
