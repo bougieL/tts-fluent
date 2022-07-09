@@ -108,10 +108,13 @@
     }
   },
   "dependencies": {
+    "@bougiel/tts-node": "^1.1.0",
+    "@fluentui/font-icons-mdl2": "^8.4.2",
     "@fluentui/react": "^8.78.0",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.7",
     "electron-updater": "^5.0.3",
+    "fs-extra": "^10.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
@@ -186,8 +189,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "TTS Fluent",
+    "appId": "org.erb.ttsFluent",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

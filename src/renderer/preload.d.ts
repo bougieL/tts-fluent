@@ -1,4 +1,4 @@
-import { app, dialog } from 'electron';
+import { app, dialog, ipcRenderer } from 'electron';
 import { Channels } from 'main/preload';
 
 declare global {
@@ -11,6 +11,7 @@ declare global {
           func: (...args: unknown[]) => void
         ): (() => void) | undefined;
         once(channel: string, func: (...args: unknown[]) => void): void;
+        invoke: typeof ipcRenderer.invoke;
       };
       dialog: {
         showOpenDialog: typeof dialog.showOpenDialog;

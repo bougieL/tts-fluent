@@ -11,10 +11,16 @@ const DownloadsDirectory = () => {
     });
     if (paths?.[0]) {
       setPath(paths[0]);
+      await window.electron.ipcRenderer.invoke(
+        'settings.downloadsDirectory.set',
+        paths[0]
+      );
     }
   };
   useAsync(async () => {
-    const downloadsPath = await window.electron.app.getPath('downloads');
+    const downloadsPath = await window.electron.ipcRenderer.invoke(
+      'settings.downloadsDirectory.get'
+    );
     setPath(downloadsPath);
   }, []);
   return (

@@ -5,7 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { Pivot, PivotItem } from '@fluentui/react';
+import { Pivot, PivotItem, Stack } from '@fluentui/react';
 import MicrosoftTTS from './views/MicrosoftTTS';
 import Settings from './views/Settings';
 import './App.scss';
@@ -18,14 +18,22 @@ const App = () => {
   };
   return (
     <>
-      <Pivot selectedKey={location.pathname} onLinkClick={handlePivotClick}>
-        <PivotItem headerText="Microsoft TTS" itemKey="/" />
-        <PivotItem headerText="Settings" itemKey="/settings" />
-      </Pivot>
-      <Routes>
-        <Route path="/" element={<MicrosoftTTS />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
+      <Stack styles={{ root: { height: 36 } }} className="header" />
+      <Stack tokens={{ childrenGap: 18 }} className="main">
+        <Pivot
+          selectedKey={location.pathname}
+          onLinkClick={handlePivotClick}
+          styles={{ text: { fontSize: 24 } }}
+          linkFormat="tabs"
+        >
+          <PivotItem headerText="Microsoft TTS" itemKey="/" />
+          <PivotItem headerText="Settings" itemKey="/settings" />
+        </Pivot>
+        <Routes>
+          <Route path="/" element={<MicrosoftTTS />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </Stack>
     </>
   );
 };

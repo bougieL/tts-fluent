@@ -4,8 +4,11 @@ module.exports = {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'error',
+    'import/prefer-default-export': 'off',
     // Since React 17 and typescript 4.1 you can safely disable the rule
     'react/react-in-jsx-scope': 'off',
+    'no-empty': 'off',
+    '@typescript-eslint/no-shadow': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

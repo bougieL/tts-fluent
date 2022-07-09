@@ -57,14 +57,14 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About TTS Fluent',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide TTS Fluent',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
