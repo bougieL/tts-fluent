@@ -1,11 +1,11 @@
 import { app, ipcMain } from 'electron';
-import { ConfigKey, getConfig, getDownloadsDir, writeConfig } from '../caches';
+import { ConfigCache } from '../caches';
 
 ipcMain.handle('settings.downloadsDirectory.get', () =>
   // dialog.showOpenDialogSync(args)
-  getDownloadsDir()
+  ConfigCache.getDownloadsDir()
 );
 
 ipcMain.handle('settings.downloadsDirectory.set', (_, args) =>
-  writeConfig(ConfigKey.downloadsDir, args)
+  ConfigCache.writeConfig(ConfigCache.ConfigKey.downloadsDir, args)
 );

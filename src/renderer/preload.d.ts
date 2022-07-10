@@ -22,6 +22,9 @@ declare global {
       app: {
         getPath: (...params: Parameters<typeof app.getPath>) => Promise<string>;
       };
+      shell: {
+        showItemInFolder: (fullPath: string) => Promise<void>;
+      };
     };
   }
 }

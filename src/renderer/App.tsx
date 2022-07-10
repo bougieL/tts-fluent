@@ -9,6 +9,7 @@ import { Pivot, PivotItem, Stack } from '@fluentui/react';
 import MicrosoftTTS from './views/MicrosoftTTS';
 import Settings from './views/Settings';
 import './App.scss';
+import Histories from './views/Histories';
 
 const App = () => {
   const location = useLocation();
@@ -27,10 +28,12 @@ const App = () => {
           linkFormat="tabs"
         >
           <PivotItem headerText="Microsoft TTS" itemKey="/" />
+          <PivotItem headerText="Histories" itemKey="/histories" />
           <PivotItem headerText="Settings" itemKey="/settings" />
         </Pivot>
         <Routes>
           <Route path="/" element={<MicrosoftTTS />} />
+          <Route path="/histories" element={<Histories />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </Stack>

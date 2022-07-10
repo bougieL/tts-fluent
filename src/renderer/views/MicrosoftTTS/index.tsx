@@ -1,4 +1,5 @@
 import { Stack } from '@fluentui/react';
+// import { shell } from 'electron';
 import { useEffect, useRef, useState } from 'react';
 import { useFn } from '../../hooks';
 import { Buttons } from './Buttons';
@@ -51,7 +52,10 @@ const MicrosoftTTS = () => {
     // eslint-disable-next-line no-new
     new Notification('Save successfully!', {
       body: `Successfully saved to ${p}`,
-    });
+    }).onclick = () => {
+      window.electron.shell.showItemInFolder(p);
+      // shell.showItemInFolder(p);
+    };
   });
   useEffect(() => {
     const handleEnd = () => {

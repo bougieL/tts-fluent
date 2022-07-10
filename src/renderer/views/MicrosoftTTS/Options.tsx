@@ -62,8 +62,14 @@ const prefix = 'microsoft_tts';
 const setStorage = (key: ConfigKey, value: string) =>
   localStorage.setItem(`${prefix}_${key}`, value);
 
-const getStorage = (key: ConfigKey) =>
-  localStorage.getItem(`${prefix}_${key}`) || '';
+const getStorage = (key: ConfigKey) => {
+  const value = localStorage.getItem(`${prefix}_${key}`) || '';
+  if (key === ConfigKey.speed || key === ConfigKey.pitch) {
+    const n = Number(value);
+    return Number.isNaN(n) || value === '' ? '1' : String(n);
+  }
+  return value;
+};
 
 export function Options({ onChange }: Props) {
   const [locale, setLocale] = useState(
@@ -71,8 +77,8 @@ export function Options({ onChange }: Props) {
   );
   const [voice, setVoice] = useState(getStorage(ConfigKey.voice));
   const [style, setStyle] = useState(getStorage(ConfigKey.style));
-  const [rate, setRate] = useState(Number(getStorage(ConfigKey.speed)) ?? 1);
-  const [pitch, setPitch] = useState(Number(getStorage(ConfigKey.pitch)) ?? 1);
+  const [rate, setRate] = useState(Number(getStorage(ConfigKey.speed)));
+  const [pitch, setPitch] = useState(Number(getStorage(ConfigKey.pitch)));
   const voices = useMemo(() => getVoicesByLocale(locale), [locale]);
   const styles = useMemo(() => getStyles(voice), [voice]);
 
@@ -163,9 +169,7 @@ export function Options({ onChange }: Props) {
           max={3}
           value={rate}
           step={0.1}
-          // showValue={false}
           styles={{ root: { width: '33%' } }}
-          // eslint-disable-next-line react/jsx-no-bind
           onChange={setRate}
         />
         <Slider
@@ -173,19 +177,15 @@ export function Options({ onChange }: Props) {
           max={2}
           value={pitch}
           step={0.1}
-          // showValue={false}
           styles={{ root: { width: '33%' } }}
-          // eslint-disable-next-line react/jsx-no-bind
           onChange={setPitch}
         />
         <Toggle
           label="Use SSML"
-          // defaultChecked
           onText="On"
           offText="Off"
           disabled
           styles={{ root: { width: '33%', visibility: 'hidden' } }}
-          // onChange={_onChange}
         />
       </Stack>
     </Stack>

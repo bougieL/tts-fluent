@@ -9,6 +9,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-empty': 'off',
     '@typescript-eslint/no-shadow': 'off',
+    '@typescript-eslint/no-namespace': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,
