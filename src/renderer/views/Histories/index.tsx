@@ -60,6 +60,7 @@ function Cell({ item, index, onRemove, onPlay }: CellProps) {
     audio.src = url;
     audio.play();
   };
+  const fileTip = (text: string) => (item.exists ? text : 'File removed');
   return (
     <Stack>
       <Separator />
@@ -78,9 +79,7 @@ function Cell({ item, index, onRemove, onPlay }: CellProps) {
           {new Date(item.date).toLocaleString()}
         </Text>
         <TooltipHost
-          content={
-            item.exists ? (isCurrentPlaying ? 'Stop' : 'Play') : 'File removed'
-          }
+          content={fileTip(isCurrentPlaying ? 'Stop' : 'Play')}
           setAriaDescribedBy={false}
         >
           <IconButton
@@ -100,7 +99,7 @@ function Cell({ item, index, onRemove, onPlay }: CellProps) {
           />
         </TooltipHost>
         <TooltipHost
-          content={item.exists ? 'Open mp3 file in explorer' : 'File removed'}
+          content={fileTip('Open mp3 file in explorer')}
           setAriaDescribedBy={false}
         >
           <IconButton

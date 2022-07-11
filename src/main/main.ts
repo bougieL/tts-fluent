@@ -76,8 +76,11 @@ const createWindow = async () => {
     height: 750,
     icon: getAssetPath('icon.png'),
     // transparent: true,
-    // titleBarOverlay: false,
-    titleBarStyle: 'hiddenInset',
+    titleBarOverlay: {
+      color: '#ffffff',
+      height: 36,
+    },
+    titleBarStyle: 'hidden',
     frame: false,
     webPreferences: {
       preload: app.isPackaged

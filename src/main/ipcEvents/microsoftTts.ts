@@ -1,4 +1,4 @@
-import { ssmlToBuffer } from '@bougiel/tts-node';
+import { ssmlToBuffer, ssmlToStream } from '@bougiel/tts-node';
 import { ipcMain } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
@@ -10,17 +10,25 @@ ipcMain.handle('tts.microsoft.ssmlToBuffer', (_, text) => {
 });
 
 ipcMain.handle('tts.microsoft.download', async (_, text) => {
-  const buffer = await ssmlToBuffer(text);
+  const stream = await ssmlToStream(text);
   const downloadsDir = ConfigCache.getDownloadsDir();
   fs.ensureDirSync(downloadsDir);
   const now = Date.now();
-  const p = path.join(downloadsDir, `${now}.mp3`);
-  fs.createWriteStream(p, 'binary').write(buffer);
-  HistoryCache.addItem({
-    id: uuid.v4(),
-    content: text,
-    date: now,
-    path: p,
+  const downloadFilePath = path.join(downloadsDir, `${now}.download`);
+  const destFilePath = path.join(downloadsDir, `${now}.download`);
+  const writeStream = fs.createWriteStream(downloadFilePath);
+  stream.pipe(writeStream);
+  return new Promise((resolve, reject) => {
+    writeStream.on('finish', () => {
+      fs.rename(downloadFilePath, destFilePath);
+      HistoryCache.addItem({
+        id: uuid.v4(),
+        content: text,
+        date: now,
+        path: destFilePath,
+      });
+      resolve(destFilePath);
+    });
+    writeStream.on('error', reject);
   });
-  return p;
 });

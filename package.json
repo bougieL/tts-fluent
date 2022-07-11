@@ -1,5 +1,5 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "Desktop apps from microsoft TTS",
   "keywords": [
     "electron",
     "boilerplate",
@@ -108,7 +108,7 @@
     }
   },
   "dependencies": {
-    "@bougiel/tts-node": "^1.1.0",
+    "@bougiel/tts-node": "^1.2.3",
     "@fluentui/font-icons-mdl2": "^8.4.2",
     "@fluentui/react": "^8.78.0",
     "electron-debug": "^3.2.0",
