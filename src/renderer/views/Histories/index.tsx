@@ -10,6 +10,7 @@ import {
   TooltipHost,
   IconButton,
 } from '@fluentui/react';
+import { shell } from 'electron';
 import {
   createContext,
   useContext,
@@ -19,7 +20,9 @@ import {
   useState,
 } from 'react';
 import { useAsync } from 'react-use';
+import fs from 'fs-extra';
 import './index.scss';
+import { HistoryCache } from 'caches';
 
 interface Item {
   id: string;
@@ -51,11 +54,8 @@ function Cell({ item, index, onRemove, onPlay }: CellProps) {
     if (isCurrentPlaying) {
       return;
     }
-    const data = await window.electron.ipcRenderer.invoke(
-      'tts.hisotries.playItem',
-      item.path
-    );
-    const blob = new Blob([data], { type: 'audio/mp3' });
+    const buffer = fs.readFileSync(item.path);
+    const blob = new Blob([buffer], { type: 'audio/mp3' });
     const url = window.URL.createObjectURL(blob);
     audio.src = url;
     audio.play();
@@ -107,7 +107,7 @@ function Cell({ item, index, onRemove, onPlay }: CellProps) {
             aria-label="MusicInCollection"
             disabled={!item.exists}
             onClick={() => {
-              window.electron.shell.showItemInFolder(item.path);
+              shell.showItemInFolder(item.path);
             }}
           />
         </TooltipHost>
@@ -129,34 +129,35 @@ const globalState = {
 
 function Histories() {
   const [list, setList] = useState<Item[]>([]);
-  const [filterReg, setFilterReg] = useState<RegExp>();
+  const [filterReg, setFilterReg] = useState<RegExp>(
+    new RegExp(globalState.filter.split(/\s+/).join('.*'))
+  );
   const [playingId, setPlayingId] = useState('');
   const [filter, setFilter] = useState(globalState.filter);
   useAsync(async () => {
-    const data = await window.electron.ipcRenderer.invoke(
-      'tts.histories.getList'
-    );
+    const data = await HistoryCache.getList();
     const list: Item[] = data
-      .map((item: any) => {
+      .map((item) => {
         return {
           id: item.id,
           text: ssmlToText(item.content).replace(/[\r\n\s]/g, ''),
           ssml: item.content,
           date: item.date,
           path: item.path,
-          exists: item.exists,
+          exists: fs.existsSync(item.path),
         };
       })
       .sort((a, b) => b.date - a.date);
     setList(list);
   }, []);
   const handleRemove = async (id: string) => {
-    await window.electron.ipcRenderer.invoke('tts.histories.removeItem', id);
+    HistoryCache.removeItem(id);
     setList((list) => list.filter((item) => item.id !== id));
   };
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
   const handleFilterChange = (value: string) => {
     setFilter(value);
+    globalState.filter = value;
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       const v = value.trim();
