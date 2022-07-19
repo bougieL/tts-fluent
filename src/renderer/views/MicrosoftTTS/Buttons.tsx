@@ -1,7 +1,6 @@
 import { DefaultButton, PrimaryButton, Spinner, Stack } from '@fluentui/react';
 
 interface Props {
-  playing: boolean;
   onPlayClick: () => void;
   onDownloadClick: () => void;
   disabled: boolean;
@@ -9,7 +8,6 @@ interface Props {
 }
 
 export function Buttons({
-  playing,
   onPlayClick,
   disabled,
   loading,
@@ -19,12 +17,8 @@ export function Buttons({
     <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
       {loading && <Spinner />}
       <PrimaryButton
-        text={playing ? 'Stop' : 'Play'}
-        iconProps={
-          playing
-            ? { iconName: 'StopSolid' }
-            : { iconName: 'TriangleSolidRight12' }
-        }
+        text="Play"
+        iconProps={{ iconName: 'TriangleSolidRight12' }}
         onClick={onPlayClick}
         allowDisabledFocus
         disabled={disabled}

@@ -10,8 +10,11 @@ module.exports = {
     'no-empty': 'off',
     '@typescript-eslint/no-shadow': 'off',
     '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
+    'no-alert': 'off',
+    'no-restricted-globals': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

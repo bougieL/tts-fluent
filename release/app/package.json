@@ -1,11 +1,11 @@
 {
   "name": "tts-fluent",
-  "version": "4.6.0",
+  "version": "0.0.1",
   "description": "Desktop apps from microsoft TTS",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
+    "name": "Bougie Liu",
+    "email": "bougie.liu@qq.com",
     "url": "https://github.com/electron-react-boilerplate"
   },
   "main": "./dist/main/main.js",

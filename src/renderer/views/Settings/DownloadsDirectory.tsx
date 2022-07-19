@@ -27,7 +27,7 @@ const DownloadsDirectory = () => {
   }, []);
   return (
     <TextField
-      label="Downloads Directory"
+      label="Downloads directory"
       type="button"
       value={path}
       onClick={handleSetFilePath}

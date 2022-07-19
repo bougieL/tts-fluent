@@ -63,7 +63,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
     fileReader.onload = () => {
       setFile(file);
       globalState.file = file;
-      setRText(fileReader.result as string);
+      setRText((fileReader.result as string).slice(0, 25000));
     };
     fileReader.onerror = () => {
       alert('Not a valid text file');
@@ -95,6 +95,8 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
             field: { height: 'calc(100vh - 390px)' },
           }}
           value={isText ? text : ssml}
+          placeholder="Type something here (max 25000 characters)..."
+          maxLength={25000}
           onChange={(_, value = '') => {
             if (isText) {
               setRText(value);
