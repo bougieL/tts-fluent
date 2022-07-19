@@ -1,9 +1,10 @@
+import { IpcEvents } from 'const';
 import { dialog, ipcMain } from 'electron';
 
-ipcMain.handle('electron.dialog.showOpenDialog', (_, args) =>
+ipcMain.handle(IpcEvents.electronDialogShowOpenDialog, (_, args) =>
   dialog.showOpenDialog(args)
 );
 
-ipcMain.handle('electron.dialog.showOpenDialogSync', (_, args) =>
+ipcMain.handle(IpcEvents.electronDialogShowOpenDialogSync, (_, args) =>
   dialog.showOpenDialogSync(args)
 );

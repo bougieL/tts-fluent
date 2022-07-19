@@ -6,7 +6,7 @@ import {
   IconButton,
   ProgressIndicator,
 } from '@fluentui/react';
-import { shell } from 'electron';
+import { clipboard, shell } from 'electron';
 import { DownloadsCache } from 'caches';
 import { useState } from 'react';
 import { useAsync } from 'react-use';
@@ -52,7 +52,7 @@ export function Cell({ item }: CellProps) {
       <Text>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
       </Text>
-      {item.downloading ? (
+      {item.status === DownloadsCache.Status.downloading ? (
         <ProgressIndicator label="Downloading" description={size} />
       ) : (
         <Stack
@@ -78,7 +78,7 @@ export function Cell({ item }: CellProps) {
               iconProps={{ iconName: 'Copy' }}
               aria-label="Copy"
               onClick={() => {
-                navigator.clipboard.writeText(item.content);
+                clipboard.writeText(item.content);
               }}
             />
           </TooltipHost>

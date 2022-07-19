@@ -1,5 +1,6 @@
 export enum AudioStatus {
   empty,
+  loading,
   playing,
   paused,
   stopped,

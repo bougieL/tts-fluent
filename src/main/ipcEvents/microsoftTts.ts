@@ -4,9 +4,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import * as uuid from 'uuid';
 import md5 from 'md5';
+import { IpcEvents } from 'const';
 import { ConfigCache, DownloadsCache, PlayCache } from '../../caches';
 
-ipcMain.handle('tts.microsoft.play', async (_, ssml) => {
+ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   const hash = md5(ssml);
   const playCachesDir = await PlayCache.getCachePath();
   const destFilePath = path.join(playCachesDir, `${hash}`);
@@ -25,7 +26,7 @@ ipcMain.handle('tts.microsoft.play', async (_, ssml) => {
   return { src: destFilePath, hash };
 });
 
-ipcMain.handle('tts.microsoft.download', async (_, ssml) => {
+ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
   const downloadsDir = await ConfigCache.getDownloadsDir();
   const hash = md5(ssml);
   const downloadFilePath = path.join(downloadsDir, `${hash}.download`);
@@ -38,32 +39,45 @@ ipcMain.handle('tts.microsoft.download', async (_, ssml) => {
   const now = Date.now();
   const writeStream = fs.createWriteStream(downloadFilePath);
   const id = uuid.v4();
-  DownloadsCache.addItem(
-    {
-      id,
-      content: ssml,
-      md5: hash,
-      date: now,
-      path: downloadFilePath,
-      downloading: true,
-    },
-    writeStream
-  );
-  stream.pipe(writeStream);
-  return new Promise((resolve, reject) => {
-    writeStream.on('finish', async () => {
-      await DownloadsCache.removeItem(id);
-      await fs.rename(downloadFilePath, destFilePath).catch(reject);
-      DownloadsCache.addItem({
-        id,
-        content: ssml,
-        date: now,
-        md5: hash,
-        path: destFilePath,
-        downloading: false,
-      });
-      resolve(destFilePath);
-    });
-    writeStream.on('error', reject);
+  await DownloadsCache.addItem({
+    id,
+    content: ssml,
+    md5: hash,
+    date: now,
+    path: downloadFilePath,
+    status: DownloadsCache.Status.downloading,
   });
+  stream.pipe(writeStream);
+  writeStream.on('finish', async () => {
+    await fs.rename(downloadFilePath, destFilePath).catch((error) => {
+      const errorMessage = JSON.stringify(error);
+      DownloadsCache.updateItem(id, {
+        status: DownloadsCache.Status.error,
+        errorMessage,
+      });
+      event.sender.send(IpcEvents.downloadsStatusChange, {
+        status: DownloadsCache.Status.error,
+        payload: `${destFilePath} ${errorMessage}`,
+      });
+    });
+    DownloadsCache.updateItem(id, {
+      path: destFilePath,
+      status: DownloadsCache.Status.finished,
+    });
+    event.sender.send(IpcEvents.downloadsStatusChange, {
+      status: DownloadsCache.Status.finished,
+      payload: destFilePath,
+    });
+  });
+  writeStream.on('error', (error) => {
+    DownloadsCache.updateItem(id, {
+      status: DownloadsCache.Status.error,
+      errorMessage: error.message,
+    });
+    event.sender.send(IpcEvents.downloadsStatusChange, {
+      status: DownloadsCache.Status.error,
+      payload: `${destFilePath} ${error.message}`,
+    });
+  });
+  return destFilePath;
 });

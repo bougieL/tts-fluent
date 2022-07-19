@@ -4,10 +4,16 @@ import { getCachesDir } from './_utils';
 
 export namespace DownloadsCache {
   export const getCachePath = async () => {
-    const p = path.join(await getCachesDir(), 'history.json');
+    const p = path.join(await getCachesDir(), 'downloads.json');
     await fs.ensureFile(p);
     return p;
   };
+
+  export enum Status {
+    error = -1,
+    finished = 0,
+    downloading = 1,
+  }
 
   export interface Item {
     id: string;
@@ -15,10 +21,9 @@ export namespace DownloadsCache {
     date: number;
     md5: string;
     path: string;
-    downloading: boolean;
+    status: Status;
+    errorMessage?: string;
   }
-
-  const streamMap: Record<string, fs.WriteStream> = {};
 
   export async function getList(): Promise<Item[]> {
     try {
@@ -30,7 +35,7 @@ export namespace DownloadsCache {
     }
   }
 
-  export async function addItem(item: Item, stream?: fs.WriteStream) {
+  export async function addItem(item: Item) {
     try {
       const cachePath = await getCachePath();
       const list = await getList();
@@ -41,9 +46,6 @@ export namespace DownloadsCache {
         list.push(item);
       }
       await fs.writeFile(cachePath, JSON.stringify(list));
-      if (stream) {
-        streamMap[item.id] = stream;
-      }
     } catch (error) {
       // console.error(error);
     }
@@ -55,7 +57,18 @@ export namespace DownloadsCache {
       let list = await getList();
       list = list.filter((item) => item.id !== id);
       await fs.writeFile(cachePath, JSON.stringify(list));
-      streamMap[id]?.close();
+    } catch (error) {}
+  }
+
+  export async function updateItem(id: string, data: Partial<Item>) {
+    try {
+      const cachePath = await getCachePath();
+      const list = await getList();
+      const index = list.findIndex((item) => item.id === id);
+      if (index > -1) {
+        list[index] = { ...list[index], ...data };
+      }
+      await fs.writeFile(cachePath, JSON.stringify(list));
     } catch (error) {}
   }
 }
