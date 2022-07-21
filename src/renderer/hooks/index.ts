@@ -11,3 +11,4 @@ export function useFn<T extends Function>(callback: T): T {
 
 export * from './audio';
 export * from './downloads';
+export * from './external';

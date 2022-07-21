@@ -9,10 +9,9 @@ import {
 import { clipboard, shell } from 'electron';
 import { DownloadsCache } from 'caches';
 import { useState } from 'react';
-import { useAsync } from 'react-use';
 import fs from 'fs-extra';
 import { getSize } from 'lib/getSize';
-import { useAudio } from 'renderer/hooks';
+import { useAudio, useAsync } from 'renderer/hooks';
 
 export interface Item extends DownloadsCache.Item {
   text: string;
@@ -62,9 +61,7 @@ export function Cell({ item }: CellProps) {
           styles={{ root: { paddingTop: 12 } }}
           tokens={{ childrenGap: 8 }}
         >
-          <Text variant="small" className="history-item-date">
-            {new Date(item.date).toLocaleString()}
-          </Text>
+          <Text variant="small">{new Date(item.date).toLocaleString()}</Text>
           <TooltipHost content="Play" setAriaDescribedBy={false}>
             <IconButton
               iconProps={{ iconName: 'Play' }}

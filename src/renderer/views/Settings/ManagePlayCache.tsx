@@ -2,7 +2,7 @@ import { DefaultButton, Label, Stack } from '@fluentui/react';
 import { PlayCache } from 'caches';
 import { shell } from 'electron';
 import { useRef, useState } from 'react';
-import { useAsync } from 'react-use';
+import { useAsync } from 'renderer/hooks';
 import fs from 'fs-extra';
 import { getSize } from 'lib/getSize';
 

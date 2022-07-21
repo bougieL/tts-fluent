@@ -20,7 +20,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "release/app/dist"
+    "outDir": "release/app/dist",
+    "skipLibCheck": true
   },
   "exclude": [
     "test",
@@ -30,7 +31,7 @@
     "node_modules"
   ],
   "paths": {
-    "@/*": ["./src/*"],
+    "*": ["./src/*"],
     "@assets/*": ["./assets/*"]
   }
 }

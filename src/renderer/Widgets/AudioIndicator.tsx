@@ -1,7 +1,6 @@
 import { IconButton, TooltipHost } from '@fluentui/react';
 import { useState } from 'react';
-import { useAsync } from 'react-use';
-import { useAudio } from 'renderer/hooks';
+import { useAudio, useAsync } from 'renderer/hooks';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
 export function AudioIndicator() {

@@ -1,14 +1,15 @@
 import { TextField } from '@fluentui/react';
 import { ConfigCache } from 'caches';
+import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
-import { useAsync } from 'react-use';
+import { useAsync } from 'renderer/hooks';
 
 const DownloadsDirectory = () => {
   const [path, setPath] = useState('');
   const handleSetFilePath = async () => {
     const paths = await ipcRenderer.invoke(
-      'electron.dialog.showOpenDialogSync',
+      IpcEvents.electronDialogShowOpenDialogSync,
       {
         properties: ['openDirectory'],
       }

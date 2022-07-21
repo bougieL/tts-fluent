@@ -14,16 +14,19 @@ ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   const isFinised = await PlayCache.getFinished(hash);
   const exists = await fs.pathExists(destFilePath);
   if (isFinised && exists) {
-    return { src: destFilePath, hash };
+    return destFilePath;
   }
   const stream = await ssmlToStream(ssml);
   await fs.ensureFile(destFilePath);
   const writeStream = fs.createWriteStream(destFilePath);
   stream.pipe(writeStream);
-  writeStream.on('finish', () => {
-    PlayCache.setFinished(hash);
+  return new Promise((resolve, reject) => {
+    writeStream.on('finish', () => {
+      PlayCache.setFinished(hash);
+      resolve(destFilePath);
+    });
+    writeStream.on('error', reject);
   });
-  return { src: destFilePath, hash };
 });
 
 ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
