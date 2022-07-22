@@ -5,10 +5,10 @@ import { ipcRenderer, shell } from 'electron';
 import { IpcEvents } from 'const';
 import { useAsync } from './external';
 
-function useDownloadsStatusChange() {
+function useDownloadStatusChange() {
   useAsync(async () => {
     ipcRenderer.on(
-      IpcEvents.downloadsStatusChange,
+      IpcEvents.ttsMicrosoftDownloadStatusChange,
       (_, { status, payload }) => {
         switch (status) {
           case DownloadsCache.Status.finished:
@@ -35,7 +35,7 @@ function useDownloadsStatusChange() {
 }
 
 export function useDownloadsNum() {
-  useDownloadsStatusChange();
+  useDownloadStatusChange();
   const [num, setNum] = useState(0);
   useAsync(async () => {
     const p = await DownloadsCache.getCachePath();

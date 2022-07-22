@@ -8,12 +8,14 @@ export namespace ConfigCache {
     downloadsDir = 'downloadsDir',
   }
 
-  const getConfigPath = async () =>
-    path.join(await getCachesDir(), 'config.json');
+  const getConfigPath = async () => {
+    const p = path.join(await getCachesDir(), 'config.json');
+    await fs.ensureFile(p);
+    return p;
+  };
 
   export async function writeConfig(key: ConfigKey, value: string | number) {
     const configPath = await getConfigPath();
-    await fs.ensureFile(configPath);
     let config: any = {};
     try {
       config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
@@ -33,6 +35,9 @@ export namespace ConfigCache {
   }
 
   export async function getDownloadsDir(): Promise<string> {
-    return getConfig(ConfigKey.downloadsDir) || app.getPath('downloads');
+    const p =
+      (await getConfig(ConfigKey.downloadsDir)) || app.getPath('downloads');
+    await fs.ensureDir(p);
+    return p;
   }
 }

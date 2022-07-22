@@ -5,7 +5,7 @@ import path from 'path';
 import * as uuid from 'uuid';
 import md5 from 'md5';
 import { IpcEvents } from 'const';
-import { ConfigCache, DownloadsCache, PlayCache } from '../../caches';
+import { ConfigCache, DownloadsCache, PlayCache } from 'caches';
 
 ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   const hash = md5(ssml);
@@ -58,7 +58,7 @@ ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
         status: DownloadsCache.Status.error,
         errorMessage,
       });
-      event.sender.send(IpcEvents.downloadsStatusChange, {
+      event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
         status: DownloadsCache.Status.error,
         payload: `${destFilePath} ${errorMessage}`,
       });
@@ -67,7 +67,7 @@ ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
       path: destFilePath,
       status: DownloadsCache.Status.finished,
     });
-    event.sender.send(IpcEvents.downloadsStatusChange, {
+    event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
       status: DownloadsCache.Status.finished,
       payload: destFilePath,
     });
@@ -77,7 +77,7 @@ ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
       status: DownloadsCache.Status.error,
       errorMessage: error.message,
     });
-    event.sender.send(IpcEvents.downloadsStatusChange, {
+    event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
       status: DownloadsCache.Status.error,
       payload: `${destFilePath} ${error.message}`,
     });

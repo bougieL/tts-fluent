@@ -18,7 +18,7 @@ const globalState = {
 
 function Downloads() {
   const [list, setList] = useState<Item[]>([]);
-  const [filterReg, setFilterReg] = useState<RegExp | undefined>(
+  const [filterReg, setFilterReg] = useState<RegExp>(
     new RegExp(globalState.filter.split(/\s+/).join('.*'))
   );
   const [filter, setFilter] = useState(globalState.filter);
@@ -42,11 +42,7 @@ function Downloads() {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       const v = value.trim();
-      if (v) {
-        setFilterReg(new RegExp(v.split(/\s+/).join('.*')));
-      } else {
-        setFilterReg(undefined);
-      }
+      setFilterReg(new RegExp(v.split(/\s+/).join('.*')));
     }, 500);
   };
   const filteredList = useMemo(() => {
@@ -67,8 +63,7 @@ function Downloads() {
       >
         <List<Item>
           items={filteredList}
-          className="history-list"
-          ignoreScrollingState
+          ignoreScrollingState={false}
           onRenderCell={(item) => <Cell item={item!} />}
         />
       </Stack>

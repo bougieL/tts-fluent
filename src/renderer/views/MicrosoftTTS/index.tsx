@@ -2,7 +2,7 @@ import { Stack } from '@fluentui/react';
 import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
-import { useAudio, useFn } from '../../hooks';
+import { useAudio } from 'renderer/hooks';
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
 import { Options, SsmlConfig } from './Options';
@@ -20,18 +20,29 @@ const MicrosoftTTS = () => {
   const [ssml, setSsml] = useState('');
   const [config, setConfig] = useState(defaultConfig);
   const audio = useAudio();
-  const handlePlayClick = useFn(async () => {
+  const handlePlayClick = async () => {
     setLoading(true);
-    const { src } = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlay, ssml);
-    audio.setSource(src);
-    audio.play();
+    try {
+      const { src } = await ipcRenderer.invoke(
+        IpcEvents.ttsMicrosoftPlay,
+        ssml
+      );
+      audio.setSource(src);
+      audio.play();
+    } catch (error) {
+      new Notification('Play failed 😭', {
+        body: `Click to show error message`,
+      }).onclick = () => {
+        alert(String(error));
+      };
+    }
     setLoading(false);
-  });
-  const handleDownloadClick = useFn(async () => {
+  };
+  const handleDownloadClick = async () => {
     setLoading(true);
     await ipcRenderer.invoke(IpcEvents.ttsMicrosoftDownload, ssml);
     setLoading(false);
-  });
+  };
   return (
     <Stack tokens={{ childrenGap: 18 }} styles={{ root: { height: '100%' } }}>
       <Inputs
