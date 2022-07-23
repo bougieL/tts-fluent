@@ -22,10 +22,9 @@ export async function checkUpdate(): Promise<VersionContextValue> {
   let remoteVersion = '';
   let hasUpdate = false;
   try {
-    remoteVersion = '0.0.3';
-    // await axios
-    //   .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
-    //   .then(({ data }) => data.tag_name);
+    remoteVersion = await axios
+      .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
+      .then(({ data }) => data.tag_name);
     hasUpdate = formatVersion(remoteVersion) > formatVersion(version);
   } catch (error) {
     hasUpdate = false;

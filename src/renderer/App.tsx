@@ -33,7 +33,7 @@ const App = () => {
           <Pivot
             selectedKey={location.pathname}
             onLinkClick={handlePivotClick}
-            styles={{ text: { fontSize: 18 }, count: { fontSize: 16 }, }}
+            styles={{ text: { fontSize: 18 }, count: { fontSize: 16 } }}
             // linkFormat="tabs"
           >
             <PivotItem headerText="Microsoft TTS" itemKey="/" />
@@ -45,7 +45,7 @@ const App = () => {
             <PivotItem
               headerText="Settings"
               itemKey="/settings"
-              itemCount={hasUpdate ? 'New version!' : undefined}
+              itemCount={hasUpdate ? '🤡 New version !' : undefined}
             />
           </Pivot>
           <AudioIndicator />

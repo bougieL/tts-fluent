@@ -1,12 +1,12 @@
 {
   "name": "tts-fluent",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Desktop apps from microsoft TTS",
   "license": "MIT",
   "author": {
     "name": "Bougie Liu",
     "email": "bougie.liu@qq.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "url": "https://bougieblog.cn"
   },
   "main": "./dist/main/main.js",
   "scripts": {
