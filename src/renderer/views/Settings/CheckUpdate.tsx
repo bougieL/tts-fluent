@@ -19,12 +19,12 @@ const CheckUpdate = () => {
       >
         <CompoundButton
           primary
-          secondaryText="Experience latest feature"
+          secondaryText={`Update to ${remoteVersion} experience latest feature`}
           onClick={() => {
             shell.openExternal('https://github.com');
           }}
         >
-          Download {remoteVersion} in github
+          Download
         </CompoundButton>
       </Stack>
     </>

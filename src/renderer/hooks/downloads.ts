@@ -46,6 +46,7 @@ export function useDownloadsNum() {
           .length
       );
     };
+    updater();
     const watcher = fs.watch(p, updater);
     return watcher.close;
   }, []);

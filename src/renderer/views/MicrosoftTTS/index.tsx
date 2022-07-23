@@ -23,10 +23,7 @@ const MicrosoftTTS = () => {
   const handlePlayClick = async () => {
     setLoading(true);
     try {
-      const { src } = await ipcRenderer.invoke(
-        IpcEvents.ttsMicrosoftPlay,
-        ssml
-      );
+      const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlay, ssml);
       audio.setSource(src);
       audio.play();
     } catch (error) {

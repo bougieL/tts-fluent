@@ -40,9 +40,12 @@ export function Cell({ item }: CellProps) {
       const size = await getSize(item.path);
       setSize(size);
     };
-    const watcher = fs.watch(item.path, updater);
     updater();
-    return watcher.close;
+    if (await fs.pathExists(item.path)) {
+      const watcher = fs.watch(item.path, updater);
+      return watcher.close;
+    }
+    return () => {};
   }, [item.path]);
   return (
     <Stack>
@@ -62,7 +65,7 @@ export function Cell({ item }: CellProps) {
           tokens={{ childrenGap: 8 }}
         >
           <Text variant="small">{new Date(item.date).toLocaleString()}</Text>
-          <TooltipHost content="Play" setAriaDescribedBy={false}>
+          <TooltipHost content={fileTip('Play')} setAriaDescribedBy={false}>
             <IconButton
               iconProps={{ iconName: 'Play' }}
               aria-label="Play"

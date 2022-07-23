@@ -1,13 +1,12 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import axios from 'axios';
-import { IpcEvents } from 'const';
-import { ipcRenderer } from 'electron';
+import { version } from '@app/package.json';
 import { useAsync } from './external';
 
 function formatVersion(version: string) {
   return Number(
     version
-      .replace(/\w/g, '')
+      .replace(/[A-Za-z]/g, '')
       .split('.')
       .map((item) => item.padStart(2, '0'))
       .join('')
@@ -15,33 +14,29 @@ function formatVersion(version: string) {
 }
 
 interface VersionContextValue {
-  localVersion: string;
   remoteVersion: string;
   hasUpdate: boolean;
 }
 
 export async function checkUpdate(): Promise<VersionContextValue> {
-  let localVersion = '';
   let remoteVersion = '';
   let hasUpdate = false;
   try {
-    localVersion = await ipcRenderer.invoke(IpcEvents.electronAppGetVersion);
-    remoteVersion = await axios
-      .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
-      .then(({ data }) => data.tag_name);
-    hasUpdate = formatVersion(remoteVersion) > formatVersion(localVersion);
+    remoteVersion = '0.0.3';
+    // await axios
+    //   .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
+    //   .then(({ data }) => data.tag_name);
+    hasUpdate = formatVersion(remoteVersion) > formatVersion(version);
   } catch (error) {
     hasUpdate = false;
   }
   return {
-    localVersion,
     remoteVersion,
     hasUpdate,
   };
 }
 
 const defaultValue: VersionContextValue = {
-  localVersion: '',
   remoteVersion: '',
   hasUpdate: false,
 };

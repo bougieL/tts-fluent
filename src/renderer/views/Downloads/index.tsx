@@ -61,10 +61,16 @@ function Downloads() {
       <Stack
         styles={{ root: { height: 'calc(100vh - 160px)', overflow: 'auto' } }}
       >
-        <List<Item>
+        <List
+          // totalCount={filteredList.length}
           items={filteredList}
-          ignoreScrollingState={false}
-          onRenderCell={(item) => <Cell item={item!} />}
+          // // ignoreScrollingState={false}
+          getKey={(item) => item.id}
+          // onShouldVirtualize={() => false}
+          onRenderCell={(item) => {
+            // const item = filteredList[index];
+            return <Cell key={item?.id} item={item!} />;
+          }}
         />
       </Stack>
     </FocusZone>

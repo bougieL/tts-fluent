@@ -72,8 +72,11 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
   return (
     <Stack tokens={{ childrenGap: 18 }}>
       <Pivot
-        styles={{ text: { fontSize: 18 }, link: { height: 32 } }}
-        linkFormat="tabs"
+        styles={{
+          text: { fontSize: 16 },
+          link: { height: 32 },
+        }}
+        // linkFormat="tabs"
         selectedKey={type}
         onLinkClick={(item) => {
           const type = item?.props.itemKey as InputType;

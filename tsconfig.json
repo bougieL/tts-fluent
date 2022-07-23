@@ -32,6 +32,7 @@
   ],
   "paths": {
     "*": ["./src/*"],
-    "@assets/*": ["./assets/*"]
+    "@assets/*": ["./assets/*"],
+    "@app/*": ["./release/app/*"]
   }
 }
