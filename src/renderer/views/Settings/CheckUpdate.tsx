@@ -21,7 +21,9 @@ const CheckUpdate = () => {
           primary
           secondaryText={`Click here update to ${remoteVersion}`}
           onClick={() => {
-            shell.openExternal('https://github.com');
+            shell.openExternal(
+              'https://github.com/bougieL/tts-fluent/releases'
+            );
           }}
           styles={{ label: { fontSize: 18 } }}
         >
