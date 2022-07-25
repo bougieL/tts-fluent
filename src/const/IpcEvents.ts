@@ -8,4 +8,5 @@ export enum IpcEvents {
   ttsMicrosoftPlay = 'tts.microsoft.play',
   ttsMicrosoftDownload = 'tts.microsoft.download',
   ttsMicrosoftDownloadStatusChange = 'tts.microsoft.download.status.change',
+  ttsMidrosoftDownloadRemove = 'tts.microsoft.download.remove',
 }

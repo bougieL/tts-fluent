@@ -1,5 +1,5 @@
 import { ssmlToStream } from '@bougiel/tts-node';
-import { ipcMain } from 'electron';
+import { app, ipcMain } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
 import * as uuid from 'uuid';
@@ -29,58 +29,73 @@ ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   });
 });
 
-ipcMain.handle(IpcEvents.ttsMicrosoftDownload, async (event, ssml) => {
-  const downloadsDir = await ConfigCache.getDownloadsDir();
-  const hash = md5(ssml);
-  const downloadFilePath = path.join(downloadsDir, `${hash}.download`);
-  const destFilePath = path.join(downloadsDir, `${hash}.mp3`);
-  if (await fs.pathExists(destFilePath)) {
-    return destFilePath;
-  }
-  const stream = await ssmlToStream(ssml);
-  await fs.ensureDir(downloadsDir);
-  const now = Date.now();
-  const writeStream = fs.createWriteStream(downloadFilePath);
-  const id = uuid.v4();
-  await DownloadsCache.addItem({
-    id,
-    content: ssml,
-    md5: hash,
-    date: now,
-    path: downloadFilePath,
-    status: DownloadsCache.Status.downloading,
-  });
-  stream.pipe(writeStream);
-  writeStream.on('finish', async () => {
-    await fs.rename(downloadFilePath, destFilePath).catch((error) => {
-      const errorMessage = JSON.stringify(error);
+const streamMap: Record<string, fs.WriteStream> = {};
+
+ipcMain.handle(
+  IpcEvents.ttsMicrosoftDownload,
+  async (event, { ssml, id: originId }) => {
+    const downloadsDir = await ConfigCache.getDownloadsDir();
+    const hash = md5(ssml);
+    const now = Date.now();
+    const id = originId || uuid.v4();
+    const destFilePath = path.join(downloadsDir, `${hash}.mp3`);
+    const exists = await fs.pathExists(destFilePath);
+    const downloadRecord = await DownloadsCache.getItemByHash(hash);
+    if (exists && downloadRecord?.status === DownloadsCache.Status.finished) {
+      await DownloadsCache.updateItem(id, { date: now });
+      return destFilePath;
+    }
+    await fs.remove(destFilePath);
+    await fs.ensureFile(destFilePath);
+    const stream = await ssmlToStream(ssml);
+    const writeStream = fs.createWriteStream(destFilePath);
+    streamMap[id] = writeStream;
+    await DownloadsCache.addItem({
+      id,
+      content: ssml,
+      md5: hash,
+      date: now,
+      path: destFilePath,
+      status: DownloadsCache.Status.downloading,
+    });
+    stream.pipe(writeStream);
+    writeStream.on('finish', async () => {
+      DownloadsCache.updateItem(id, {
+        path: destFilePath,
+        status: DownloadsCache.Status.finished,
+      });
+      event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
+        status: DownloadsCache.Status.finished,
+        payload: destFilePath,
+      });
+    });
+    writeStream.on('error', (error) => {
       DownloadsCache.updateItem(id, {
         status: DownloadsCache.Status.error,
-        errorMessage,
+        errorMessage: error.message,
       });
       event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
         status: DownloadsCache.Status.error,
-        payload: `${destFilePath} ${errorMessage}`,
+        payload: `${destFilePath} ${error.message}`,
       });
     });
-    DownloadsCache.updateItem(id, {
-      path: destFilePath,
-      status: DownloadsCache.Status.finished,
-    });
-    event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
-      status: DownloadsCache.Status.finished,
-      payload: destFilePath,
-    });
+    return destFilePath;
+  }
+);
+
+ipcMain.handle(IpcEvents.ttsMidrosoftDownloadRemove, (_, id) => {
+  streamMap[id]?.close();
+  DownloadsCache.removeItem(id);
+});
+
+app.on('ready', async () => {
+  const list = await DownloadsCache.getList();
+  list.forEach((item) => {
+    if (item.status === DownloadsCache.Status.downloading) {
+      DownloadsCache.updateItem(item.id, {
+        status: DownloadsCache.Status.error,
+      });
+      fs.remove(item.path);
+    }
   });
-  writeStream.on('error', (error) => {
-    DownloadsCache.updateItem(id, {
-      status: DownloadsCache.Status.error,
-      errorMessage: error.message,
-    });
-    event.sender.send(IpcEvents.ttsMicrosoftDownloadStatusChange, {
-      status: DownloadsCache.Status.error,
-      payload: `${destFilePath} ${error.message}`,
-    });
-  });
-  return destFilePath;
 });

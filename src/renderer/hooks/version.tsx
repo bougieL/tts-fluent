@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import axios from 'axios';
-import { version } from '@app/package.json';
+import { APP_VERSION } from 'const';
 import { useAsync } from './external';
 
 function formatVersion(version: string) {
@@ -25,7 +25,7 @@ export async function checkUpdate(): Promise<VersionContextValue> {
     remoteVersion = await axios
       .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
       .then(({ data }) => data.tag_name);
-    hasUpdate = formatVersion(remoteVersion) > formatVersion(version);
+    hasUpdate = formatVersion(remoteVersion) > formatVersion(APP_VERSION);
   } catch (error) {
     hasUpdate = false;
   }

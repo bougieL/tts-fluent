@@ -1,12 +1,12 @@
 import { TextField } from '@fluentui/react';
-import { version } from '@app/package.json';
+import { APP_VERSION } from 'const';
 
 const AppVersion = () => {
   return (
     <TextField
       label="Version"
       readOnly
-      value={version}
+      value={APP_VERSION}
       style={{ textAlign: 'left' }}
     />
   );
