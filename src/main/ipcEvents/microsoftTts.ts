@@ -29,6 +29,44 @@ ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   });
 });
 
+ipcMain.handle(
+  IpcEvents.ttsMicrosoftPlayStream,
+  async (event, { ssml, sessionId }) => {
+    const hash = md5(ssml);
+    const playCachesDir = await PlayCache.getCachePath();
+    const destFilePath = path.join(playCachesDir, `${hash}`);
+    const isFinised = await PlayCache.getFinished(hash);
+    const exists = await fs.pathExists(destFilePath);
+    if (isFinised && exists) {
+      return destFilePath;
+    }
+    const stream = await ssmlToStream(ssml);
+    await fs.ensureFile(destFilePath);
+    const writeStream = fs.createWriteStream(destFilePath);
+    stream.pipe(writeStream);
+    writeStream.on('finish', () => {
+      PlayCache.setFinished(hash);
+    });
+    writeStream.on('error', () => {});
+    stream.on('data', (chunk) => {
+      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, { chunk, sessionId });
+    });
+    stream.on('close', () => {
+      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
+        sessionId,
+        isEnd: true,
+      });
+    });
+    stream.on('error', () => {
+      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
+        sessionId,
+        isError: true,
+      });
+    });
+    return null;
+  }
+);
+
 const streamMap: Record<string, fs.WriteStream> = {};
 
 ipcMain.handle(

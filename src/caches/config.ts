@@ -18,7 +18,8 @@ export namespace ConfigCache {
     const configPath = await getConfigPath();
     let config: any = {};
     try {
-      config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+      const content = await fs.readFile(configPath, 'utf-8');
+      config = JSON.parse(content || '{}');
     } catch (error) {}
     config[key] = value;
     try {
@@ -35,9 +36,14 @@ export namespace ConfigCache {
   }
 
   export async function getDownloadsDir(): Promise<string> {
-    const p =
-      (await getConfig(ConfigKey.downloadsDir)) || app.getPath('downloads');
-    await fs.ensureDir(p);
-    return p;
+    const downloadsDir = app.getPath('downloads');
+    const configDir = await getConfig(ConfigKey.downloadsDir);
+    const p = configDir || downloadsDir;
+    try {
+      await fs.ensureDir(p);
+      return p;
+    } catch (error) {
+      return downloadsDir;
+    }
   }
 }
