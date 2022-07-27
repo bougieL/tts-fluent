@@ -27,7 +27,7 @@ function Downloads() {
     const updater = async () => {
       const data = await DownloadsCache.getList();
       const list = data
-        .map((item) => ({ ...item, text: ssmlToText(item.content) }))
+        .map((item) => ({ ...item, text: ssmlToText(item.content).trim() }))
         .sort((a, b) => b.date - a.date);
       setList(list);
     };
@@ -62,13 +62,9 @@ function Downloads() {
         styles={{ root: { height: 'calc(100vh - 160px)', overflow: 'auto' } }}
       >
         <List
-          // totalCount={filteredList.length}
           items={filteredList}
-          // // ignoreScrollingState={false}
           getKey={(item) => item.id}
-          // onShouldVirtualize={() => false}
           onRenderCell={(item) => {
-            // const item = filteredList[index];
             return <Cell key={item?.id} item={item!} />;
           }}
         />

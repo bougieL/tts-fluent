@@ -1,15 +1,11 @@
 import { AudioStatus, StatusChangeCallback } from './types';
 
-export class GlobalAudio {
+export class LocalAudio {
   private privAudio = new Audio();
 
   private privStatus = AudioStatus.empty;
 
   private privStatusChangeCallbacks = new Set<StatusChangeCallback>();
-
-  constructor() {
-    this.privAudio.preload = 'none';
-  }
 
   setSource(src: string) {
     this.privAudio.src = `file://${src}`;
@@ -51,7 +47,7 @@ export class GlobalAudio {
 
   addStatusChangeListener(callback: StatusChangeCallback) {
     this.privStatusChangeCallbacks.add(callback);
-
+    callback(this.privStatus);
     return {
       remove: () => {
         this.privStatusChangeCallbacks.delete(callback);

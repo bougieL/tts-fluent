@@ -71,4 +71,9 @@ export namespace DownloadsCache {
       await fs.writeFile(cachePath, JSON.stringify(list));
     } catch (error) {}
   }
+
+  export async function getItemByHash(hash: string) {
+    const list = await getList();
+    return list.find((item) => item.md5 === hash);
+  }
 }

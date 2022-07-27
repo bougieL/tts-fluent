@@ -1,23 +1,33 @@
 import { IconButton, TooltipHost } from '@fluentui/react';
-import { useState } from 'react';
-import { useAudio, useAsync } from 'renderer/hooks';
+import { useLayoutEffect, useState } from 'react';
+import { useAudio } from 'renderer/hooks';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
 export function AudioIndicator() {
-  const audio = useAudio();
+  const { audio, streamAudio, isStreamAudio } = useAudio();
   const [status, setStatus] = useState(AudioStatus.empty);
+  const currentAudio = isStreamAudio ? streamAudio : audio;
+  useLayoutEffect(() => {
+    if (isStreamAudio) {
+      audio.stop();
+    } else {
+      streamAudio.stop();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStreamAudio]);
 
-  useAsync(async () => {
-    const subscription = audio.addStatusChangeListener(setStatus);
-
-    return subscription.remove;
-  }, []);
+  useLayoutEffect(() => {
+    const s = currentAudio.addStatusChangeListener((status) => {
+      setStatus(status);
+    });
+    return s.remove;
+  }, [currentAudio]);
 
   const handleClick = () => {
     if (status !== AudioStatus.playing) {
-      audio.play();
+      currentAudio.play();
     } else {
-      audio.stop();
+      currentAudio.stop();
     }
   };
 

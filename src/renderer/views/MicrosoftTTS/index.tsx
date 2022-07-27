@@ -3,6 +3,7 @@ import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
 import { useAudio } from 'renderer/hooks';
+import * as uuid from 'uuid';
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
 import { Options, SsmlConfig } from './Options';
@@ -19,13 +20,37 @@ const MicrosoftTTS = () => {
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
   const [config, setConfig] = useState(defaultConfig);
-  const audio = useAudio();
-  const handlePlayClick = async () => {
+  const { audio, streamAudio, setIsStreamAudio } = useAudio();
+  const handlePlayStream = async () => {
     setLoading(true);
     try {
-      const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlay, ssml);
-      audio.setSource(src);
-      audio.play();
+      const id = uuid.v4();
+      const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlayStream, {
+        ssml,
+        sessionId: id,
+      });
+      if (src) {
+        setIsStreamAudio(false);
+        audio.setSource(src);
+        audio.play();
+      } else {
+        setIsStreamAudio(true);
+        streamAudio.reset();
+        ipcRenderer.on(
+          IpcEvents.ttsMicrosoftPlayStream,
+          (_, { chunk, isEnd, isError, sessionId }) => {
+            if (sessionId === id) {
+              if (chunk) {
+                streamAudio.appendBuffer(chunk);
+              }
+              if (isEnd || isError) {
+                streamAudio.setStreamEnd();
+              }
+            }
+          }
+        );
+        streamAudio.play();
+      }
     } catch (error) {
       new Notification('Play failed 😭', {
         body: `Click to show error message`,
@@ -37,7 +62,15 @@ const MicrosoftTTS = () => {
   };
   const handleDownloadClick = async () => {
     setLoading(true);
-    await ipcRenderer.invoke(IpcEvents.ttsMicrosoftDownload, ssml);
+    await ipcRenderer
+      .invoke(IpcEvents.ttsMicrosoftDownload, { ssml })
+      .catch((error) => {
+        new Notification('Download failed 😭', {
+          body: `Click to show error message`,
+        }).onclick = () => {
+          alert(String(error));
+        };
+      });
     setLoading(false);
   };
   return (
@@ -53,7 +86,7 @@ const MicrosoftTTS = () => {
       />
       <Options onChange={setConfig} />
       <Buttons
-        onPlayClick={handlePlayClick}
+        onPlayClick={handlePlayStream}
         onDownloadClick={handleDownloadClick}
         disabled={empty || loading}
         loading={loading}
