@@ -1,7 +1,16 @@
-import { createContext, PropsWithChildren, useContext, useRef } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import { LocalAudio } from 'renderer/lib/Audio/LocalAudio';
 import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
-import { AudioStatus } from 'renderer/lib/Audio/types';
+
+const isStreamAudioContext = createContext<
+  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+>([false, () => {}]);
 
 const audioContext = createContext(new LocalAudio());
 
@@ -11,56 +20,23 @@ export function AudioProvider(props: PropsWithChildren<any>) {
   const audioRef = useRef(new LocalAudio());
   const streamAudioRef = useRef(new StreamAudio());
   return (
-    <streamAudioContext.Provider value={streamAudioRef.current}>
-      <audioContext.Provider value={audioRef.current} {...props} />
-    </streamAudioContext.Provider>
+    <isStreamAudioContext.Provider value={useState<boolean>(false)}>
+      <streamAudioContext.Provider value={streamAudioRef.current}>
+        <audioContext.Provider value={audioRef.current} {...props} />
+      </streamAudioContext.Provider>
+    </isStreamAudioContext.Provider>
   );
 }
 
 export function useAudio() {
+  const [isStreamAudio, setIsStreamAudio] = useContext(isStreamAudioContext);
   const audio = useContext(audioContext);
   const streamAudio = useContext(streamAudioContext);
-  const isStreamRef = useRef(false);
-  return useRef({
-    setSource(src: string) {
-      isStreamRef.current = false;
-      audio.setSource(src);
-      streamAudio.reset();
-    },
-    appendStream(chunk: ArrayBuffer) {
-      isStreamRef.current = true;
-      streamAudio.appendStream(chunk);
-    },
-    play(isStream = false) {
-      if (isStream) {
-        streamAudio.play();
-        audio.stop();
-      } else {
-        audio.play();
-        streamAudio.stop();
-      }
-    },
-    stop() {
-      streamAudio.stop();
-      audio.stop();
-    },
-    addStatusChangeListener(listener: (status: AudioStatus) => void) {
-      const s1 = audio.addStatusChangeListener((status) => {
-        if (!isStreamRef.current) {
-          listener(status);
-        }
-      });
-      const s2 = streamAudio.addStatusChangeListener((status) => {
-        if (isStreamRef.current) {
-          listener(status);
-        }
-      });
-      return {
-        remove() {
-          s1.remove();
-          s2.remove();
-        },
-      };
-    },
-  }).current;
+
+  return {
+    isStreamAudio,
+    setIsStreamAudio,
+    audio,
+    streamAudio,
+  };
 }

@@ -5,24 +5,29 @@ export class StreamAudio {
 
   private privStatus = AudioStatus.empty;
 
-  private privChunks: ArrayBuffer[] = [];
+  private privBuffers: ArrayBuffer[] = [];
 
   private privStatusChangeCallbacks = new Set<StatusChangeCallback>();
 
+  private privMediaSource?: MediaSource;
+
   private privSourceBuffer?: SourceBuffer;
+
+  private privStreamEnd = false;
 
   constructor() {
     this.reset();
     this.setupAudioListener();
   }
 
-  appendStream(chunk: ArrayBuffer) {
-    this.privChunks.push(chunk);
+  appendBuffer(buffer: ArrayBuffer) {
+    this.privBuffers.push(buffer);
+    this.updateSourceBuffer();
   }
 
   private setupAudioListener() {
     const handleEnd = () => {
-      this.privStatus = AudioStatus.stopped;
+      this.status = AudioStatus.stopped;
     };
     this.privAudio.addEventListener('ended', handleEnd);
   }
@@ -41,23 +46,61 @@ export class StreamAudio {
     await this.privAudio.play();
   }
 
+  private updateSourceBuffer() {
+    if (
+      this.privMediaSource?.readyState === 'open' &&
+      !this.privSourceBuffer?.updating
+    ) {
+      const buffer = this.privBuffers.shift();
+      if (buffer) {
+        try {
+          this.privSourceBuffer?.appendBuffer(buffer);
+        } catch (error) {
+          this.privBuffers.unshift(buffer);
+        }
+        this.endStream();
+      }
+    }
+  }
+
+  private endStream() {
+    if (
+      !this.privSourceBuffer?.updating &&
+      this.privBuffers.length === 0 &&
+      this.privStreamEnd
+    ) {
+      try {
+        this.privMediaSource?.endOfStream();
+      } catch (error) {}
+    }
+  }
+
   reset() {
     this.stop();
-    this.privChunks = [];
-    const mediaSource = new MediaSource();
-    this.privAudio.src = URL.createObjectURL(mediaSource);
-    mediaSource.onsourceopen = () => {
-      this.privSourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
-      this.privSourceBuffer.onupdate = () => {
-        const chunk = this.privChunks.shift();
-        if (chunk) {
-          this.privSourceBuffer?.appendBuffer(chunk);
-        }
-      };
-      this.privSourceBuffer.onupdateend = () => {
-        mediaSource.endOfStream();
-      };
+    this.privBuffers = [];
+    this.privStreamEnd = false;
+    this.privMediaSource = new MediaSource();
+    this.privMediaSource.onsourceopen = () => {
+      if (this.privMediaSource) {
+        this.privSourceBuffer =
+          this.privMediaSource.addSourceBuffer('audio/mpeg');
+        this.privSourceBuffer.onupdate = () => {
+          this.updateSourceBuffer();
+          this.endStream();
+        };
+        this.privSourceBuffer.onupdateend = () => {
+          this.updateSourceBuffer();
+          this.endStream();
+        };
+      }
     };
+    this.privMediaSource.onsourceclose = () => {};
+    this.privAudio.src = URL.createObjectURL(this.privMediaSource);
+  }
+
+  setStreamEnd() {
+    this.privStreamEnd = true;
+    this.endStream();
   }
 
   stop() {
@@ -73,7 +116,7 @@ export class StreamAudio {
 
   addStatusChangeListener(callback: StatusChangeCallback) {
     this.privStatusChangeCallbacks.add(callback);
-
+    callback(this.privStatus);
     return {
       remove: () => {
         this.privStatusChangeCallbacks.delete(callback);

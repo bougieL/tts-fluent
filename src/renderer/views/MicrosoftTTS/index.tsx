@@ -20,22 +20,7 @@ const MicrosoftTTS = () => {
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
   const [config, setConfig] = useState(defaultConfig);
-  const audio = useAudio();
-  // const handlePlayClick = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlay, ssml);
-  //     audio.setSource(src);
-  //     audio.play();
-  //   } catch (error) {
-  //     new Notification('Play failed 😭', {
-  //       body: `Click to show error message`,
-  //     }).onclick = () => {
-  //       alert(String(error));
-  //     };
-  //   }
-  //   setLoading(false);
-  // };
+  const { audio, streamAudio, setIsStreamAudio } = useAudio();
   const handlePlayStream = async () => {
     setLoading(true);
     try {
@@ -45,23 +30,26 @@ const MicrosoftTTS = () => {
         sessionId: id,
       });
       if (src) {
+        setIsStreamAudio(false);
         audio.setSource(src);
         audio.play();
       } else {
+        setIsStreamAudio(true);
+        streamAudio.reset();
         ipcRenderer.on(
           IpcEvents.ttsMicrosoftPlayStream,
           (_, { chunk, isEnd, isError, sessionId }) => {
             if (sessionId === id) {
               if (chunk) {
-                audio.appendStream(chunk);
+                streamAudio.appendBuffer(chunk);
               }
               if (isEnd || isError) {
-                // audio.setEnd();
+                streamAudio.setStreamEnd();
               }
             }
           }
         );
-        audio.play(true);
+        streamAudio.play();
       }
     } catch (error) {
       new Notification('Play failed 😭', {
@@ -70,11 +58,12 @@ const MicrosoftTTS = () => {
         alert(String(error));
       };
     }
+    setLoading(false);
   };
   const handleDownloadClick = async () => {
     setLoading(true);
     await ipcRenderer
-      .invoke(IpcEvents.ttsMicrosoftDownload, ssml)
+      .invoke(IpcEvents.ttsMicrosoftDownload, { ssml })
       .catch((error) => {
         new Notification('Download failed 😭', {
           body: `Click to show error message`,

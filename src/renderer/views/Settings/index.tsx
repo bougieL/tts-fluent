@@ -1,6 +1,7 @@
 import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
 import DownloadsDirectory from './DownloadsDirectory';
+import Feedback from './FeedBack';
 import ManagePlayCache from './ManagePlayCache';
 
 const Settings = () => {
@@ -9,6 +10,7 @@ const Settings = () => {
       <DownloadsDirectory />
       <ManagePlayCache />
       <AppVersion />
+      <Feedback />
       <CheckUpdate />
     </>
   );

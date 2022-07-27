@@ -47,7 +47,7 @@ export class LocalAudio {
 
   addStatusChangeListener(callback: StatusChangeCallback) {
     this.privStatusChangeCallbacks.add(callback);
-
+    callback(this.privStatus);
     return {
       remove: () => {
         this.privStatusChangeCallbacks.delete(callback);

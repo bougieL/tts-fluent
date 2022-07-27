@@ -25,8 +25,9 @@ interface CellProps {
 export function Cell({ item }: CellProps) {
   const [exists, setExists] = useState(true);
   const [size, setSize] = useState('0 B');
-  const audio = useAudio();
+  const { audio, setIsStreamAudio } = useAudio();
   const handlePlayClick = useFn(async () => {
+    setIsStreamAudio(false);
     audio.setSource(item.path);
     audio.play();
   });
@@ -57,6 +58,14 @@ export function Cell({ item }: CellProps) {
   const renderActions = useFn(() => {
     return (
       <>
+        <TooltipHost content={fileTip('Play')} setAriaDescribedBy={false}>
+          <IconButton
+            iconProps={{ iconName: 'Play' }}
+            aria-label="Play"
+            disabled={!exists}
+            onClick={handlePlayClick}
+          />
+        </TooltipHost>
         <TooltipHost content="Copy SSML" setAriaDescribedBy={false}>
           <IconButton
             iconProps={{ iconName: 'Copy' }}
@@ -68,7 +77,7 @@ export function Cell({ item }: CellProps) {
         </TooltipHost>
         <TooltipHost content="Copy pure text" setAriaDescribedBy={false}>
           <IconButton
-            iconProps={{ iconName: 'Copy' }}
+            iconProps={{ iconName: 'PasteAsText' }}
             aria-label="Copy"
             onClick={() => {
               clipboard.writeText(item.text);
@@ -95,7 +104,7 @@ export function Cell({ item }: CellProps) {
   useAsync(async () => {
     const updater = async () => {
       const exists = await fs.pathExists(item.path);
-      setExists(exists);
+      setExists(exists && item.status === DownloadsCache.Status.finished);
       const size = await getSize(item.path);
       setSize(size);
     };
@@ -117,14 +126,31 @@ export function Cell({ item }: CellProps) {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
             return (
-              <Stack horizontal horizontalAlign="end" verticalAlign="center">
-                <ProgressIndicator label="Downloading" description={size} />
+              <Stack
+                horizontal
+                horizontalAlign="space-between"
+                verticalAlign="center"
+                tokens={{ childrenGap: 20 }}
+              >
+                <ProgressIndicator
+                  label="Downloading"
+                  description={size}
+                  styles={{ root: { flex: 1 } }}
+                />
                 {renderDelete()}
               </Stack>
             );
           case DownloadsCache.Status.error:
             return (
-              <Stack horizontal verticalAlign="center" horizontalAlign="end">
+              <Stack
+                horizontal
+                verticalAlign="center"
+                horizontalAlign="end"
+                tokens={{ childrenGap: 10 }}
+              >
+                <Text variant="small" color="red">
+                  Download failed
+                </Text>
                 <Text variant="small">
                   {new Date(item.date).toLocaleString()}
                 </Text>
@@ -145,22 +171,11 @@ export function Cell({ item }: CellProps) {
                 horizontalAlign="end"
                 verticalAlign="center"
                 styles={{ root: { paddingTop: 12 } }}
-                tokens={{ childrenGap: 8 }}
+                tokens={{ childrenGap: 10 }}
               >
                 <Text variant="small">
                   {new Date(item.date).toLocaleString()}
                 </Text>
-                <TooltipHost
-                  content={fileTip('Play')}
-                  setAriaDescribedBy={false}
-                >
-                  <IconButton
-                    iconProps={{ iconName: 'Play' }}
-                    aria-label="Play"
-                    disabled={!exists}
-                    onClick={handlePlayClick}
-                  />
-                </TooltipHost>
                 {renderActions()}
               </Stack>
             );
@@ -168,9 +183,6 @@ export function Cell({ item }: CellProps) {
             return null;
         }
       }, [
-        exists,
-        fileTip,
-        handlePlayClick,
         handleRetryClick,
         item.date,
         item.status,
