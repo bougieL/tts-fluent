@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
   checkNodeEnv('development');
 }
 
-const port = process.env.PORT || 1212;
+const port = process.env.PORT || 1213;
 const manifest = path.resolve(webpackPaths.dllPath, 'renderer.json');
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const requiredByDLLConfig = module.parent!.filename.includes(
@@ -45,18 +45,14 @@ const configuration: webpack.Configuration = {
   mode: 'development',
 
   // target: ['web', 'electron-renderer'],
-  target: 'electron-renderer',
+  target: 'web',
 
-  entry: [
-    `webpack-dev-server/client?http://localhost:${port}/dist`,
-    'webpack/hot/only-dev-server',
-    path.join(webpackPaths.srcRendererPath, 'index.tsx'),
-  ],
+  entry: [path.join(webpackPaths.srcTransferPath, 'index.tsx')],
 
   output: {
-    path: webpackPaths.distRendererPath,
-    publicPath: '/',
-    filename: 'renderer.dev.js',
+    path: webpackPaths.distTransferPath,
+    publicPath: '/transfer',
+    filename: 'transfer.dev.js',
     library: {
       type: 'umd',
     },
@@ -94,10 +90,6 @@ const configuration: webpack.Configuration = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-      },
-      {
-        resourceQuery: /raw/,
-        type: 'asset/source',
       },
     ],
   },
@@ -138,7 +130,7 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: path.join('index.html'),
-      template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      template: path.join(webpackPaths.srcTransferPath, 'index.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
@@ -167,33 +159,37 @@ const configuration: webpack.Configuration = {
     historyApiFallback: {
       verbose: true,
     },
-    setupMiddlewares(middlewares) {
-      console.log('Starting preload.js builder...');
-      const preloadProcess = spawn('npm', ['run', 'start:preload'], {
-        shell: true,
-        stdio: 'inherit',
-      })
-        .on('close', (code: number) => process.exit(code!))
-        .on('error', (spawnError) => console.error(spawnError));
+    // server: {
+    //   type: 'https',
+    // },
+    open: `http://localhost:${port}/transfer`,
+    // setupMiddlewares(middlewares) {
+    //   console.log('Starting preload.js builder...');
+    //   const preloadProcess = spawn('npm', ['run', 'start:preload'], {
+    //     shell: true,
+    //     stdio: 'inherit',
+    //   })
+    //     .on('close', (code: number) => process.exit(code!))
+    //     .on('error', (spawnError) => console.error(spawnError));
 
-      console.log('Starting Main Process...');
-      let args = ['run', 'start:main'];
-      if (process.env.MAIN_ARGS) {
-        args = args.concat(
-          ['--', ...process.env.MAIN_ARGS.matchAll(/"[^"]+"|[^\s"]+/g)].flat()
-        );
-      }
-      spawn('npm', args, {
-        shell: true,
-        stdio: 'inherit',
-      })
-        .on('close', (code: number) => {
-          preloadProcess.kill();
-          process.exit(code!);
-        })
-        .on('error', (spawnError) => console.error(spawnError));
-      return middlewares;
-    },
+    //   console.log('Starting Main Process...');
+    //   let args = ['run', 'start:main'];
+    //   if (process.env.MAIN_ARGS) {
+    //     args = args.concat(
+    //       ['--', ...process.env.MAIN_ARGS.matchAll(/"[^"]+"|[^\s"]+/g)].flat()
+    //     );
+    //   }
+    //   spawn('npm', args, {
+    //     shell: true,
+    //     stdio: 'inherit',
+    //   })
+    //     .on('close', (code: number) => {
+    //       preloadProcess.kill();
+    //       process.exit(code!);
+    //     })
+    //     .on('error', (spawnError) => console.error(spawnError));
+    //   return middlewares;
+    // },
   },
 };
 

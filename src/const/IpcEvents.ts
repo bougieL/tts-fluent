@@ -10,4 +10,6 @@ export enum IpcEvents {
   ttsMicrosoftDownload = 'tts.microsoft.download',
   ttsMicrosoftDownloadStatusChange = 'tts.microsoft.download.status.change',
   ttsMidrosoftDownloadRemove = 'tts.microsoft.download.remove',
+
+  transferDevicesUpdate = 'transfer.devices.update',
 }

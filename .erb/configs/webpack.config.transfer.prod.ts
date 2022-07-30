@@ -24,14 +24,14 @@ const configuration: webpack.Configuration = {
   mode: 'production',
 
   // target: ['web', 'electron-renderer'],
-  target: 'electron-renderer',
+  target: 'web',
 
-  entry: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
+  entry: [path.join(webpackPaths.srcTransferPath, 'index.tsx')],
 
   output: {
-    path: webpackPaths.distRendererPath,
-    publicPath: './',
-    filename: 'renderer.js',
+    path: webpackPaths.distTransferPath,
+    publicPath: '/transfer',
+    filename: 'transfer.js',
     // library: {
     //   type: 'umd',
     // },
@@ -69,10 +69,6 @@ const configuration: webpack.Configuration = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-      },
-      {
-        resourceQuery: /raw/,
-        type: 'asset/source',
       },
     ],
   },
@@ -112,7 +108,7 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      template: path.join(webpackPaths.srcTransferPath, 'index.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,

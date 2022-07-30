@@ -39,6 +39,7 @@ const MicrosoftTTS = () => {
         ipcRenderer.on(
           IpcEvents.ttsMicrosoftPlayStream,
           (_, { chunk, isEnd, isError, sessionId }) => {
+            console.log({ chunk, sessionId })
             if (sessionId === id) {
               if (chunk) {
                 streamAudio.appendBuffer(chunk);

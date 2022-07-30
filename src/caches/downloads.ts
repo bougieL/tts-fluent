@@ -72,6 +72,22 @@ export namespace DownloadsCache {
     } catch (error) {}
   }
 
+  export async function updateBatches(
+    items: Array<{ id: string; data: Partial<Item> }>
+  ) {
+    try {
+      const cachePath = await getCachePath();
+      const list = await getList();
+      items.forEach(({ id, data }) => {
+        const index = list.findIndex((item) => item.id === id);
+        if (index > -1) {
+          list[index] = { ...list[index], ...data };
+        }
+      });
+      await fs.writeFile(cachePath, JSON.stringify(list));
+    } catch (error) {}
+  }
+
   export async function getItemByHash(hash: string) {
     const list = await getList();
     return list.find((item) => item.md5 === hash);
