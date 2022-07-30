@@ -1,4 +1,5 @@
 import { useDropzone } from 'react-dropzone';
+import { Text } from '@fluentui/react';
 
 interface Props {
   value?: File;
@@ -25,13 +26,13 @@ export function Dropzone({ value, onChange }: Props) {
     >
       <input {...getInputProps()} multiple={false} />
       {isDragActive ? (
-        <p>Drop a file here ...</p>
+        <Text>Drop a file here ...</Text>
       ) : (
-        <p>
+        <Text>
           Drag and drop a text file here, or click to select a text file
           <br />
           {value && `Current select file: ${value.name}`}
-        </p>
+        </Text>
       )}
     </div>
   );

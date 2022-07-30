@@ -14,3 +14,16 @@ export async function getCachesDir() {
   }
   return path.join(userData, 'tts-fluent');
 }
+
+export async function getDownloadsDir() {
+  let downloads = '';
+  if (ipcMain) {
+    downloads = app.getPath('downloads');
+  } else {
+    downloads = await ipcRenderer.invoke(
+      IpcEvents.electronAppGetPath,
+      'downloads'
+    );
+  }
+  return downloads;
+}

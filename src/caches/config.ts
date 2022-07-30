@@ -1,7 +1,6 @@
-import { app } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { getCachesDir } from './_utils';
+import { getCachesDir, getDownloadsDir } from './_utils';
 
 export namespace ConfigCache {
   export enum ConfigKey {
@@ -35,8 +34,8 @@ export namespace ConfigCache {
     return config[key];
   }
 
-  export async function getDownloadsDir(): Promise<string> {
-    const downloadsDir = app.getPath('downloads');
+  export async function getTTSDownloadsDir(): Promise<string> {
+    const downloadsDir = await getDownloadsDir();
     const configDir = await getConfig(ConfigKey.downloadsDir);
     const p = configDir || downloadsDir;
     try {

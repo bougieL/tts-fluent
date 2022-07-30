@@ -47,7 +47,6 @@ ipcMain.handle(
     writeStream.on('finish', () => {
       PlayCache.setFinished(hash);
     });
-    writeStream.on('error', () => {});
     stream.on('data', (chunk) => {
       event.sender.send(IpcEvents.ttsMicrosoftPlayStream, { chunk, sessionId });
     });
@@ -72,7 +71,7 @@ const streamMap: Record<string, fs.WriteStream> = {};
 ipcMain.handle(
   IpcEvents.ttsMicrosoftDownload,
   async (event, { ssml, id: originId }) => {
-    const downloadsDir = await ConfigCache.getDownloadsDir();
+    const downloadsDir = await ConfigCache.getTTSDownloadsDir();
     const hash = md5(ssml);
     const now = Date.now();
     const id = originId || uuid.v4();
