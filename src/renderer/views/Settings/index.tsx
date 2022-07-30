@@ -1,13 +1,13 @@
 import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
-import DownloadsDirectory from './DownloadsDirectory';
+import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 import Feedback from './FeedBack';
 import ManagePlayCache from './ManagePlayCache';
 
 const Settings = () => {
   return (
     <>
-      <DownloadsDirectory />
+      <TTSDownloadsDirectory />
       <ManagePlayCache />
       <AppVersion />
       <Feedback />

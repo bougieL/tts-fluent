@@ -5,7 +5,7 @@ import { ipcRenderer } from 'electron';
 import { useState } from 'react';
 import { useAsync } from 'renderer/hooks';
 
-const DownloadsDirectory = () => {
+const TTSDownloadsDirectory = () => {
   const [path, setPath] = useState('');
   const handleSetFilePath = async () => {
     const paths = await ipcRenderer.invoke(
@@ -23,12 +23,12 @@ const DownloadsDirectory = () => {
     }
   };
   useAsync(async () => {
-    const downloadsDir = await ConfigCache.getDownloadsDir();
+    const downloadsDir = await ConfigCache.getTTSDownloadsDir();
     setPath(downloadsDir);
   }, []);
   return (
     <TextField
-      label="Downloads directory"
+      label="TTS Downloads directory"
       type="button"
       value={path}
       onClick={handleSetFilePath}
@@ -37,4 +37,4 @@ const DownloadsDirectory = () => {
   );
 };
 
-export default DownloadsDirectory;
+export default TTSDownloadsDirectory;
