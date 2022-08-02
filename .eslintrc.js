@@ -12,6 +12,7 @@ module.exports = {
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'no-alert': 'off',

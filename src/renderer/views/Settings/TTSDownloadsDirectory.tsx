@@ -9,7 +9,7 @@ const TTSDownloadsDirectory = () => {
   const [path, setPath] = useState('');
   const handleSetFilePath = async () => {
     const paths = await ipcRenderer.invoke(
-      IpcEvents.electronDialogShowOpenDialogSync,
+      IpcEvents.electronDialogShowOpenDialog,
       {
         properties: ['openDirectory'],
       }

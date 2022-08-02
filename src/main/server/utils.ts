@@ -24,6 +24,6 @@ export async function getServerHost() {
   return `http://${address.ip()}:${port}`;
 }
 
-export async function getServerName() {
-  return `${os.userInfo.name}@${os.hostname}`;
+export function getServerName() {
+  return `${os.userInfo().username}@${os.hostname}`;
 }

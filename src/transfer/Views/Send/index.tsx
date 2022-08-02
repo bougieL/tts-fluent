@@ -5,35 +5,41 @@ import { Clipboard } from './Clipboard';
 
 const globalState: { files: File[] } = { files: [] };
 
-export function Send() {
+interface SendProps {
+  disabled?: boolean;
+}
+
+export function Send({ disabled = false }: SendProps) {
   const [files, setStateFiles] = useState(globalState.files);
   const setFiles = (files: File[]) => {
     globalState.files = files;
     setStateFiles(files);
   };
   return (
-    <Stack>
-      <Label>Files</Label>
-      <Dropzone value={files} onChange={setFiles} />
-      <Stack
-        horizontalAlign="end"
-        horizontal
-        styles={{ root: { paddingTop: 12 } }}
-        tokens={{ childrenGap: 12 }}
-      >
-        <DefaultButton
-          disabled={files.length === 0}
-          iconProps={{ iconName: 'Delete' }}
-          onClick={() => setFiles([])}
+    <Stack tokens={{ childrenGap: 24 }}>
+      <Stack>
+        <Label>Files</Label>
+        <Dropzone value={files} onChange={setFiles} />
+        <Stack
+          horizontalAlign="end"
+          horizontal
+          styles={{ root: { paddingTop: 12 } }}
+          tokens={{ childrenGap: 12 }}
         >
-          Clear
-        </DefaultButton>
-        <PrimaryButton
-          iconProps={{ iconName: 'Send' }}
-          disabled={files.length === 0}
-        >
-          Send files
-        </PrimaryButton>
+          <DefaultButton
+            disabled={files.length === 0}
+            iconProps={{ iconName: 'Delete' }}
+            onClick={() => setFiles([])}
+          >
+            Clear
+          </DefaultButton>
+          <PrimaryButton
+            iconProps={{ iconName: 'Send' }}
+            disabled={files.length === 0 || disabled}
+          >
+            Send files
+          </PrimaryButton>
+        </Stack>
       </Stack>
       <Clipboard />
     </Stack>

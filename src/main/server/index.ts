@@ -1,14 +1,20 @@
 import express from 'express';
-import { Notification, shell } from 'electron';
 import address from 'address';
-import { getServerPort } from './utils';
+import cookieParser from 'cookie-parser';
+import { TransferCache } from 'caches/transfer';
+import { getServerName, getServerPort } from './utils';
 import { router as transferRouter } from './transfer';
 
 const app = express();
 
+app.use(cookieParser());
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
@@ -19,18 +25,14 @@ app.use((req, res, next) => {
 app.use('/transfer', transferRouter);
 
 export async function setupSever() {
+  await TransferCache.clear();
   const port = await getServerPort();
-  return app.listen(port, () => {
+  return app.listen(port, async () => {
     // Notification()
-    const url = `http://${address.ip()}:${port}`;
-    const noti = new Notification({
-      title: 'Server started',
-      body: 'Click here to open in browser',
+    const host = `http://${address.ip()}:${port}`;
+    TransferCache.writeServerConfig({
+      serverHost: `${host}/transfer`,
+      serverName: getServerName(),
     });
-    noti.on('click', () => {
-      shell.openExternal(url);
-    });
-    noti.show();
-    // console.log(`Example app listening on port ${port}`);
   });
 }

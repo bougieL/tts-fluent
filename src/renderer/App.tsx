@@ -1,5 +1,5 @@
 import {
-  MemoryRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   useLocation,
@@ -11,6 +11,7 @@ import Settings from './Views/Settings';
 import Downloads from './Views/Downloads';
 import { AudioProvider, Version, useDownloadsNum, useVersion } from './hooks';
 import { AudioIndicator } from './Widgets/AudioIndicator';
+import { Transfer } from './Views/Transfer';
 import './App.scss';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
             // linkFormat="tabs"
           >
             <PivotItem headerText="Microsoft TTS" itemKey="/" />
+            <PivotItem headerText="Transfer" itemKey="/transfer" />
             <PivotItem
               headerText="Downloads"
               itemKey="/downloads"
@@ -52,6 +54,7 @@ const App = () => {
         </Stack>
         <Routes>
           <Route path="/" element={<MicrosoftTTS />} />
+          <Route path="/transfer" element={<Transfer />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

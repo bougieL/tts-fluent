@@ -5,14 +5,27 @@ import {
   DefaultButton,
   TextField,
 } from '@fluentui/react';
+import { TransferType } from 'const/Transfer';
 import { useState } from 'react';
-import { useAsync } from 'react-use';
+import { useServerAliveSse } from 'transfer/hooks';
+import { getClipboard, sendClipboard } from 'transfer/requests';
 
 const globalState: { text: string } = { text: '' };
 
-export function Clipboard() {
+interface ClipboardProps {
+  disabled?: boolean;
+}
+
+export function Clipboard({ disabled = false }: ClipboardProps) {
   const [text, setText] = useState(globalState.text);
-  useAsync(async () => {}, []);
+  useServerAliveSse(({ type, payload }) => {
+    if (type === TransferType.sendClipboard) {
+      setText(payload);
+    }
+    if (type === TransferType.getClipboard) {
+      sendClipboard(text).catch();
+    }
+  });
   return (
     <Stack>
       <Label>Clipboard(Long press to paste or copy)</Label>
@@ -29,10 +42,23 @@ export function Clipboard() {
         styles={{ root: { paddingTop: 12 } }}
         tokens={{ childrenGap: 12 }}
       >
-        <DefaultButton iconProps={{ iconName: 'Download' }}>
+        <DefaultButton
+          iconProps={{ iconName: 'Download' }}
+          disabled={disabled}
+          onClick={async () => {
+            const { data } = await getClipboard().catch();
+            if (data) setText(data);
+          }}
+        >
           Get clipboard
         </DefaultButton>
-        <PrimaryButton iconProps={{ iconName: 'Send' }} disabled={!text}>
+        <PrimaryButton
+          iconProps={{ iconName: 'Send' }}
+          disabled={!text || disabled}
+          onClick={async () => {
+            await sendClipboard(text).catch();
+          }}
+        >
           Send clipboard
         </PrimaryButton>
       </Stack>
