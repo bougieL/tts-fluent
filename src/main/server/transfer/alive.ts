@@ -45,7 +45,7 @@ export function setupAliveRouter(router: Router) {
   const timers = new Map<string, ReturnType<typeof setInterval>>();
 
   ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
-    console.log('on ', IpcEvents.transferSSEData, payload);
+    // console.log('on ', IpcEvents.transferSSEData, payload);
     Array.from(responses.values()).forEach((res) => {
       res.write(toEventStreamData(payload));
     });

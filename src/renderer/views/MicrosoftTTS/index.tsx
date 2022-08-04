@@ -36,20 +36,27 @@ const MicrosoftTTS = () => {
       } else {
         setIsStreamAudio(true);
         streamAudio.reset();
-        ipcRenderer.on(
-          IpcEvents.ttsMicrosoftPlayStream,
-          (_, { chunk, isEnd, isError, sessionId }) => {
-            console.log({ chunk, sessionId })
-            if (sessionId === id) {
-              if (chunk) {
-                streamAudio.appendBuffer(chunk);
-              }
-              if (isEnd || isError) {
-                streamAudio.setStreamEnd();
-              }
-            }
+        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
+        const streamHandler = (
+          _,
+          { chunk, isEnd, isError, errorMessage }: any
+        ) => {
+          if (chunk) {
+            streamAudio.appendBuffer(chunk);
           }
-        );
+          if (isEnd || isError) {
+            streamAudio.setStreamEnd();
+            ipcRenderer.off(channel, streamHandler);
+          }
+          if (isError && errorMessage) {
+            new Notification('Play failed 😭', {
+              body: `Click to show error message`,
+            }).onclick = () => {
+              alert(errorMessage);
+            };
+          }
+        };
+        ipcRenderer.on(channel, streamHandler);
         streamAudio.play();
       }
     } catch (error) {

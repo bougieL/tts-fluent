@@ -47,19 +47,19 @@ ipcMain.handle(
     writeStream.on('finish', () => {
       PlayCache.setFinished(hash);
     });
+    const replyChannel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     stream.on('data', (chunk) => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, { chunk, sessionId });
+      event.sender.send(replyChannel, { chunk });
     });
     stream.on('close', () => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
-        sessionId,
+      event.sender.send(replyChannel, {
         isEnd: true,
       });
     });
-    stream.on('error', () => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
-        sessionId,
+    stream.on('error', (error) => {
+      event.sender.send(replyChannel, {
         isError: true,
+        errorMessage: error.message,
       });
     });
     return null;

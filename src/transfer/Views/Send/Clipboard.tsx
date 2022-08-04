@@ -7,8 +7,10 @@ import {
 } from '@fluentui/react';
 import { TransferType } from 'const/Transfer';
 import { useState } from 'react';
-import { useServerAliveSse } from 'transfer/hooks';
+import copy from 'copy-to-clipboard';
+import { useServer, useServerAliveSse } from 'transfer/hooks';
 import { getClipboard, sendClipboard } from 'transfer/requests';
+import { toast } from 'react-toastify';
 
 const globalState: { text: string } = { text: '' };
 
@@ -18,9 +20,12 @@ interface ClipboardProps {
 
 export function Clipboard({ disabled = false }: ClipboardProps) {
   const [text, setText] = useState(globalState.text);
+  const server = useServer();
   useServerAliveSse(({ type, payload }) => {
     if (type === TransferType.sendClipboard) {
       setText(payload);
+      copy(payload);
+      toast.success(`Get clipboard from ${server?.serverName}`);
     }
     if (type === TransferType.getClipboard) {
       sendClipboard(text).catch();
@@ -47,7 +52,12 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
           disabled={disabled}
           onClick={async () => {
             const { data } = await getClipboard().catch();
-            if (data) setText(data);
+            if (data) {
+              setText(data);
+              copy(data);
+              toast.success(`Get clipboard from ${server?.serverName}`);
+            }
+            // copy(text);
           }}
         >
           Get clipboard

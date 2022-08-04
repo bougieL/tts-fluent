@@ -18,3 +18,16 @@ export function useServerAliveSse(callback: Callback) {
     };
   }, [callback]);
 }
+
+interface TransferPayloadMap {
+  [TransferType.heartbeat]: {
+    deviceName: string;
+    deviceHost: string;
+  };
+  [TransferType.getClipboard]: void;
+  [TransferType.sendClipboard]: string;
+  [TransferType.getFiles]: void;
+  [TransferType.sendFiles]: string[];
+}
+
+export type TransferPayload<T extends TransferType> = TransferPayloadMap[T];

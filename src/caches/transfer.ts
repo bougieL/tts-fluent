@@ -29,7 +29,7 @@ export namespace TransferCache {
     deviceHost: string;
   }
 
-  let devices: Device[] = [];
+  const devices: Device[] = [];
 
   export async function writeServerConfig(config: ServerConfig) {
     const p = await getServerConfigPath();

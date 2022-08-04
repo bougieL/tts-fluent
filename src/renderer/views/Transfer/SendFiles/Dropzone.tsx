@@ -3,7 +3,7 @@ import { Text } from '@fluentui/react';
 import { ipcRenderer } from 'electron';
 import { IpcEvents } from 'const';
 
-interface File {
+export interface File {
   name: string;
   path: string;
 }

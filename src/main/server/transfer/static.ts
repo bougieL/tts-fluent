@@ -17,7 +17,7 @@ export function setupStaticRouter(router: Router) {
       );
     } else {
       text = await import(
-        // @ts-ignore
+        // @ts-ignore import inline will pack module as string to main.js bundle
         '../../../../release/app/dist/transfer/index.html?raw'
       ).then((res) => res.default);
     }
@@ -49,7 +49,7 @@ export function setupStaticRouter(router: Router) {
       text = await import(
         // @ts-ignore
         '../../../../release/app/dist/transfer/style.css?raw'
-      );
+      ).then((res) => res.default);
     }
     res.send(text);
   });

@@ -3,6 +3,7 @@
  */
 
 import webpack from 'webpack';
+import address from 'address';
 import webpackPaths from './webpack.paths';
 import { dependencies as externals } from '../../release/app/package.json';
 
@@ -46,6 +47,9 @@ const configuration: webpack.Configuration = {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.HOST_IP': JSON.stringify(address.ip()),
     }),
   ],
 };
