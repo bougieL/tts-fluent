@@ -21,6 +21,8 @@ export function setupStaticRouter(router: Router) {
         '../../../../release/app/dist/transfer/index.html?raw'
       ).then((res) => res.default);
     }
+    res.header('content-type', 'text/html; charset=utf-8');
+    res.header('cache-control', 'no-cache');
     res.send(text);
   });
 
@@ -36,6 +38,8 @@ export function setupStaticRouter(router: Router) {
         '../../../../release/app/dist/transfer/transfer.js?raw'
       ).then((res) => res.default);
     }
+    res.header('content-type', 'application/javascript');
+    res.header('cache-control', 'no-cache');
     res.send(text);
   });
 
@@ -51,6 +55,8 @@ export function setupStaticRouter(router: Router) {
         '../../../../release/app/dist/transfer/style.css?raw'
       ).then((res) => res.default);
     }
+    res.header('content-type', 'text/css');
+    res.header('cache-control', 'no-cache');
     res.send(text);
   });
 }

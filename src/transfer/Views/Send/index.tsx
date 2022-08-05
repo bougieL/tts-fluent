@@ -47,9 +47,9 @@ export function Send({ disabled = false }: SendProps) {
             styles={{ root: { paddingTop: 12 } }}
             tokens={{ childrenGap: 12 }}
           >
-            {loading && <Spinner />}
+            {loading && <Spinner />}{' '}
             <DefaultButton
-              disabled={files.length === 0}
+              disabled={files.length === 0 || loading}
               iconProps={{ iconName: 'Delete' }}
               onClick={() => setFiles([])}
             >
@@ -57,7 +57,7 @@ export function Send({ disabled = false }: SendProps) {
             </DefaultButton>
             <PrimaryButton
               iconProps={{ iconName: 'Send' }}
-              disabled={files.length === 0 || disabled}
+              disabled={files.length === 0 || disabled || loading}
               onClick={handleSend}
             >
               Send files

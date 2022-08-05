@@ -1,4 +1,3 @@
-import { Stack, Text } from '@fluentui/react';
 import { TransferType } from 'const/Transfer';
 import { useRef } from 'react';
 import { Id, toast } from 'react-toastify';
@@ -13,22 +12,8 @@ export function useReceiveFiles() {
   const handleProgressChange = (event: any, path: string) => {
     const toastId = toastsRef.current.get(path);
     const progress = event.loaded / event.total;
-    const filename = path.split('/').pop();
     if (toastId) {
       toast.update(toastId, { progress });
-    } else {
-      toastsRef.current.set(
-        path,
-        toast(
-          <Stack>
-            <Text variant="medium">
-              Receiving {filename} from {server?.serverName}
-            </Text>
-            <Text variant="small">Do not close this page before success</Text>
-          </Stack>,
-          { progress, closeButton: false }
-        )
-      );
     }
   };
   useServerAliveSse(({ type, payload }) => {
@@ -38,6 +23,17 @@ export function useReceiveFiles() {
         const name = path.split('/').pop() || String(Date.now());
         if (toastsRef.current.get(path)) return;
         try {
+          toastsRef.current.set(
+            path,
+            toast(
+              <>
+                Receiving {name} from {server?.serverName}
+                <br />
+                Do not close this page before success
+              </>,
+              { progress: 0, closeButton: false }
+            )
+          );
           const data = await fetchFile(path, (event) =>
             handleProgressChange(event, path)
           );

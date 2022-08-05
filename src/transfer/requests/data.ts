@@ -8,8 +8,8 @@ export function sendClipboard(text: string) {
   return http.post('/transfer/clipboard', { data: text });
 }
 
-export function sendFiles(form: any) {
-  return http.post('/transfer/files', form);
+export function sendFiles(form: any, onUploadProgress?: (event: any) => void) {
+  return http.post('/transfer/files', form, { onUploadProgress });
 }
 
 // export async function getFile(
