@@ -38,7 +38,7 @@ const MicrosoftTTS = () => {
         streamAudio.reset();
         const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
         const streamHandler = (
-          _,
+          _: any,
           { chunk, isEnd, isError, errorMessage }: any
         ) => {
           if (chunk) {

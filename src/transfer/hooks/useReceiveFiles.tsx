@@ -34,40 +34,38 @@ export function useReceiveFiles() {
   useServerAliveSse(({ type, payload }) => {
     if (type === TransferType.sendFiles) {
       // console.log(payload);
-      payload.forEach(
-        async ({ path, name }: { path: string; name: string }) => {
-          if (toastsRef.current.get(path)) return;
-          try {
-            const data = await fetchFile(path, (event) =>
-              handleProgressChange(event, path)
-            );
-            saveByObjectUrl(data, name);
-            const toastId = toastsRef.current.get(path);
-            if (toastId) {
-              toast.update(toastId, {
-                type: 'success',
-                autoClose: 3000,
-                closeButton: true,
-              });
-              // toast.done(toastId);
-              toastsRef.current.delete(path);
-            }
-          } catch (error) {
-            console.error(error);
-            const toastId = toastsRef.current.get(path);
-            if (toastId) {
-              toast.update(toastId, {
-                type: 'error',
-                autoClose: 3000,
-                closeButton: true,
-              });
-              // toast.done(toastId);
-              // toast.done(toastId);
-              toastsRef.current.delete(path);
-            }
+      payload.forEach(async ({ path }: { path: string }) => {
+        const name = path.split('/').pop() || String(Date.now());
+        if (toastsRef.current.get(path)) return;
+        try {
+          const data = await fetchFile(path, (event) =>
+            handleProgressChange(event, path)
+          );
+          saveByObjectUrl(data, name);
+          const toastId = toastsRef.current.get(path);
+          if (toastId) {
+            toast.update(toastId, {
+              type: 'success',
+              autoClose: 3000,
+              closeButton: true,
+            });
+            // toast.done(toastId);
+            toastsRef.current.delete(path);
+          }
+        } catch (error) {
+          const toastId = toastsRef.current.get(path);
+          if (toastId) {
+            toast.update(toastId, {
+              type: 'error',
+              autoClose: 3000,
+              closeButton: true,
+            });
+            // toast.done(toastId);
+            // toast.done(toastId);
+            toastsRef.current.delete(path);
           }
         }
-      );
+      });
     }
   });
 }

@@ -18,9 +18,14 @@ export function SendFiles() {
     globalState.files = files;
   };
   const sendFiles = () => {
+    // console.log('files', files);
     ipcRenderer.send(IpcEvents.transferSSEData, {
       type: TransferType.sendFiles,
-      payload: files,
+      payload: files.map((item) => {
+        return {
+          path: item.path,
+        };
+      }),
     });
   };
   return (
