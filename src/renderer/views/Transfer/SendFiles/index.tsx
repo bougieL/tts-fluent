@@ -33,6 +33,7 @@ export function SendFiles() {
         <Stack horizontal tokens={{ childrenGap: 12 }}>
           <DefaultButton
             iconProps={{ iconName: 'delete' }}
+            disabled={files.length === 0}
             onClick={() => setFiles([])}
           >
             Clear Files

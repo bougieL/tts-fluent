@@ -1,5 +1,5 @@
 import { TransferType } from 'const/Transfer';
-import { baseURL, getDeviceId, getDeviceName, http } from './_http';
+import { baseQuery, baseURL, http } from './_http';
 
 export function deviceAlivePolling() {
   return http.get('/transfer/deviceAlivePolling', {
@@ -11,7 +11,7 @@ export function serverAliveSse(
   onReceiveData?: (data: { type: TransferType; payload: any }) => void
 ) {
   const source = new EventSource(
-    `${baseURL}/transfer/serverAliveSse?deviceId=${getDeviceId()}&deviceName=${getDeviceName()}`,
+    `${baseURL}/transfer/serverAliveSse?${baseQuery}`,
     {
       withCredentials: true,
     }

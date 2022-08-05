@@ -1,4 +1,4 @@
-import { http } from './_http';
+import { baseQuery, baseURL, http } from './_http';
 
 export function getClipboard() {
   return http.get('/transfer/clipboard');
@@ -22,4 +22,35 @@ export async function getFile(
   });
   // console.log('typeof res.data', typeof res.data);
   return res.data;
+}
+
+export function getFileDownloadUrl(p: string) {
+  return `${baseURL}/transfer/file/${encodeURIComponent(p)}?${baseQuery}`;
+}
+
+export async function fetchFile(
+  p: string,
+  onDownloadProgress?: (event: any) => void
+) {
+  const url = getFileDownloadUrl(p);
+  const blob = await fetch(url).then(async (res) => {
+    const reader = res.clone().body?.getReader();
+    const total = res.headers.get('Content-Length');
+    let loaded = 0;
+    if (reader) {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const { done, value } = await reader.read();
+        loaded += value?.length || 0;
+        if (done) {
+          break;
+        }
+        onDownloadProgress?.({ loaded, total });
+      }
+    }
+
+    return res.blob();
+  });
+  return blob;
 }

@@ -28,3 +28,5 @@ export function getDeviceName() {
   const matche = navigator.userAgent.match(/^[^(]+\((\w+)/)?.[1];
   return `${matche ? `${matche}@` : ''}${md5(navigator.userAgent)}`;
 }
+
+export const baseQuery = `deviceId=${getDeviceId()}&deviceName=${getDeviceName()}`;

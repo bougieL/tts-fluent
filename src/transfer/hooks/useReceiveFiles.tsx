@@ -2,7 +2,8 @@ import { Stack, Text } from '@fluentui/react';
 import { TransferType } from 'const/Transfer';
 import { useRef } from 'react';
 import { Id, toast } from 'react-toastify';
-import { getFile } from 'transfer/requests';
+import { saveByObjectUrl } from 'transfer/lib/saveFile';
+import { fetchFile } from 'transfer/requests';
 import { useServer } from './useServer';
 import { useServerAliveSse } from './useServerAliveSse';
 
@@ -18,13 +19,14 @@ export function useReceiveFiles() {
     } else {
       toastsRef.current.set(
         path,
-        toast.info(
+        toast(
           <Stack>
             <Text variant="medium">
               Receiving {filename} from {server?.serverName}
             </Text>
             <Text variant="small">Do not close this page before success</Text>
-          </Stack>
+          </Stack>,
+          { progress, closeButton: false }
         )
       );
     }
@@ -32,26 +34,40 @@ export function useReceiveFiles() {
   useServerAliveSse(({ type, payload }) => {
     if (type === TransferType.sendFiles) {
       // console.log(payload);
-      payload.forEach(async ({ path }: { path: string; name: string }) => {
-        if (toastsRef.current.get(path)) return;
-        try {
-          const stream = await getFile(path, (event) =>
-            handleProgressChange(event, path)
-          );
-          const toastId = toastsRef.current.get(path);
-          if (toastId) {
-            toast.update(toastId, { type: 'success' });
-            toast.done(toastId);
-            toastsRef.current.delete(path);
-          }
-        } catch (error) {
-          const toastId = toastsRef.current.get(path);
-          if (toastId) {
-            toast.error(toastId);
-            toastsRef.current.delete(path);
+      payload.forEach(
+        async ({ path, name }: { path: string; name: string }) => {
+          if (toastsRef.current.get(path)) return;
+          try {
+            const data = await fetchFile(path, (event) =>
+              handleProgressChange(event, path)
+            );
+            saveByObjectUrl(data, name);
+            const toastId = toastsRef.current.get(path);
+            if (toastId) {
+              toast.update(toastId, {
+                type: 'success',
+                autoClose: 3000,
+                closeButton: true,
+              });
+              // toast.done(toastId);
+              toastsRef.current.delete(path);
+            }
+          } catch (error) {
+            console.error(error);
+            const toastId = toastsRef.current.get(path);
+            if (toastId) {
+              toast.update(toastId, {
+                type: 'error',
+                autoClose: 3000,
+                closeButton: true,
+              });
+              // toast.done(toastId);
+              // toast.done(toastId);
+              toastsRef.current.delete(path);
+            }
           }
         }
-      });
+      );
     }
   });
 }
