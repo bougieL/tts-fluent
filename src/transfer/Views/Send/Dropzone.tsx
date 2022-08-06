@@ -42,7 +42,7 @@ export function Dropzone({ value = [], onChange }: Props) {
                 <ul style={{ paddingLeft: 14 }}>
                   {value.map((item) => {
                     return (
-                      <li>
+                      <li key={item.name}>
                         <Text>{item.name}</Text>
                       </li>
                     );

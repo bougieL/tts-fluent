@@ -1,4 +1,10 @@
-import { DefaultButton, Label, PrimaryButton, Stack } from '@fluentui/react';
+import {
+  DefaultButton,
+  Label,
+  PrimaryButton,
+  Stack,
+  TextField,
+} from '@fluentui/react';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import { clipboard, ipcRenderer } from 'electron';
@@ -21,19 +27,22 @@ export function Clipboard() {
   return (
     <Stack>
       <Label>Clipboard</Label>
-      <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <DefaultButton
-          iconProps={{ iconName: 'download' }}
-          onClick={handleGetClick}
-        >
-          Get clipboard
-        </DefaultButton>
-        <PrimaryButton
-          iconProps={{ iconName: 'send' }}
-          onClick={handleSendClick}
-        >
-          Send clipboard
-        </PrimaryButton>
+      <Stack tokens={{ childrenGap: 12 }}>
+        <TextField />
+        <Stack horizontal tokens={{ childrenGap: 12 }} horizontalAlign="end">
+          <DefaultButton
+            iconProps={{ iconName: 'download' }}
+            onClick={handleGetClick}
+          >
+            Get clipboard
+          </DefaultButton>
+          <PrimaryButton
+            iconProps={{ iconName: 'send' }}
+            onClick={handleSendClick}
+          >
+            Send clipboard
+          </PrimaryButton>
+        </Stack>
       </Stack>
     </Stack>
   );

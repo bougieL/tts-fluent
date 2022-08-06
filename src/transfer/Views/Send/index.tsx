@@ -5,9 +5,10 @@ import {
   DefaultButton,
   Spinner,
 } from '@fluentui/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { sendFiles } from 'transfer/requests';
-import { useReceiveFiles } from 'transfer/hooks';
+import { useReceiveFiles, useServer } from 'transfer/hooks';
+import { Id, toast } from 'react-toastify';
 import { Dropzone } from './Dropzone';
 import { Clipboard } from './Clipboard';
 
@@ -24,13 +25,47 @@ export function Send({ disabled = false }: SendProps) {
     globalState.files = files;
     setStateFiles(files);
   };
+  const toastIdRef = useRef<Id>();
+  const server = useServer();
+  const handleUploadProgress = (event: any) => {
+    const progress = event.loaded / event.total;
+    if (toastIdRef.current) {
+      toast.update(toastIdRef.current, { progress });
+    }
+  };
   const handleSend = async () => {
     const form = new FormData();
     files.forEach((file) => {
       form.append('files', file);
     });
     setLoading(true);
-    await sendFiles(form).catch();
+    try {
+      toastIdRef.current = toast(
+        <>
+          Update files to {server?.serverName}
+          <br />
+          Do not close this page before success
+        </>,
+        { progress: 0, closeButton: false }
+      );
+      await sendFiles(form, handleUploadProgress);
+      if (toastIdRef.current) {
+        toast.update(toastIdRef.current, {
+          type: 'success',
+          autoClose: 3000,
+          closeButton: true,
+        });
+      }
+    } catch (error) {
+      if (toastIdRef.current) {
+        toast.update(toastIdRef.current, {
+          type: 'error',
+          autoClose: 3000,
+          closeButton: true,
+        });
+      }
+    }
+    toastIdRef.current = undefined;
     setLoading(false);
   };
   useReceiveFiles();

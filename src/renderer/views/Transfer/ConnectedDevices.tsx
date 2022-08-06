@@ -1,4 +1,11 @@
-import { ActivityItem, Icon, Label, Separator, Stack, Text } from '@fluentui/react';
+import {
+  ActivityItem,
+  Icon,
+  Label,
+  Separator,
+  Stack,
+  Text,
+} from '@fluentui/react';
 import { TransferCache } from 'caches/transfer';
 import fs from 'fs-extra';
 import { Fragment, useState } from 'react';
@@ -16,7 +23,16 @@ export function ConnectedDevices() {
     fs.watch(p, updater);
   }, []);
   return (
-    <Stack styles={{ root: { flex: 1, maxHeight: 200, overflow: 'auto' } }}>
+    <Stack
+      styles={{
+        root: {
+          flex: 1,
+          maxHeight: 'calc(100vh - 515px)',
+          overflow: 'auto',
+          overflowX: 'hidden',
+        },
+      }}
+    >
       <Label>Connected devices</Label>
       {devices.filter(Boolean).map((item) => {
         return (
@@ -26,6 +42,11 @@ export function ConnectedDevices() {
               activityDescription={item.deviceId}
               comments={<Text>{item.deviceName}</Text>}
               timeStamp={item.deviceHost}
+              styles={{
+                root: {
+                  width: 300,
+                },
+              }}
             />
             <Separator />
           </Fragment>

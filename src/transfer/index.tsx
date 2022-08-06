@@ -22,6 +22,6 @@ const root = createRoot(container);
 root.render(
   <Router basename="/">
     <App />
-    <ToastContainer autoClose={3000} />
+    <ToastContainer autoClose={3000} draggable={false} />
   </Router>
 );
