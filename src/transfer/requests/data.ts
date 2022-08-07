@@ -12,17 +12,18 @@ export function sendFiles(form: any, onUploadProgress?: (event: any) => void) {
   return http.post('/transfer/files', form, { onUploadProgress });
 }
 
-// export async function getFile(
-//   p: string,
-//   onDownloadProgress?: (event: any) => void
-// ) {
-//   const res = await http.get(`/transfer/file/${encodeURIComponent(p)}`, {
-//     // responseType: 'stream',
-//     onDownloadProgress,
-//   });
-//   // console.log('typeof res.data', typeof res.data);
-//   return res.data;
-// }
+export async function getFile(
+  p: string,
+  onDownloadProgress?: (event: any) => void
+) {
+  const res = await http.get(`/transfer/file/${encodeURIComponent(p)}`, {
+    responseType: 'blob',
+    timeout: 0,
+    onDownloadProgress,
+  });
+  console.log(`fetch end: ${p}`)
+  return res.data;
+}
 
 export function getFileDownloadUrl(p: string) {
   return `${baseURL}/transfer/file/${encodeURIComponent(p)}?${baseQuery}`;
