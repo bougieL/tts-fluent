@@ -3,6 +3,7 @@ import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
+import fs from 'fs-extra';
 import { Dropzone, File } from './Dropzone';
 
 const globalState: {
@@ -24,6 +25,7 @@ export function SendFiles() {
       payload: files.map((item) => {
         return {
           path: item.path,
+          size: fs.statSync(item.path).size,
         };
       }),
     });

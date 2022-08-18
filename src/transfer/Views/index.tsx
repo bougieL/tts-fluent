@@ -7,10 +7,11 @@ import {
 } from '@fluentui/react';
 import { useRef, useState } from 'react';
 import { sendFiles } from 'transfer/requests';
-import { useReceiveFiles, useServer } from 'transfer/hooks';
+import { useServer } from 'transfer/hooks';
 import { Id, toast } from 'react-toastify';
 import { Dropzone } from './Dropzone';
 import { Clipboard } from './Clipboard';
+import { ReceiveFiles } from './ReceiveFiles';
 
 const globalState: { files: File[] } = { files: [] };
 
@@ -68,10 +69,9 @@ export function Send({ disabled = false }: SendProps) {
     toastIdRef.current = undefined;
     setLoading(false);
   };
-  useReceiveFiles();
   return (
     <>
-      {/* <Label styles={{ root: { fontSize: 24 } }}>Send</Label> */}
+      <ReceiveFiles />
       <Stack tokens={{ childrenGap: 24 }}>
         <Stack>
           <Label>Files</Label>

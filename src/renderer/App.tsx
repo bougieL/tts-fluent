@@ -9,10 +9,26 @@ import { Pivot, PivotItem, Stack } from '@fluentui/react';
 import MicrosoftTTS from './Views/MicrosoftTTS';
 import Settings from './Views/Settings';
 import Downloads from './Views/Downloads';
-import { AudioProvider, Version, useDownloadsNum, useVersion } from './hooks';
+import {
+  AudioProvider,
+  Version,
+  useDownloadsNum,
+  useVersion,
+  useAsync,
+} from './hooks';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import { Transfer } from './Views/Transfer';
 import './App.scss';
+
+const pathCache = {
+  key: '__path__',
+  set(path: string) {
+    localStorage.setItem(this.key, path);
+  },
+  get() {
+    return localStorage.getItem(this.key) || '/';
+  },
+};
 
 const App = () => {
   const location = useLocation();
@@ -20,8 +36,13 @@ const App = () => {
   const downloadsNum = useDownloadsNum();
   const { hasUpdate } = useVersion();
   const handlePivotClick = (item?: PivotItem) => {
-    navigate(item?.props.itemKey || '/');
+    const path = item?.props.itemKey || '/';
+    navigate(path);
+    pathCache.set(path);
   };
+  useAsync(async () => {
+    navigate(pathCache.get());
+  }, []);
   return (
     <>
       <Stack styles={{ root: { height: 36 } }} className="header" />

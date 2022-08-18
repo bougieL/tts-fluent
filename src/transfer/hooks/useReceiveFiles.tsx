@@ -1,12 +1,23 @@
 import { useRef } from 'react';
 import { Id, toast } from 'react-toastify';
 import { saveByObjectUrl } from 'transfer/lib/saveFile';
-import { getFile } from 'transfer/requests';
+import { getFile, getFileDownloadUrl } from 'transfer/requests';
 import { TransferType } from 'const/Transfer';
+import { detectMobile } from 'transfer/lib/detectMobile';
 import { useServer } from './useServer';
 import { useServerAliveSse } from './useServerAliveSse';
 
-export function useReceiveFiles() {
+function getFilenameByPath(p: string) {
+  return p.replace(/^.*[\\/]/, '') || String(Date.now());
+}
+
+interface Options {
+  onReceiveManualFiles?: (
+    files: Array<{ name: string; download: string; size: number }>
+  ) => void;
+}
+
+export function useReceiveFiles(options?: Options) {
   const server = useServer();
 
   const taostIdRef = useRef<Id>();
@@ -23,7 +34,7 @@ export function useReceiveFiles() {
   const downloadFileByAxios = async (file: { path: string }) => {
     const downloadFiles = async () => {
       const { path } = file;
-      const name = path.replace(/^.*[\\/]/, '') || String(Date.now());
+      const name = getFilenameByPath(path);
       const data = await getFile(path, handleProgress);
       saveByObjectUrl(data, name);
     };
@@ -66,8 +77,16 @@ export function useReceiveFiles() {
 
   useServerAliveSse(async ({ type, payload }) => {
     if (type === TransferType.sendFiles) {
-      if (payload.length === 1) {
+      if (payload.length === 1 && !detectMobile()) {
         downloadFileByAxios(payload[0]);
+      } else {
+        options?.onReceiveManualFiles?.(
+          payload.map(({ path, size }: any) => ({
+            name: getFilenameByPath(path),
+            download: getFileDownloadUrl(path),
+            size,
+          }))
+        );
       }
     }
   });
