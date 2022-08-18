@@ -6,6 +6,7 @@ import { IpcEvents } from 'const';
 export interface File {
   name: string;
   path: string;
+  size: number;
 }
 
 interface Props {

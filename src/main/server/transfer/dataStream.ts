@@ -10,6 +10,7 @@ export function setupDataStreamRouter(router: Router) {
     // console.log(params.path)
     const stat = await fs.stat(fp);
     res.header('Content-Length', String(stat.size));
+    res.header('Content-Disposition', 'attachment');
     const readStream = fs.createReadStream(decodeURIComponent(params.path));
     readStream.pipe(res);
   });
