@@ -1,4 +1,9 @@
-import { DefaultButton, PrimaryButton, Spinner, Stack } from 'renderer/components';
+import {
+  DefaultButton,
+  PrimaryButton,
+  Spinner,
+  Stack,
+} from 'renderer/components';
 
 interface Props {
   onPlayClick: () => void;

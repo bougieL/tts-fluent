@@ -4,6 +4,7 @@ import {
   PrimaryButton,
   DefaultButton,
   TextField,
+  Text,
 } from 'transfer/components';
 import { TransferType } from 'const/Transfer';
 import { useState } from 'react';
@@ -12,20 +13,18 @@ import { useServer, useServerAliveSse } from 'transfer/hooks';
 import { getClipboard, sendClipboard } from 'transfer/requests';
 import { toast } from 'react-toastify';
 
-const globalState: { text: string } = { text: '' };
-
 interface ClipboardProps {
   disabled?: boolean;
 }
 
 export function Clipboard({ disabled = false }: ClipboardProps) {
-  const [text, setText] = useState(globalState.text);
+  const [text, setText] = useState('');
   const server = useServer();
   useServerAliveSse(({ type, payload }) => {
     if (type === TransferType.sendClipboard) {
       setText(payload);
       copy(payload);
-      toast.success(`Get clipboard from ${server?.serverName}`);
+      toast.success(<Text>Get clipboard from {server?.serverName}</Text>);
     }
     if (type === TransferType.getClipboard) {
       sendClipboard(text).catch();
@@ -33,12 +32,11 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
   });
   return (
     <Stack>
-      <Label>Clipboard(Long press to paste or copy)</Label>
+      <Label>Text</Label>
       <TextField
         value={text}
-        onChange={(_, newValue) => {
-          globalState.text = newValue!;
-          setText(newValue!);
+        onChange={(_, newValue = '') => {
+          setText(newValue);
         }}
       />
       <Stack
@@ -55,7 +53,9 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
             if (data) {
               setText(data);
               copy(data);
-              toast.success(`Get clipboard from ${server?.serverName}`);
+              toast.success(
+                <Text>Get clipboard from {server?.serverName}</Text>
+              );
             }
             // copy(text);
           }}
@@ -69,7 +69,7 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
             await sendClipboard(text).catch();
           }}
         >
-          Send clipboard
+          Send text
         </PrimaryButton>
       </Stack>
     </Stack>

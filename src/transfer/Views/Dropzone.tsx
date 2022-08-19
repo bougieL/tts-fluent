@@ -34,7 +34,7 @@ export function Dropzone({ value = [], onChange }: Props) {
           <Text
             style={{
               display: 'block',
-              width: '70%',
+              width: '100%',
               textAlign: value.length > 0 ? 'left' : 'center',
             }}
           >
@@ -49,9 +49,9 @@ export function Dropzone({ value = [], onChange }: Props) {
             return (
               <ul
                 style={{
-                  paddingLeft: 14,
+                  paddingLeft: 18,
                   overflow: 'overlay',
-                  width: '70%',
+                  width: '100%',
                 }}
               >
                 {value.map((item) => {

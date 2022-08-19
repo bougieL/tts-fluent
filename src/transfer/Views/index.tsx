@@ -3,9 +3,9 @@ import {
   Stack,
   PrimaryButton,
   DefaultButton,
-  Spinner,
+  Text,
 } from 'transfer/components';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { sendFiles } from 'transfer/requests';
 import { useServer } from 'transfer/hooks';
 import { Id, toast } from 'react-toastify';
@@ -13,62 +13,57 @@ import { Dropzone } from './Dropzone';
 import { Clipboard } from './Clipboard';
 import { ReceiveFiles } from './ReceiveFiles';
 
-const globalState: { files: File[] } = { files: [] };
-
 interface SendProps {
   disabled?: boolean;
 }
 
 export function Send({ disabled = false }: SendProps) {
-  const [files, setStateFiles] = useState(globalState.files);
-  const [loading, setLoading] = useState(false);
-  const setFiles = (files: File[]) => {
-    globalState.files = files;
-    setStateFiles(files);
-  };
-  const toastIdRef = useRef<Id>();
+  const [files, setFiles] = useState<File[]>([]);
+
   const server = useServer();
-  const handleUploadProgress = (event: any) => {
+  const handleUploadProgress = (event: any, id: Id) => {
     const progress = event.loaded / event.total;
-    if (toastIdRef.current) {
-      toast.update(toastIdRef.current, { progress });
-    }
+    toast.update(id, { progress });
   };
   const handleSend = async () => {
     const form = new FormData();
     files.forEach((file) => {
       form.append('files', file);
     });
-    setLoading(true);
+    const id = toast.loading(
+      <>
+        <Text>Upload files to {server?.serverName}</Text>
+        <br />
+        <Text variant="small">Do not close this page before success</Text>
+      </>,
+      { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
+    );
     try {
-      toastIdRef.current = toast(
-        <>
-          Update files to {server?.serverName}
-          <br />
-          Do not close this page before success
-        </>,
-        { progress: 0, closeButton: false }
-      );
-      await sendFiles(form, handleUploadProgress);
-      if (toastIdRef.current) {
-        toast.update(toastIdRef.current, {
-          type: 'success',
-          autoClose: 3000,
-          closeButton: true,
-        });
-      }
+      await sendFiles(form, (event) => handleUploadProgress(event, id));
+      toast.update(id, {
+        type: 'success',
+        isLoading: false,
+        closeButton: true,
+        closeOnClick: true,
+        autoClose: 3000,
+        render() {
+          return <Text>Upload success 😄</Text>;
+        },
+      });
     } catch (error) {
-      if (toastIdRef.current) {
-        toast.update(toastIdRef.current, {
-          type: 'error',
-          autoClose: 3000,
-          closeButton: true,
-        });
-      }
+      toast.update(id, {
+        type: 'error',
+        isLoading: false,
+        closeButton: true,
+        closeOnClick: true,
+        autoClose: 3000,
+        render() {
+          return <Text>Upload failed 🤡</Text>;
+        },
+      });
     }
-    toastIdRef.current = undefined;
-    setLoading(false);
   };
+
   return (
     <>
       <ReceiveFiles />
@@ -82,9 +77,8 @@ export function Send({ disabled = false }: SendProps) {
             styles={{ root: { paddingTop: 12 } }}
             tokens={{ childrenGap: 12 }}
           >
-            {loading && <Spinner />}{' '}
             <DefaultButton
-              disabled={files.length === 0 || loading}
+              disabled={files.length === 0}
               iconProps={{ iconName: 'Delete' }}
               onClick={() => setFiles([])}
             >
@@ -92,7 +86,7 @@ export function Send({ disabled = false }: SendProps) {
             </DefaultButton>
             <PrimaryButton
               iconProps={{ iconName: 'Send' }}
-              disabled={files.length === 0 || disabled || loading}
+              disabled={files.length === 0 || disabled}
               onClick={handleSend}
             >
               Send files
