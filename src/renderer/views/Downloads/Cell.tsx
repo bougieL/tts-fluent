@@ -5,7 +5,7 @@ import {
   TooltipHost,
   IconButton,
   ProgressIndicator,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { clipboard, ipcRenderer, shell } from 'electron';
 import { DownloadsCache } from 'caches';
 import { useMemo, useState } from 'react';

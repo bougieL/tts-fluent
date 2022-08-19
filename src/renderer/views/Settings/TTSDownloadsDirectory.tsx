@@ -1,4 +1,4 @@
-import { TextField } from '@fluentui/react';
+import { TextField } from 'renderer/components';
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
@@ -8,17 +8,17 @@ import { useAsync } from 'renderer/hooks';
 const TTSDownloadsDirectory = () => {
   const [path, setPath] = useState('');
   const handleSetFilePath = async () => {
-    const paths = await ipcRenderer.invoke(
-      IpcEvents.electronDialogShowOpenDialogSync,
+    const { filePaths } = await ipcRenderer.invoke(
+      IpcEvents.electronDialogShowOpenDialog,
       {
         properties: ['openDirectory'],
       }
     );
-    if (paths?.[0]) {
-      setPath(paths[0]);
+    if (filePaths?.[0]) {
+      setPath(filePaths[0]);
       await ConfigCache.writeConfig(
         ConfigCache.ConfigKey.downloadsDir,
-        paths[0]
+        filePaths[0]
       );
     }
   };

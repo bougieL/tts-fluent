@@ -70,6 +70,10 @@ const configuration: webpack.Configuration = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      {
+        resourceQuery: /raw/,
+        type: 'asset/source',
+      },
     ],
   },
 

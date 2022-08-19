@@ -40,6 +40,15 @@ const configuration: webpack.Configuration = {
     ],
   },
 
+  module: {
+    rules: [
+      {
+        resourceQuery: /raw/,
+        type: 'asset/source',
+      },
+    ],
+  },
+
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.ANALYZE === 'true' ? 'server' : 'disabled',

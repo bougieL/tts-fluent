@@ -1,4 +1,4 @@
-import { IconButton, TooltipHost } from '@fluentui/react';
+import { IconButton, TooltipHost } from 'renderer/components';
 import { useLayoutEffect, useState } from 'react';
 import { useAudio } from 'renderer/hooks';
 import { AudioStatus } from 'renderer/lib/Audio/types';

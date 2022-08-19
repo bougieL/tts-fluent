@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { setupSever } from './server';
 import './ipcEvents';
 
 class AppUpdater {
@@ -66,8 +67,10 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1000,
-    height: 750,
+    width: 800,
+    height: 600,
+    minWidth: 800,
+    minHeight: 600,
     icon: getAssetPath('icon.png'),
     // transparent: true,
     titleBarOverlay: {
@@ -133,6 +136,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
+    setupSever();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

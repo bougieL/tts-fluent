@@ -1,7 +1,6 @@
 export enum IpcEvents {
   electronAppGetPath = 'electron.app.getPath',
   electronAppGetVersion = 'electron.app.getVersion',
-
   electronDialogShowOpenDialog = 'electron.dialog.showOpenDialog',
   electronDialogShowOpenDialogSync = 'electron.dialog.showOpenDialogSync',
 
@@ -10,4 +9,8 @@ export enum IpcEvents {
   ttsMicrosoftDownload = 'tts.microsoft.download',
   ttsMicrosoftDownloadStatusChange = 'tts.microsoft.download.status.change',
   ttsMidrosoftDownloadRemove = 'tts.microsoft.download.remove',
+
+  transferDevicesUpdate = 'transfer.devices.update',
+  transferServerStarted = 'transfer.server.started',
+  transferSSEData = 'transfer.sse.data',
 }

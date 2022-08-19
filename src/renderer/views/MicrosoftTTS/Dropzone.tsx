@@ -1,5 +1,5 @@
 import { useDropzone } from 'react-dropzone';
-import { Text } from '@fluentui/react';
+import { Text } from 'renderer/components';
 
 interface Props {
   value?: File;

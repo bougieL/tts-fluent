@@ -1,4 +1,4 @@
-import { DefaultButton, Label, Stack } from '@fluentui/react';
+import { DefaultButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
 
 const Feedback = () => {

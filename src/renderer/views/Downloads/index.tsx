@@ -4,7 +4,7 @@ import {
   List,
   Stack,
   TextField,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { useMemo, useRef, useState } from 'react';
 import { useAsync } from 'renderer/hooks';
 import { DownloadsCache } from 'caches';
@@ -59,7 +59,10 @@ function Downloads() {
         placeholder="Type some keywords here (use blank space separate) ..."
       />
       <Stack
-        styles={{ root: { height: 'calc(100vh - 160px)', overflow: 'auto' } }}
+        styles={{
+          // @ts-ignore
+          root: { height: 'calc(100vh - 144px)', overflow: 'overlay' },
+        }}
       >
         <List
           items={filteredList}

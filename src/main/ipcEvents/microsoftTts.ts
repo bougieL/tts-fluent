@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import * as uuid from 'uuid';
 import md5 from 'md5';
-import { IpcEvents } from 'const';
+import { ErrorMessage, IpcEvents } from 'const';
 import { ConfigCache, DownloadsCache, PlayCache } from 'caches';
 
 ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
@@ -47,19 +47,19 @@ ipcMain.handle(
     writeStream.on('finish', () => {
       PlayCache.setFinished(hash);
     });
+    const replyChannel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     stream.on('data', (chunk) => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, { chunk, sessionId });
+      event.sender.send(replyChannel, { chunk });
     });
     stream.on('close', () => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
-        sessionId,
+      event.sender.send(replyChannel, {
         isEnd: true,
       });
     });
-    stream.on('error', () => {
-      event.sender.send(IpcEvents.ttsMicrosoftPlayStream, {
-        sessionId,
+    stream.on('error', (error) => {
+      event.sender.send(replyChannel, {
         isError: true,
+        errorMessage: error.message,
       });
     });
     return null;
@@ -107,6 +107,9 @@ ipcMain.handle(
       });
     });
     writeStream.on('error', (error) => {
+      if (error.message === ErrorMessage.abort) {
+        return;
+      }
       DownloadsCache.updateItem(id, {
         status: DownloadsCache.Status.error,
         errorMessage: error.message,
@@ -121,18 +124,19 @@ ipcMain.handle(
 );
 
 ipcMain.handle(IpcEvents.ttsMidrosoftDownloadRemove, (_, id) => {
-  streamMap[id]?.close();
+  streamMap[id]?.destroy(new Error(ErrorMessage.abort));
   DownloadsCache.removeItem(id);
 });
 
 app.on('ready', async () => {
   const list = await DownloadsCache.getList();
-  list.forEach((item) => {
-    if (item.status === DownloadsCache.Status.downloading) {
-      DownloadsCache.updateItem(item.id, {
-        status: DownloadsCache.Status.error,
-      });
-      fs.remove(item.path);
-    }
-  });
+  const batches = list
+    .filter((item) => item.status === DownloadsCache.Status.downloading)
+    .map((item) => {
+      return {
+        id: item.id,
+        data: { status: DownloadsCache.Status.error },
+      };
+    });
+  DownloadsCache.updateBatches(batches);
 });

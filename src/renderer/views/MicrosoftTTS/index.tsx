@@ -1,4 +1,4 @@
-import { Stack } from '@fluentui/react';
+import { Stack } from 'renderer/components';
 import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
@@ -36,19 +36,27 @@ const MicrosoftTTS = () => {
       } else {
         setIsStreamAudio(true);
         streamAudio.reset();
-        ipcRenderer.on(
-          IpcEvents.ttsMicrosoftPlayStream,
-          (_, { chunk, isEnd, isError, sessionId }) => {
-            if (sessionId === id) {
-              if (chunk) {
-                streamAudio.appendBuffer(chunk);
-              }
-              if (isEnd || isError) {
-                streamAudio.setStreamEnd();
-              }
-            }
+        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
+        const streamHandler = (
+          _: any,
+          { chunk, isEnd, isError, errorMessage }: any
+        ) => {
+          if (chunk) {
+            streamAudio.appendBuffer(chunk);
           }
-        );
+          if (isEnd || isError) {
+            streamAudio.setStreamEnd();
+            ipcRenderer.off(channel, streamHandler);
+          }
+          if (isError && errorMessage) {
+            new Notification('Play failed 😭', {
+              body: `Click to show error message`,
+            }).onclick = () => {
+              alert(errorMessage);
+            };
+          }
+        };
+        ipcRenderer.on(channel, streamHandler);
         streamAudio.play();
       }
     } catch (error) {
@@ -74,7 +82,7 @@ const MicrosoftTTS = () => {
     setLoading(false);
   };
   return (
-    <Stack tokens={{ childrenGap: 18 }} styles={{ root: { height: '100%' } }}>
+    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {
