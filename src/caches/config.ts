@@ -5,6 +5,7 @@ import { getCachesDir, getDownloadsDir } from './_utils';
 export namespace ConfigCache {
   export enum ConfigKey {
     downloadsDir = 'downloadsDir',
+    transferDir = 'transferDir'
   }
 
   const getConfigPath = async () => {
@@ -37,6 +38,18 @@ export namespace ConfigCache {
   export async function getTTSDownloadsDir(): Promise<string> {
     const downloadsDir = await getDownloadsDir();
     const configDir = await getConfig(ConfigKey.downloadsDir);
+    const p = configDir || downloadsDir;
+    try {
+      await fs.ensureDir(p);
+      return p;
+    } catch (error) {
+      return downloadsDir;
+    }
+  }
+
+  export async function getTransferDir(): Promise<string> {
+    const downloadsDir = await getDownloadsDir();
+    const configDir = await getConfig(ConfigKey.transferDir);
     const p = configDir || downloadsDir;
     try {
       await fs.ensureDir(p);
