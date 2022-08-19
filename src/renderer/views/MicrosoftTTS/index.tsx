@@ -82,7 +82,7 @@ const MicrosoftTTS = () => {
     setLoading(false);
   };
   return (
-    <Stack tokens={{ childrenGap: 18 }} styles={{ root: { height: '100%' } }}>
+    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {

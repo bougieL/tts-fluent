@@ -10,7 +10,7 @@ export function Transfer() {
       <HostServer
         bottomSlot={<ConnectedDevices />}
         rightSlot={
-          <Stack tokens={{ childrenGap: 36 }}>
+          <Stack tokens={{ childrenGap: 12 }}>
             <SendFiles />
             <Clipboard />
           </Stack>

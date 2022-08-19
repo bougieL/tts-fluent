@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { v4 } from 'uuid';
 import md5 from 'md5';
-import { isDev } from 'lib/utils';
 
-export const baseURL = isDev ? `http://${process.env.HOST_IP}:1236` : '';
+export const baseURL =
+  process.env.NODE_ENV === 'development'
+    ? `http://${process.env.HOST_IP}:1236`
+    : '';
 
 export const http = axios.create({
   baseURL,

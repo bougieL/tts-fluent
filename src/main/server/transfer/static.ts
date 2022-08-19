@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
 import fs from 'fs-extra';
 import path from 'path';
-import { isDev } from 'lib/utils';
 import { Router } from 'express';
 
 function readDevText(p: string) {
@@ -11,7 +10,7 @@ function readDevText(p: string) {
 export function setupStaticRouter(router: Router) {
   router.get('/', async (req, res) => {
     let text = '';
-    if (isDev) {
+    if (process.env.NODE_ENV === 'development') {
       text = await readDevText(
         '../../../../release/app/dist/transfer/index.html'
       );
@@ -28,7 +27,7 @@ export function setupStaticRouter(router: Router) {
 
   router.get('/transfer.js', async (req, res) => {
     let text = '';
-    if (isDev) {
+    if (process.env.NODE_ENV === 'development') {
       text = await readDevText(
         '../../../../release/app/dist/transfer/transfer.js'
       );
@@ -45,7 +44,7 @@ export function setupStaticRouter(router: Router) {
 
   router.get('/style.css', async (req, res) => {
     let text = '';
-    if (isDev) {
+    if (process.env.NODE_ENV === 'development') {
       text = await readDevText(
         '../../../../release/app/dist/transfer/style.css'
       );

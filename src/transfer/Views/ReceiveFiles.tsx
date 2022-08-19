@@ -46,10 +46,11 @@ export function ReceiveFiles() {
 
   return (
     <Stack>
-      <Stack horizontal horizontalAlign="space-between">
+      <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
         <Label>Receive files</Label>
         <Link
           href="##"
+          style={{ fontSize: 14 }}
           onClick={(event) => {
             event.preventDefault();
             setFiles([]);
@@ -61,6 +62,7 @@ export function ReceiveFiles() {
       <List
         items={files}
         getKey={(item) => item.download}
+        style={{ marginTop: 12 }}
         onRenderCell={(item) => {
           return (
             <>
@@ -69,17 +71,17 @@ export function ReceiveFiles() {
                   horizontal
                   horizontalAlign="space-between"
                   verticalAlign="center"
-                  styles={{ root: { paddingTop: 4, paddingBottom: 4 } }}
+                  // styles={{ root: { paddingTop: 4, paddingBottom: 4 } }}
                   tokens={{ childrenGap: 12 }}
                 >
-                  <Text variant="medium">{item!.name}</Text>
+                  <Text variant="smallPlus">{item!.name}</Text>
                   <Stack
                     horizontal
                     horizontalAlign="end"
                     verticalAlign="center"
                     tokens={{ childrenGap: 12 }}
                   >
-                    <Text variant="medium" style={{ whiteSpace: 'nowrap' }}>
+                    <Text variant="smallPlus" style={{ whiteSpace: 'nowrap' }}>
                       {humanFileSize(item!.size)}
                     </Text>
                     <Icon iconName="download" />

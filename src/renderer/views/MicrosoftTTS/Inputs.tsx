@@ -73,8 +73,8 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
     <Stack tokens={{ childrenGap: 18 }}>
       <Pivot
         styles={{
-          text: { fontSize: 16 },
-          link: { height: 32 },
+          text: { fontSize: 14 },
+          link: { height: 26 },
         }}
         // linkFormat="tabs"
         selectedKey={type}
@@ -95,7 +95,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
           resizable={false}
           styles={{
             root: { width: '100%' },
-            field: { height: 'calc(100vh - 390px)' },
+            field: { height: 'calc(100vh - 348px)' },
           }}
           value={isText ? text : ssml}
           placeholder="Type something here (max 25000 characters)..."

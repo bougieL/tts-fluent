@@ -67,10 +67,10 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1000,
-    height: 750,
-    minWidth: 1000,
-    minHeight: 750,
+    width: 800,
+    height: 600,
+    minWidth: 800,
+    minHeight: 600,
     icon: getAssetPath('icon.png'),
     // transparent: true,
     titleBarOverlay: {

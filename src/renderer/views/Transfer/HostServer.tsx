@@ -6,7 +6,7 @@ import {
   Stack,
 } from 'renderer/components';
 import { TransferCache } from 'caches/transfer';
-import { shell } from 'electron';
+import { clipboard, shell } from 'electron';
 import fs from 'fs-extra';
 import { useEffect, useRef, useState } from 'react';
 import qrcode from 'qrcode';
@@ -35,7 +35,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
       canvasRef.current,
       config.serverHost,
       {
-        width: 300,
+        width: 250,
         scale: 0,
         margin: 0,
       },
@@ -64,11 +64,15 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
           Open transfer page
         </Link>
       </MessageBar>
-      <Stack horizontal tokens={{ childrenGap: 36 }}>
-        <Stack tokens={{ childrenGap: 24 }}>
+      <Stack horizontal tokens={{ childrenGap: 12 }}>
+        <Stack tokens={{ childrenGap: 12 }}>
           <Stack>
             <Label>Qrcode</Label>
-            <canvas ref={canvasRef} />
+            <canvas
+              ref={canvasRef}
+              style={{ cursor: 'pointer' }}
+              onClick={() => clipboard.writeText(config.serverHost)}
+            />
           </Stack>
           {bottomSlot}
         </Stack>

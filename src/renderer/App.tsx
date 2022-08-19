@@ -46,7 +46,7 @@ const App = () => {
   return (
     <>
       <Stack styles={{ root: { height: 36 } }} className="header" />
-      <Stack tokens={{ childrenGap: 18 }} className="main">
+      <Stack tokens={{ childrenGap: 12 }} className="main">
         <Stack
           horizontal
           horizontalAlign="space-between"
@@ -55,7 +55,7 @@ const App = () => {
           <Pivot
             selectedKey={location.pathname}
             onLinkClick={handlePivotClick}
-            styles={{ text: { fontSize: 18 }, count: { fontSize: 16 } }}
+            styles={{ text: { fontSize: 16 }, count: { fontSize: 16 }, link: { height: 32 } }}
             // linkFormat="tabs"
           >
             <PivotItem headerText="Microsoft TTS" itemKey="/" />

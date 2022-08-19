@@ -20,6 +20,7 @@ export function Dropzone({ value = [], onChange }: Props) {
         aspectRatio: '3 / 2',
         border: '1px solid #ccc',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 12,
@@ -29,29 +30,41 @@ export function Dropzone({ value = [], onChange }: Props) {
       {isDragActive ? (
         <Text>Drop files here ...</Text>
       ) : (
-        <Text>
-          Drag and drop files here, or click to select files
-          <br />
+        <>
+          <Text
+            style={{
+              display: 'block',
+              width: '70%',
+              textAlign: value.length > 0 ? 'left' : 'center',
+            }}
+          >
+            Drag and drop files here, or click to select files
+            <br />
+            {value.length > 0 && 'Current selected files:'}
+          </Text>
           {(() => {
             if (value.length === 0) {
               return null;
             }
             return (
-              <>
-                <Text>Current select files:</Text>
-                <ul style={{ paddingLeft: 14 }}>
-                  {value.map((item) => {
-                    return (
-                      <li key={item.name}>
-                        <Text>{item.name}</Text>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
+              <ul
+                style={{
+                  paddingLeft: 14,
+                  overflow: 'overlay',
+                  width: '70%',
+                }}
+              >
+                {value.map((item) => {
+                  return (
+                    <li key={item.path}>
+                      <Text>{item.name}</Text>
+                    </li>
+                  );
+                })}
+              </ul>
             );
           })()}
-        </Text>
+        </>
       )}
     </div>
   );

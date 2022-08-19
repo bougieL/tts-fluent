@@ -23,35 +23,39 @@ export function ConnectedDevices() {
     fs.watch(p, updater);
   }, []);
   return (
-    <Stack
-      styles={{
-        root: {
-          flex: 1,
-          maxHeight: 'calc(100vh - 515px)',
-          overflow: 'auto',
-          overflowX: 'hidden',
-        },
-      }}
-    >
+    <Stack>
       <Label>Connected devices</Label>
-      {devices.filter(Boolean).map((item) => {
-        return (
-          <Fragment key={item.deviceId}>
-            <ActivityItem
-              activityIcon={<Icon iconName="Devices3" />}
-              activityDescription={item.deviceId}
-              comments={<Text>{item.deviceName}</Text>}
-              timeStamp={item.deviceHost}
-              styles={{
-                root: {
-                  width: 300,
-                },
-              }}
-            />
-            <Separator />
-          </Fragment>
-        );
-      })}
+      <Stack
+        styles={{
+          // @ts-ignore
+          root: {
+            flex: 1,
+            maxHeight: 'calc(100vh - 470px)',
+            overflow: 'overlay',
+            overflowX: 'hidden',
+            width: 250,
+          },
+        }}
+      >
+        {devices.filter(Boolean).map((item) => {
+          return (
+            <Fragment key={item.deviceId}>
+              <ActivityItem
+                activityIcon={<Icon iconName="Devices3" />}
+                activityDescription={item.deviceId}
+                comments={<Text>{item.deviceName}</Text>}
+                timeStamp={item.deviceHost}
+                styles={{
+                  root: {
+                    width: 250,
+                  },
+                }}
+              />
+              <Separator />
+            </Fragment>
+          );
+        })}
+      </Stack>
     </Stack>
   );
 }
