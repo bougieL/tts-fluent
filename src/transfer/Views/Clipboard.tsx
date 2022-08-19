@@ -4,7 +4,7 @@ import {
   PrimaryButton,
   DefaultButton,
   TextField,
-} from '@fluentui/react';
+} from 'transfer/components';
 import { TransferType } from 'const/Transfer';
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';

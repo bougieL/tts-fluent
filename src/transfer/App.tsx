@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { MessageBar, MessageBarType, Stack } from '@fluentui/react';
-import { useAsync, useInterval } from 'react-use';
+import { MessageBar, MessageBarType, Stack } from 'transfer/components';
 import { Send } from './Views';
 import { deviceAlivePolling } from './requests';
-import { serverContext } from './hooks';
+import { serverContext, useAsync, useInterval } from './hooks';
 import './App.scss';
 
 export function App() {

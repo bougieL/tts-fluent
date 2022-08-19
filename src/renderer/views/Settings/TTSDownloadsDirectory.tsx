@@ -1,4 +1,4 @@
-import { TextField } from '@fluentui/react';
+import { TextField } from 'renderer/components';
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';

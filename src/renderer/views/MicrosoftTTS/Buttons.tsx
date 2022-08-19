@@ -1,4 +1,4 @@
-import { DefaultButton, PrimaryButton, Spinner, Stack } from '@fluentui/react';
+import { DefaultButton, PrimaryButton, Spinner, Stack } from 'renderer/components';
 
 interface Props {
   onPlayClick: () => void;

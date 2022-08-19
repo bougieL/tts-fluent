@@ -5,7 +5,7 @@ import {
   Separator,
   Stack,
   Text,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { TransferCache } from 'caches/transfer';
 import fs from 'fs-extra';
 import { Fragment, useState } from 'react';

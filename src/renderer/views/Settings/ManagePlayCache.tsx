@@ -1,4 +1,4 @@
-import { DefaultButton, Label, Stack } from '@fluentui/react';
+import { DefaultButton, Label, Stack } from 'renderer/components';
 import { PlayCache } from 'caches';
 import { shell } from 'electron';
 import { useRef, useState } from 'react';

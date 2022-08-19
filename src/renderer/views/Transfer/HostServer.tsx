@@ -4,7 +4,7 @@ import {
   MessageBar,
   MessageBarType,
   Stack,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { TransferCache } from 'caches/transfer';
 import { shell } from 'electron';
 import fs from 'fs-extra';

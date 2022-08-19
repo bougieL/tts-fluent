@@ -4,7 +4,7 @@ import {
   PrimaryButton,
   Stack,
   TextField,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import { clipboard, ipcRenderer } from 'electron';

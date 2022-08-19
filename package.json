@@ -11,6 +11,9 @@
     "hot",
     "reload"
   ],
+  "sideEffects": [
+    "@fluentui/react"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bougieL/tts-fluent.git"

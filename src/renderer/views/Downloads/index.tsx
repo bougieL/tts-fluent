@@ -4,7 +4,7 @@ import {
   List,
   Stack,
   TextField,
-} from '@fluentui/react';
+} from 'renderer/components';
 import { useMemo, useRef, useState } from 'react';
 import { useAsync } from 'renderer/hooks';
 import { DownloadsCache } from 'caches';

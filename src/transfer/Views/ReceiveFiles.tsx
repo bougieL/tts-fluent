@@ -7,7 +7,7 @@ import {
   Separator,
   Stack,
   Text,
-} from '@fluentui/react';
+} from 'transfer/components';
 import { humanFileSize } from 'lib/humanFileSize';
 import { toast } from 'react-toastify';
 import { useReceiveFiles, useServer } from 'transfer/hooks';

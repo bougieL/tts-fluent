@@ -1,4 +1,4 @@
-import { Dropdown, Slider, Stack, Toggle } from '@fluentui/react';
+import { Dropdown, Slider, Stack, Toggle } from 'renderer/components';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import { useEffect, useMemo, useState } from 'react';
 

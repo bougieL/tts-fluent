@@ -5,7 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { Pivot, PivotItem, Stack } from '@fluentui/react';
+import { Pivot, PivotItem, Stack } from 'renderer/components';
 import MicrosoftTTS from './Views/MicrosoftTTS';
 import Settings from './Views/Settings';
 import Downloads from './Views/Downloads';

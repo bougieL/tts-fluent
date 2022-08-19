@@ -1,4 +1,4 @@
-import { TextField } from '@fluentui/react';
+import { TextField } from 'renderer/components';
 import { version } from '../../../../release/app/package.json';
 
 const AppVersion = () => {

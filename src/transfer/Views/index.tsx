@@ -4,7 +4,7 @@ import {
   PrimaryButton,
   DefaultButton,
   Spinner,
-} from '@fluentui/react';
+} from 'transfer/components';
 import { useRef, useState } from 'react';
 import { sendFiles } from 'transfer/requests';
 import { useServer } from 'transfer/hooks';

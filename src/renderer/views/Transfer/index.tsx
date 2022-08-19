@@ -1,4 +1,4 @@
-import { Stack } from '@fluentui/react';
+import { Stack } from 'renderer/components';
 import { ConnectedDevices } from './ConnectedDevices';
 import { HostServer } from './HostServer';
 import { SendFiles } from './SendFiles';

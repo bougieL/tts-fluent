@@ -1,4 +1,4 @@
-import { Stack } from '@fluentui/react';
+import { Stack } from 'renderer/components';
 import { IpcEvents } from 'const';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';

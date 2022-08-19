@@ -1,4 +1,4 @@
-import { CompoundButton, Label, Stack } from '@fluentui/react';
+import { CompoundButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
 import { useVersion } from 'renderer/hooks';
 
