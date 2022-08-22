@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import { humanFileSize } from './humanFileSize';
 
-
 export async function getSize(p: string) {
   let size = 0;
 

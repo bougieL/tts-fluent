@@ -21,7 +21,6 @@ export async function getFile(
     timeout: 0,
     onDownloadProgress,
   });
-  console.log(`fetch end: ${p}`)
   return res.data;
 }
 
