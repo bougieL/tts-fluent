@@ -1,12 +1,12 @@
 {
   "name": "tts-fluent",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Desktop apps from microsoft TTS",
   "license": "MIT",
   "author": {
     "name": "Bougie Liu",
     "email": "bougie.liu@qq.com",
-    "url": "https://bougieblog.cn"
+    "url": "https://github.com/bougieL"
   },
   "main": "./dist/main/main.js",
   "scripts": {

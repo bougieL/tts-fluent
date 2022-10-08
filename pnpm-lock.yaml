@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@bougiel/tts-node': ^1.2.5
+  '@bougiel/tts-node': ^1.2.6
   '@fluentui/font-icons-mdl2': ^8.4.2
   '@fluentui/react': ^8.78.0
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.6
@@ -101,7 +101,7 @@ specifiers:
   webpack-merge: ^5.8.0
 
 dependencies:
-  '@bougiel/tts-node': 1.2.5
+  '@bougiel/tts-node': 1.2.6
   '@fluentui/font-icons-mdl2': 8.4.8_a1bdd43be9504ec770a838d8189f6868
   '@fluentui/react': 8.90.0_ff80cd9dfb626a6c6c4251864122e347
   address: 1.2.0
@@ -555,8 +555,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bougiel/tts-node/1.2.5:
-    resolution: {integrity: sha512-VOqETK8XliN4LFVZuCM1GstrGVve5N+3PSlqI/xZQXowLNWcULDanmx4pGrfUo/i/VIIFrKhdbbZ8aOcAWCnMA==}
+  /@bougiel/tts-node/1.2.6:
+    resolution: {integrity: sha512-YQ0QZMeF57k/isjX8T/R3JCptIJ/yRQ0H+8qmD2Uq685bkg7C2E5mOE+Vz6A6dTYkYMHD8SHSC+9aSLOlwTmbw==}
     dependencies:
       axios: 0.27.2
       uuid: 8.3.2
