@@ -55,7 +55,11 @@ const App = () => {
           <Pivot
             selectedKey={location.pathname}
             onLinkClick={handlePivotClick}
-            styles={{ text: { fontSize: 16 }, count: { fontSize: 16 }, link: { height: 32 } }}
+            styles={{
+              text: { fontSize: 16 },
+              count: { fontSize: 16 },
+              link: { height: 32 },
+            }}
             // linkFormat="tabs"
           >
             <PivotItem headerText="Microsoft TTS" itemKey="/" />

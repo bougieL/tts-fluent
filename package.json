@@ -22,7 +22,7 @@
   "author": {
     "name": "Bougie Liu",
     "email": "bougie.liu@qq.com",
-    "url": "https://bougieblog.cn"
+    "url": "https://github.com/bougieL"
   },
   "main": "./src/main/main.ts",
   "scripts": {
@@ -103,7 +103,7 @@
     }
   },
   "dependencies": {
-    "@bougiel/tts-node": "^1.2.5",
+    "@bougiel/tts-node": "^1.2.6",
     "@fluentui/font-icons-mdl2": "^8.4.2",
     "@fluentui/react": "^8.78.0",
     "address": "^1.2.0",

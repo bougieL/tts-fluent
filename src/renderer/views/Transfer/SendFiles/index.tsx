@@ -1,4 +1,9 @@
-import { DefaultButton, Label, PrimaryButton, Stack } from 'renderer/components';
+import {
+  DefaultButton,
+  Label,
+  PrimaryButton,
+  Stack,
+} from 'renderer/components';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import { ipcRenderer } from 'electron';

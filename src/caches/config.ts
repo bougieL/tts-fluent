@@ -5,7 +5,7 @@ import { getCachesDir, getDownloadsDir } from './_utils';
 export namespace ConfigCache {
   export enum ConfigKey {
     downloadsDir = 'downloadsDir',
-    transferDir = 'transferDir'
+    transferDir = 'transferDir',
   }
 
   const getConfigPath = async () => {

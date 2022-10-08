@@ -28,11 +28,16 @@ export async function setupSever() {
   await TransferCache.clear();
   const port = await getServerPort();
   return app.listen(port, async () => {
-    // Notification()
-    const host = `http://${address.ip()}:${port}`;
-    TransferCache.writeServerConfig({
-      serverHost: `${host}/transfer`,
-      serverName: getServerName(),
-    });
+    function updateServerConfig() {
+      const host = `http://${address.ip()}:${port}`;
+      TransferCache.writeServerConfig({
+        serverHost: `${host}/transfer`,
+        serverName: getServerName(),
+      });
+    }
+
+    updateServerConfig();
+
+    setInterval(updateServerConfig, 10000);
   });
 }
