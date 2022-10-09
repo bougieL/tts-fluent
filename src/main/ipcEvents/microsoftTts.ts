@@ -82,7 +82,7 @@ ipcMain.handle(
       await DownloadsCache.updateItem(id, { date: now });
       return destFilePath;
     }
-    await fs.remove(destFilePath);
+    // await fs.remove(destFilePath);
     await fs.ensureFile(destFilePath);
     const stream = await ssmlToStream(ssml);
     const writeStream = fs.createWriteStream(destFilePath);

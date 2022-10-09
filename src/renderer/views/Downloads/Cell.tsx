@@ -108,13 +108,13 @@ export function Cell({ item }: CellProps) {
       const size = await getSize(item.path);
       setSize(size);
     };
-    updater();
+    await updater();
     if (await fs.pathExists(item.path)) {
       const watcher = fs.watch(item.path, updater);
       return watcher.close;
     }
     return () => {};
-  }, [item.path]);
+  }, [item.path, item.status]);
   return (
     <Stack>
       <Separator />
