@@ -71,7 +71,11 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
             <canvas
               ref={canvasRef}
               style={{ cursor: 'pointer' }}
-              onClick={() => clipboard.writeText(config.serverHost)}
+              onClick={() => {
+                clipboard.writeText(config.serverHost);
+                new Notification('Server url copied to clipboard 😁').onclick =
+                  () => {};
+              }}
             />
           </Stack>
           {bottomSlot}
