@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { TransferCache } from 'caches/transfer';
 import { getServerName, getServerPort } from './utils';
 import { router as transferRouter } from './transfer';
+import { router as ttsCatRouter } from './ttsCat';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/transfer', transferRouter);
+app.use('/ttsCat', ttsCatRouter);
 
 export async function setupSever() {
   await TransferCache.clear();
@@ -32,7 +34,7 @@ export async function setupSever() {
       const host = `http://${address.ip()}:${port}`;
       TransferCache.writeServerConfig({
         serverHost: `${host}/transfer`,
-        serverName: getServerName(),
+        serverPort: getServerName(),
       });
     }
 

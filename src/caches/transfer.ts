@@ -19,7 +19,7 @@ export namespace TransferCache {
   };
 
   export interface ServerConfig {
-    serverName: string;
+    serverPort: string;
     serverHost: string;
   }
 

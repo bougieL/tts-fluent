@@ -51,7 +51,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
       <MessageBar messageBarType={MessageBarType.success}>
-        Start transfer server in {config.serverName} success, scan the qrcode to
+        Start transfer server in {config.serverPort} success, scan the qrcode to
         transfer files.
         <Link
           href={config.serverHost}

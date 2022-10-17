@@ -1,5 +1,6 @@
-import { Dropdown, Slider, Stack, Toggle } from 'renderer/components';
+import { Dropdown, Slider, Stack } from 'renderer/components';
 import list from '@bougiel/tts-node/lib/ssml/list';
+import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
 import { useEffect, useMemo, useState } from 'react';
 
 const locales = list
@@ -38,47 +39,35 @@ function getStyles(name: string) {
   );
 }
 
+const outputFormatsList = outputFormats.map((item) => ({
+  key: item,
+  text: item,
+}));
+
 export interface SsmlConfig {
+  locale: string;
   voice: string;
   style: string;
   rate: string;
   pitch: string;
+  outputFormat: string;
 }
 
 interface Props {
+  value: SsmlConfig;
   onChange: (value: SsmlConfig) => void;
 }
 
-enum ConfigKey {
-  locale = 'locale',
-  voice = 'voice',
-  style = 'style',
-  speed = 'speed',
-  pitch = 'pitch',
-}
+export function Options({ value, onChange }: Props) {
+  const rate2n = (v: string) => Number.parseInt(v, 10) / 100 || 0 + 1;
+  const pitch2n = (v: string) => Number.parseInt(v, 10) / 50 || 0 + 1;
 
-const prefix = 'microsoft_tts';
-
-const setStorage = (key: ConfigKey, value: string) =>
-  localStorage.setItem(`${prefix}_${key}`, value);
-
-const getStorage = (key: ConfigKey) => {
-  const value = localStorage.getItem(`${prefix}_${key}`) || '';
-  if (key === ConfigKey.speed || key === ConfigKey.pitch) {
-    const n = Number(value);
-    return Number.isNaN(n) || value === '' ? '1' : String(n);
-  }
-  return value;
-};
-
-export function Options({ onChange }: Props) {
-  const [locale, setLocale] = useState(
-    getStorage(ConfigKey.locale) || 'Chinese (Mandarin, Simplified)'
-  );
-  const [voice, setVoice] = useState(getStorage(ConfigKey.voice));
-  const [style, setStyle] = useState(getStorage(ConfigKey.style));
-  const [rate, setRate] = useState(Number(getStorage(ConfigKey.speed)));
-  const [pitch, setPitch] = useState(Number(getStorage(ConfigKey.pitch)));
+  const [locale, setLocale] = useState(value.locale);
+  const [voice, setVoice] = useState(value.voice);
+  const [style, setStyle] = useState(value.style);
+  const [rate, setRate] = useState(rate2n(value.rate));
+  const [pitch, setPitch] = useState(pitch2n(value.pitch));
+  const [outputFormat, setOutputFormat] = useState(value.outputFormat);
   const voices = useMemo(() => getVoicesByLocale(locale), [locale]);
   const styles = useMemo(() => getStyles(voice), [voice]);
 
@@ -96,28 +85,14 @@ export function Options({ onChange }: Props) {
 
   useEffect(() => {
     onChange({
+      locale,
       voice,
       style,
       rate: `${(rate - 1) * 100}%`,
       pitch: `${(pitch - 1) * 50}%`,
+      outputFormat,
     });
-  }, [onChange, pitch, rate, style, voice]);
-
-  useEffect(() => {
-    setStorage(ConfigKey.locale, locale);
-  }, [locale]);
-  useEffect(() => {
-    setStorage(ConfigKey.voice, voice);
-  }, [voice]);
-  useEffect(() => {
-    setStorage(ConfigKey.style, style);
-  }, [style]);
-  useEffect(() => {
-    setStorage(ConfigKey.speed, String(rate));
-  }, [rate]);
-  useEffect(() => {
-    setStorage(ConfigKey.pitch, String(pitch));
-  }, [pitch]);
+  }, [locale, onChange, outputFormat, pitch, rate, style, voice]);
 
   return (
     <Stack tokens={{ childrenGap: 36 }}>
@@ -180,12 +155,18 @@ export function Options({ onChange }: Props) {
           styles={{ root: { width: '33%' } }}
           onChange={setPitch}
         />
-        <Toggle
-          label="Use SSML"
-          onText="On"
-          offText="Off"
-          disabled
-          styles={{ root: { width: '33%', visibility: 'hidden' } }}
+        <Dropdown
+          options={outputFormatsList}
+          label="Output format"
+          placeholder="Select output format"
+          styles={{ root: { width: '33%' }, callout: { height: 400 } }}
+          // disabled={styles.length === 0}
+          selectedKey={outputFormat}
+          onChange={(_, item) => {
+            if (item?.key !== outputFormat) {
+              setOutputFormat(item?.key as string);
+            }
+          }}
         />
       </Stack>
     </Stack>
