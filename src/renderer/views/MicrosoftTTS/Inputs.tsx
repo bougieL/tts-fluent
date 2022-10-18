@@ -98,7 +98,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
             field: { height: 'calc(100vh - 348px)' },
           }}
           value={isText ? text : ssml}
-          placeholder="Type something here (max 25000 characters)..."
+          placeholder="Type something here (max 25000 characters, 200 requests per day)..."
           maxLength={25000}
           onChange={(_, value = '') => {
             if (isText) {

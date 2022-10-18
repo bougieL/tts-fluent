@@ -41,49 +41,51 @@ const MicrosoftTTS = () => {
   const { audio, streamAudio, setIsStreamAudio } = useAudio();
   const handlePlayStream = async () => {
     setLoading(true);
-    try {
-      const id = uuid.v4();
-      const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlayStream, {
+    const id = uuid.v4();
+    const src = await ipcRenderer
+      .invoke(IpcEvents.ttsMicrosoftPlayStream, {
         ssml,
         sessionId: id,
-      });
-      if (src) {
-        setIsStreamAudio(false);
-        audio.setSource(src);
-        audio.play();
-      } else {
-        setIsStreamAudio(true);
-        streamAudio.reset();
-        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
-        const streamHandler = (
-          _: any,
-          { chunk, isEnd, isError, errorMessage }: any
-        ) => {
-          if (chunk) {
-            streamAudio.appendBuffer(chunk);
-          }
-          if (isEnd || isError) {
-            streamAudio.setStreamEnd();
-            ipcRenderer.off(channel, streamHandler);
-          }
-          if (isError && errorMessage) {
-            new Notification('Play failed 😭', {
-              body: `Click to show error message`,
-            }).onclick = () => {
-              alert(errorMessage);
-            };
-          }
+      })
+      .catch((error) => {
+        setLoading(false);
+        new Notification('Play failed 😭', {
+          body: `Click to show error message`,
+        }).onclick = () => {
+          alert(String(error));
         };
-        ipcRenderer.on(channel, streamHandler);
-        streamAudio.play();
-      }
-    } catch (error) {
-      new Notification('Play failed 😭', {
-        body: `Click to show error message`,
-      }).onclick = () => {
-        alert(String(error));
-      };
+      });
+    if (src) {
+      setLoading(false);
+      setIsStreamAudio(false);
+      audio.setSource(src);
+      audio.play();
+      return;
     }
+    setIsStreamAudio(true);
+    streamAudio.reset();
+    const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
+    const streamHandler = (
+      _: any,
+      { chunk, isEnd, isError, errorMessage }: any
+    ) => {
+      if (chunk) {
+        streamAudio.appendBuffer(chunk);
+      }
+      if (isEnd || isError) {
+        streamAudio.setStreamEnd();
+        ipcRenderer.off(channel, streamHandler);
+      }
+      if (isError && errorMessage) {
+        new Notification('Play failed 😭', {
+          body: `Click to show error message`,
+        }).onclick = () => {
+          alert(errorMessage);
+        };
+      }
+    };
+    ipcRenderer.on(channel, streamHandler);
+    streamAudio.play();
     setLoading(false);
   };
   const handleDownloadClick = async () => {
@@ -105,7 +107,7 @@ const MicrosoftTTS = () => {
   });
 
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
+    <Stack tokens={{ childrenGap: 24 }} styles={{ root: { height: '100%' } }}>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {

@@ -32,16 +32,16 @@ export function Inputs({ ssmlConfig }: Props) {
     }
     return (
       <Stack
-        style={{ paddingLeft: 24, cursor: 'pointer' }}
-        tokens={{ childrenGap: 18 }}
+        style={{ paddingLeft: 12, cursor: 'pointer' }}
+        tokens={{ childrenGap: 12 }}
       >
         <Stack onClick={() => copy(url1)}>
-          <Text variant="medium">Used for local device</Text>
+          <Text variant="large">Used for local device</Text>
           <Text>{url1}</Text>
         </Stack>
         <Separator />
         <Stack onClick={() => copy(url2)}>
-          <Text variant="medium">Used for LAN devices</Text>
+          <Text variant="large">Used for LAN devices</Text>
           <Text onClick={() => copy(url2)}>{url2}</Text>
         </Stack>
       </Stack>
@@ -54,7 +54,7 @@ export function Inputs({ ssmlConfig }: Props) {
       styles={{
         root: {
           width: '100%',
-          height: 'calc(100vh - 320px)',
+          height: 'calc(100vh - 290px)',
         },
       }}
     >

@@ -78,22 +78,22 @@ function OptionsComponent({ value, onChange }: Props) {
     if (voices.length > 0 && !voices.find((item) => item.key === voice)) {
       handleChange({
         ...value,
-        voice: voices[0].key
-      })
+        voice: voices[0].key,
+      });
     }
-  }, [voice, voices]);
+  }, [handleChange, value, voice, voices]);
 
   useEffect(() => {
     if (styles.length > 0 && !styles.find((item) => item.key === style)) {
       handleChange({
         ...value,
-        style: styles[0].key
-      })
+        style: styles[0].key,
+      });
     }
-  }, [style, styles]);
+  }, [handleChange, style, styles, value]);
 
   return (
-    <Stack tokens={{ childrenGap: 36 }}>
+    <Stack tokens={{ childrenGap: 12 }}>
       <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
         <Dropdown
           options={locales}
@@ -141,11 +141,11 @@ function OptionsComponent({ value, onChange }: Props) {
           value={rate2n(rate)}
           step={0.1}
           styles={{ root: { width: '33%' } }}
-          onChange={rate => {
+          onChange={(rate) => {
             handleChange({
               ...value,
-              rate: `${(rate - 1) * 100}%`
-            })
+              rate: `${(rate - 1) * 100}%`,
+            });
           }}
         />
         <Slider
@@ -154,11 +154,11 @@ function OptionsComponent({ value, onChange }: Props) {
           value={pitch2n(pitch)}
           step={0.1}
           styles={{ root: { width: '33%' } }}
-          onChange={pitch => {
+          onChange={(pitch) => {
             handleChange({
               ...value,
-              pitch: `${(pitch - 1) * 50}%`
-            })
+              pitch: `${(pitch - 1) * 50}%`,
+            });
           }}
         />
         <Dropdown
@@ -171,8 +171,8 @@ function OptionsComponent({ value, onChange }: Props) {
           onChange={(_, item) => {
             handleChange({
               ...value,
-              outputFormat: item?.key as string
-            })
+              outputFormat: item?.key as string,
+            });
           }}
         />
       </Stack>
