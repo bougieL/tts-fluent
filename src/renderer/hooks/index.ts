@@ -13,3 +13,4 @@ export * from './audio';
 export * from './downloads';
 export * from './external';
 export * from './version';
+export * from './useServerConfig';

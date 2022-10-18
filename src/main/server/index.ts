@@ -1,5 +1,4 @@
 import express from 'express';
-import address from 'address';
 import cookieParser from 'cookie-parser';
 import { TransferCache } from 'caches/transfer';
 import { getServerName, getServerPort } from './utils';
@@ -29,17 +28,10 @@ app.use('/ttsCat', ttsCatRouter);
 export async function setupSever() {
   await TransferCache.clear();
   const port = await getServerPort();
-  return app.listen(port, async () => {
-    function updateServerConfig() {
-      const host = `http://${address.ip()}:${port}`;
-      TransferCache.writeServerConfig({
-        serverHost: `${host}/transfer`,
-        serverPort: getServerName(),
-      });
-    }
-
-    updateServerConfig();
-
-    setInterval(updateServerConfig, 10000);
+  return app.listen(port, () => {
+    TransferCache.writeServerConfig({
+      serverPort: port,
+      serverName: getServerName(),
+    });
   });
 }

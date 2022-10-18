@@ -10,6 +10,14 @@ const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
 
 export function setupAliveRouter(router: Router) {
   const timerMap = new Map<string, ReturnType<typeof setTimeout>>();
+  const responses = new Map<string, Response>();
+
+  ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
+    Array.from(responses.values()).forEach((res) => {
+      res.write(toEventStreamData(payload));
+    });
+  });
+
   router.get('/deviceAlivePolling', async (req, res) => {
     const { query, cookies } = req;
     let deviceId = (query.deviceId as string) || cookies?.deviceId;
@@ -17,7 +25,6 @@ export function setupAliveRouter(router: Router) {
       deviceId = v4();
       res.cookie('deviceId', deviceId, {
         maxAge: COOKIE_MAX_AGE,
-        // httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
@@ -33,23 +40,13 @@ export function setupAliveRouter(router: Router) {
       setTimeout(() => {
         TransferCache.disconnect(deviceId);
         timerMap.delete(deviceId);
+        responses.delete(deviceId)
       }, 10000)
     );
     res.status(200).send({
       serverName: getServerName(),
       serverHost: await getServerHost(),
     });
-  });
-
-  const responses = new Map<string, Response>();
-  const timers = new Map<string, ReturnType<typeof setInterval>>();
-
-  ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
-    // console.log('on ', IpcEvents.transferSSEData, payload);
-    Array.from(responses.values()).forEach((res) => {
-      res.write(toEventStreamData(payload));
-    });
-    // res.write(toEventStreamData(payload));
   });
 
   router.get('/serverAliveSse', async (req, res) => {
@@ -67,11 +64,6 @@ export function setupAliveRouter(router: Router) {
       },
     });
     res.write(heartbeatData);
-    clearInterval(timers.get(deviceId));
-    const timer = setInterval(() => {
-      res.write(heartbeatData);
-    }, 5000);
-    timers.set(deviceId, timer);
     responses.set(deviceId, res);
   });
 }

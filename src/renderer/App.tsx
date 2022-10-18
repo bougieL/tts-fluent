@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { Pivot, PivotItem, Stack } from 'renderer/components';
 import MicrosoftTTS from './Views/MicrosoftTTS';
+import TTSCat from './Views/TTSCat';
 import Settings from './Views/Settings';
 import Downloads from './Views/Downloads';
 import {
@@ -63,6 +64,7 @@ const App = () => {
             // linkFormat="tabs"
           >
             <PivotItem headerText="Microsoft TTS" itemKey="/" />
+            <PivotItem headerText="TTS Cat" itemKey="/ttsCat" />
             <PivotItem headerText="Transfer" itemKey="/transfer" />
             <PivotItem
               headerText="Downloads"
@@ -79,6 +81,7 @@ const App = () => {
         </Stack>
         <Routes>
           <Route path="/" element={<MicrosoftTTS />} />
+          <Route path="/ttsCat" element={<TTSCat />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/settings" element={<Settings />} />

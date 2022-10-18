@@ -1,7 +1,8 @@
+import { memo, useEffect, useMemo, useState } from 'react';
 import { Dropdown, Slider, Stack } from 'renderer/components';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
-import { useEffect, useMemo, useState } from 'react';
+import { useFn } from 'renderer/hooks';
 
 const locales = list
   .map((item) => {
@@ -58,41 +59,38 @@ interface Props {
   onChange: (value: SsmlConfig) => void;
 }
 
-export function Options({ value, onChange }: Props) {
+function OptionsComponent({ value, onChange }: Props) {
   const rate2n = (v: string) => Number.parseInt(v, 10) / 100 || 0 + 1;
   const pitch2n = (v: string) => Number.parseInt(v, 10) / 50 || 0 + 1;
 
-  const [locale, setLocale] = useState(value.locale);
-  const [voice, setVoice] = useState(value.voice);
-  const [style, setStyle] = useState(value.style);
-  const [rate, setRate] = useState(rate2n(value.rate));
-  const [pitch, setPitch] = useState(pitch2n(value.pitch));
-  const [outputFormat, setOutputFormat] = useState(value.outputFormat);
+  const { locale, voice, style, rate, pitch, outputFormat } = value;
+
   const voices = useMemo(() => getVoicesByLocale(locale), [locale]);
   const styles = useMemo(() => getStyles(voice), [voice]);
 
+  const handleChange = useFn((newValue: SsmlConfig) => {
+    if (!isEqual(newValue, value)) {
+      onChange(newValue);
+    }
+  });
+
   useEffect(() => {
     if (voices.length > 0 && !voices.find((item) => item.key === voice)) {
-      setVoice(voices[0]?.key);
+      handleChange({
+        ...value,
+        voice: voices[0].key
+      })
     }
   }, [voice, voices]);
 
   useEffect(() => {
     if (styles.length > 0 && !styles.find((item) => item.key === style)) {
-      setStyle(styles[0]?.key);
+      handleChange({
+        ...value,
+        style: styles[0].key
+      })
     }
   }, [style, styles]);
-
-  useEffect(() => {
-    onChange({
-      locale,
-      voice,
-      style,
-      rate: `${(rate - 1) * 100}%`,
-      pitch: `${(pitch - 1) * 50}%`,
-      outputFormat,
-    });
-  }, [locale, onChange, outputFormat, pitch, rate, style, voice]);
 
   return (
     <Stack tokens={{ childrenGap: 36 }}>
@@ -104,10 +102,10 @@ export function Options({ value, onChange }: Props) {
           styles={{ root: { width: '33%' }, callout: { height: 400 } }}
           selectedKey={locale}
           onChange={(_, item) => {
-            const key = (item?.key || '') as string;
-            if (key !== locale) {
-              setLocale(key);
-            }
+            handleChange({
+              ...value,
+              locale: item?.key as string,
+            });
           }}
         />
         <Dropdown
@@ -118,10 +116,10 @@ export function Options({ value, onChange }: Props) {
           selectedKey={voice}
           disabled={voices.length === 0}
           onChange={(_, item) => {
-            const key = (item?.key || '') as string;
-            if (key !== voice) {
-              setVoice(key);
-            }
+            handleChange({
+              ...value,
+              voice: item?.key as string,
+            });
           }}
         />
         <Dropdown
@@ -132,9 +130,7 @@ export function Options({ value, onChange }: Props) {
           disabled={styles.length === 0}
           selectedKey={style}
           onChange={(_, item) => {
-            if (item?.key !== style) {
-              setStyle(item?.key as string);
-            }
+            handleChange({ ...value, style: item?.key as string });
           }}
         />
       </Stack>
@@ -142,18 +138,28 @@ export function Options({ value, onChange }: Props) {
         <Slider
           label="Speed"
           max={3}
-          value={rate}
+          value={rate2n(rate)}
           step={0.1}
           styles={{ root: { width: '33%' } }}
-          onChange={setRate}
+          onChange={rate => {
+            handleChange({
+              ...value,
+              rate: `${(rate - 1) * 100}%`
+            })
+          }}
         />
         <Slider
           label="Pitch"
           max={2}
-          value={pitch}
+          value={pitch2n(pitch)}
           step={0.1}
           styles={{ root: { width: '33%' } }}
-          onChange={setPitch}
+          onChange={pitch => {
+            handleChange({
+              ...value,
+              pitch: `${(pitch - 1) * 50}%`
+            })
+          }}
         />
         <Dropdown
           options={outputFormatsList}
@@ -163,12 +169,23 @@ export function Options({ value, onChange }: Props) {
           // disabled={styles.length === 0}
           selectedKey={outputFormat}
           onChange={(_, item) => {
-            if (item?.key !== outputFormat) {
-              setOutputFormat(item?.key as string);
-            }
+            handleChange({
+              ...value,
+              outputFormat: item?.key as string
+            })
           }}
         />
       </Stack>
     </Stack>
   );
 }
+
+function isEqual<T extends {}>(a: T, b: T) {
+  return Object.keys(a).every((key) => {
+    return a[key as keyof T] === b[key as keyof T];
+  });
+}
+
+export const Options = memo(OptionsComponent, (prevProps, nextProps) => {
+  return isEqual(prevProps.value, nextProps.value);
+});

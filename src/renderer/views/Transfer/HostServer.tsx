@@ -5,12 +5,10 @@ import {
   MessageBarType,
   Stack,
 } from 'renderer/components';
-import { TransferCache } from 'caches/transfer';
 import { clipboard, shell } from 'electron';
-import fs from 'fs-extra';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import qrcode from 'qrcode';
-import { useAsync } from 'renderer/hooks';
+import { useServerConfig } from 'renderer/hooks';
 
 interface HostServerProps {
   bottomSlot: React.ReactNode;
@@ -18,22 +16,14 @@ interface HostServerProps {
 }
 
 export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
-  const [config, setConfig] = useState<TransferCache.ServerConfig>();
-  useAsync(async () => {
-    const updater = async () => {
-      const c = await TransferCache.getServerConfig();
-      setConfig(c);
-    };
-    const p = await TransferCache.getServerConfigPath();
-    updater();
-    fs.watch(p, updater);
-  }, []);
+  const { serverHost, serverName } = useServerConfig();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const serverUrl = `http://${serverHost}/transfer`;
   useEffect(() => {
-    if (!config?.serverHost) return;
+    if (!serverName) return;
     qrcode.toCanvas(
       canvasRef.current,
-      config.serverHost,
+      serverUrl,
       {
         width: 250,
         scale: 0,
@@ -44,21 +34,21 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         console.log('success!');
       }
     );
-  }, [config?.serverHost]);
-  if (!config) {
+  }, [serverName, serverUrl]);
+  if (!serverName) {
     return null;
   }
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
       <MessageBar messageBarType={MessageBarType.success}>
-        Start transfer server in {config.serverPort} success, scan the qrcode to
+        Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
         <Link
-          href={config.serverHost}
+          href={serverHost}
           target="_blank"
           onClick={(event) => {
             event.preventDefault();
-            shell.openExternal(config.serverHost);
+            shell.openExternal(serverHost);
           }}
         >
           Open transfer page
@@ -72,7 +62,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
               ref={canvasRef}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                clipboard.writeText(config.serverHost);
+                clipboard.writeText(serverHost);
                 new Notification('Server url copied to clipboard 😁').onclick =
                   () => {};
               }}

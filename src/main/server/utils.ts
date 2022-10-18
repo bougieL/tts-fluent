@@ -25,5 +25,5 @@ export async function getServerHost() {
 }
 
 export function getServerName() {
-  return `${os.userInfo().username}@${os.hostname}`;
+  return `${os.userInfo().username}@${os.hostname()}`;
 }

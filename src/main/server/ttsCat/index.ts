@@ -5,14 +5,34 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   // const text = req.query.text
-  const { text } = req.query;
+  const { text, voice, style, rate, pitch, outputFormat } = req.query as Record<
+    string,
+    string
+  >;
   if (!text) {
-    res.send('Unknown text');
+    res.sendStatus(400);
     return;
   }
-  const stream = await ssmlToStream(textToSsml(text as string));
+  const stream = await ssmlToStream(
+    textToSsml(text, {
+      voice,
+      style,
+      rate,
+      pitch,
+    }),
+    outputFormat
+  ).catch((error) => {
+    if (String(error).includes('429')) {
+      res.status(429).send('Reach api limit');
+      return;
+    }
+    res.sendStatus(500);
+  });
   res.header('Content-Type', 'audio/mpeg');
-  stream.pipe(res);
+  stream?.pipe(res);
+  stream?.on('error', (error) => {
+    res.status(500).send(error.message);
+  });
 });
 
 export { router };

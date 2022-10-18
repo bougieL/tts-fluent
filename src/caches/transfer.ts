@@ -19,8 +19,8 @@ export namespace TransferCache {
   };
 
   export interface ServerConfig {
-    serverPort: string;
-    serverHost: string;
+    serverName: string;
+    serverPort: number;
   }
 
   export interface Device {
