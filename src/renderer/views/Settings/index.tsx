@@ -1,9 +1,9 @@
 import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
-import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 import Feedback from './FeedBack';
 import ManagePlayCache from './ManagePlayCache';
 import TransferDirectory from './TransferDirectory';
+import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 
 const Settings = () => {
   return (

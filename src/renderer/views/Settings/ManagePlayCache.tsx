@@ -1,10 +1,10 @@
-import { DefaultButton, Label, Stack } from 'renderer/components';
 import { PlayCache } from 'caches';
 import { shell } from 'electron';
-import { useRef, useState } from 'react';
-import { useAsync } from 'renderer/hooks';
 import fs from 'fs-extra';
 import { getSize } from 'lib/getSize';
+import { useRef, useState } from 'react';
+import { DefaultButton, Label, Stack } from 'renderer/components';
+import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {
   const cacheDirRef = useRef('');

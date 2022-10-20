@@ -1,7 +1,8 @@
 import { ssmlToText, textToSsml } from '@bougiel/tts-node/lib/ssml';
-import { Pivot, PivotItem, Stack, TextField } from 'renderer/components';
 import { useEffect, useState } from 'react';
+import { Pivot, PivotItem, Stack, TextField } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
+
 import { Dropzone } from './Dropzone';
 import { SsmlConfig } from './Options';
 

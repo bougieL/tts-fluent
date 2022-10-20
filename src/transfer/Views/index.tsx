@@ -1,16 +1,17 @@
+import { useState } from 'react';
+import { Id, toast } from 'react-toastify';
 import {
-  Label,
-  Stack,
-  PrimaryButton,
   DefaultButton,
+  Label,
+  PrimaryButton,
+  Stack,
   Text,
 } from 'transfer/components';
-import { useState } from 'react';
-import { sendFiles } from 'transfer/requests';
 import { useServer } from 'transfer/hooks';
-import { Id, toast } from 'react-toastify';
-import { Dropzone } from './Dropzone';
+import { sendFiles } from 'transfer/requests';
+
 import { Clipboard } from './Clipboard';
+import { Dropzone } from './Dropzone';
 import { ReceiveFiles } from './ReceiveFiles';
 
 interface SendProps {

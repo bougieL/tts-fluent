@@ -1,14 +1,15 @@
+import { IpcEvents } from 'const';
+import { TransferType } from 'const/Transfer';
+import { ipcRenderer } from 'electron';
+import fs from 'fs-extra';
+import { useState } from 'react';
 import {
   DefaultButton,
   Label,
   PrimaryButton,
   Stack,
 } from 'renderer/components';
-import { IpcEvents } from 'const';
-import { TransferType } from 'const/Transfer';
-import { ipcRenderer } from 'electron';
-import { useState } from 'react';
-import fs from 'fs-extra';
+
 import { Dropzone, File } from './Dropzone';
 
 const globalState: {

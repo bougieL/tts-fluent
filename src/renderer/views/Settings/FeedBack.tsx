@@ -1,5 +1,5 @@
-import { DefaultButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
+import { DefaultButton, Label, Stack } from 'renderer/components';
 
 const Feedback = () => {
   return (

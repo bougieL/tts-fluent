@@ -1,4 +1,5 @@
 import { TransferType } from 'const/Transfer';
+
 import { baseQuery, baseURL, http } from './_http';
 
 export function deviceAlivePolling() {

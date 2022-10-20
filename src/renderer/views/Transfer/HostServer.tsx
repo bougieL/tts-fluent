@@ -1,7 +1,6 @@
 import { clipboard, shell } from 'electron';
-import { useEffect, useRef } from 'react';
 import qrcode from 'qrcode';
-import { useServerConfig } from 'renderer/hooks';
+import { useEffect, useRef } from 'react';
 import {
   Label,
   Link,
@@ -9,6 +8,7 @@ import {
   MessageBarType,
   Stack,
 } from 'renderer/components';
+import { useServerConfig } from 'renderer/hooks';
 
 interface HostServerProps {
   bottomSlot: React.ReactNode;

@@ -1,11 +1,11 @@
 import { ssmlToStream } from '@bougiel/tts-node';
+import { ConfigCache, DownloadsCache, PlayCache } from 'caches';
+import { ErrorMessage, IpcEvents } from 'const';
 import { app, ipcMain } from 'electron';
 import fs from 'fs-extra';
+import md5 from 'md5';
 import path from 'path';
 import * as uuid from 'uuid';
-import md5 from 'md5';
-import { ErrorMessage, IpcEvents } from 'const';
-import { ConfigCache, DownloadsCache, PlayCache } from 'caches';
 
 ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
   const hash = md5(ssml);

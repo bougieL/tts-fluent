@@ -1,24 +1,24 @@
-export { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
-export { List } from '@fluentui/react/lib/List';
-export { Stack } from '@fluentui/react/lib/Stack';
-export { TextField } from '@fluentui/react/lib/TextField';
-export {
-  DefaultButton,
-  PrimaryButton,
-  CompoundButton,
-  IconButton,
-} from '@fluentui/react/lib/Button';
-export { Spinner } from '@fluentui/react/lib/Spinner';
-export { Pivot, PivotItem } from '@fluentui/react/lib/Pivot';
-export { Dropdown } from '@fluentui/react/lib/Dropdown';
-export { Slider } from '@fluentui/react/lib/Slider';
-export { Toggle } from '@fluentui/react/lib/Toggle';
-export { Label } from '@fluentui/react/lib/Label';
 export { ActivityItem } from '@fluentui/react/lib/ActivityItem';
+export {
+  CompoundButton,
+  DefaultButton,
+  IconButton,
+  PrimaryButton,
+} from '@fluentui/react/lib/Button';
+export { Dropdown } from '@fluentui/react/lib/Dropdown';
+export { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
 export { Icon } from '@fluentui/react/lib/Icon';
-export { Separator } from '@fluentui/react/lib/Separator';
-export { Text } from '@fluentui/react/lib/Text';
+export { Label } from '@fluentui/react/lib/Label';
 export { Link } from '@fluentui/react/lib/Link';
+export { List } from '@fluentui/react/lib/List';
 export { MessageBar, MessageBarType } from '@fluentui/react/lib/MessageBar';
-export { TooltipHost } from '@fluentui/react/lib/Tooltip';
+export { Pivot, PivotItem } from '@fluentui/react/lib/Pivot';
 export { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
+export { Separator } from '@fluentui/react/lib/Separator';
+export { Slider } from '@fluentui/react/lib/Slider';
+export { Spinner } from '@fluentui/react/lib/Spinner';
+export { Stack } from '@fluentui/react/lib/Stack';
+export { Text } from '@fluentui/react/lib/Text';
+export { TextField } from '@fluentui/react/lib/TextField';
+export { Toggle } from '@fluentui/react/lib/Toggle';
+export { TooltipHost } from '@fluentui/react/lib/Tooltip';

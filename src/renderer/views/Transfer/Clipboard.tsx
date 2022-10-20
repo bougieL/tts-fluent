@@ -1,3 +1,5 @@
+import { IpcEvents } from 'const';
+import { TransferType } from 'const/Transfer';
 import { clipboard, ipcRenderer } from 'electron';
 import { useState } from 'react';
 import {
@@ -7,8 +9,6 @@ import {
   Stack,
   TextField,
 } from 'renderer/components';
-import { IpcEvents } from 'const';
-import { TransferType } from 'const/Transfer';
 
 export function Clipboard() {
   const [value, setValue] = useState('');

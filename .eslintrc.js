@@ -1,5 +1,6 @@
 module.exports = {
   extends: 'erb',
+  plugins: ['simple-import-sort'],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
@@ -20,6 +21,8 @@ module.exports = {
     'no-alert': 'off',
     'no-restricted-globals': 'off',
     'promise/valid-params': 'off',
+    'simple-import-sort/imports': 'warn',
+    'simple-import-sort/exports': 'warn',
   },
   parserOptions: {
     ecmaVersion: 2020,

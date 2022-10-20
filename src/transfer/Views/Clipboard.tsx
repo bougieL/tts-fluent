@@ -1,17 +1,17 @@
-import {
-  Label,
-  Stack,
-  PrimaryButton,
-  DefaultButton,
-  TextField,
-  Text,
-} from 'transfer/components';
 import { TransferType } from 'const/Transfer';
-import { useState } from 'react';
 import copy from 'copy-to-clipboard';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import {
+  DefaultButton,
+  Label,
+  PrimaryButton,
+  Stack,
+  Text,
+  TextField,
+} from 'transfer/components';
 import { useServer, useServerAliveSse } from 'transfer/hooks';
 import { getClipboard, sendClipboard } from 'transfer/requests';
-import { toast } from 'react-toastify';
 
 interface ClipboardProps {
   disabled?: boolean;

@@ -1,3 +1,5 @@
+import './App.scss';
+
 import {
   HashRouter as Router,
   Route,
@@ -6,20 +8,20 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { Pivot, PivotItem, Stack } from 'renderer/components';
-import MicrosoftTTS from './Views/MicrosoftTTS';
-import TTSCat from './Views/TTSCat';
-import Settings from './Views/Settings';
-import Downloads from './Views/Downloads';
+
 import {
   AudioProvider,
-  Version,
+  useAsync,
   useDownloadsNum,
   useVersion,
-  useAsync,
+  Version,
 } from './hooks';
-import { AudioIndicator } from './Widgets/AudioIndicator';
+import Downloads from './Views/Downloads';
+import MicrosoftTTS from './Views/MicrosoftTTS';
+import Settings from './Views/Settings';
 import { Transfer } from './Views/Transfer';
-import './App.scss';
+import TTSCat from './Views/TTSCat';
+import { AudioIndicator } from './Widgets/AudioIndicator';
 
 const pathCache = {
   key: '__path__',

@@ -1,8 +1,9 @@
 import { DownloadsCache } from 'caches';
-import { useState } from 'react';
-import fs from 'fs-extra';
-import { ipcRenderer, shell } from 'electron';
 import { IpcEvents } from 'const';
+import { ipcRenderer, shell } from 'electron';
+import fs from 'fs-extra';
+import { useState } from 'react';
+
 import { useAsync } from './external';
 
 function useDownloadStatusChange() {

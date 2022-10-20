@@ -1,6 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": [
-    "cross-env NODE_ENV=development eslint --cache"
+    "cross-env NODE_ENV=development eslint --cache --fix"
   ],
   "*.json,.{eslintrc,prettierrc}": [
     "prettier --ignore-path .eslintignore --parser json --write"

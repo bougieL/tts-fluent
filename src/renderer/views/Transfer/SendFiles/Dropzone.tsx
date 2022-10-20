@@ -1,7 +1,7 @@
+import { IpcEvents } from 'const';
+import { ipcRenderer } from 'electron';
 import { useDropzone } from 'react-dropzone';
 import { Text } from 'renderer/components';
-import { ipcRenderer } from 'electron';
-import { IpcEvents } from 'const';
 
 export interface File {
   name: string;

@@ -1,18 +1,18 @@
-import {
-  Stack,
-  Text,
-  Separator,
-  TooltipHost,
-  IconButton,
-  ProgressIndicator,
-} from 'renderer/components';
-import { clipboard, ipcRenderer, shell } from 'electron';
 import { DownloadsCache } from 'caches';
-import { useMemo, useState } from 'react';
+import { IpcEvents } from 'const';
+import { clipboard, ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
 import { getSize } from 'lib/getSize';
-import { useAudio, useAsync, useFn } from 'renderer/hooks';
-import { IpcEvents } from 'const';
+import { useMemo, useState } from 'react';
+import {
+  IconButton,
+  ProgressIndicator,
+  Separator,
+  Stack,
+  Text,
+  TooltipHost,
+} from 'renderer/components';
+import { useAsync, useAudio, useFn } from 'renderer/hooks';
 
 export interface Item extends DownloadsCache.Item {
   text: string;

@@ -1,5 +1,5 @@
-import { Router } from 'express';
 import { ssmlToStream, textToSsml } from '@bougiel/tts-node';
+import { Router } from 'express';
 
 const router = Router();
 

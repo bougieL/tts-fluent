@@ -1,2 +1,2 @@
-export * from './IpcEvents';
 export * from './ErrorMessage';
+export * from './IpcEvents';

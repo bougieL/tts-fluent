@@ -1,7 +1,7 @@
-import { memo, useEffect, useMemo, useState } from 'react';
-import { Dropdown, Slider, Stack } from 'renderer/components';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { Dropdown, Slider, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 const locales = list

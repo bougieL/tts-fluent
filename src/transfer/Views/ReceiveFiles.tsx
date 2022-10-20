@@ -1,4 +1,6 @@
+import { humanFileSize } from 'lib/humanFileSize';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   Icon,
   Label,
@@ -8,8 +10,6 @@ import {
   Stack,
   Text,
 } from 'transfer/components';
-import { humanFileSize } from 'lib/humanFileSize';
-import { toast } from 'react-toastify';
 import { useReceiveFiles, useServer } from 'transfer/hooks';
 
 export function ReceiveFiles() {

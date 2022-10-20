@@ -1,6 +1,6 @@
 import { ConfigCache } from 'caches';
 import { clipboard, Notification, shell } from 'electron';
-import { Router, Request } from 'express';
+import { Request, Router } from 'express';
 import fs from 'fs-extra';
 import multer from 'multer';
 
@@ -17,7 +17,9 @@ export function setupDataStreamRouter(router: Router) {
 
   const storage = multer.diskStorage({
     destination(req, file, cb) {
-      ConfigCache.getTransferDir().then((dir) => cb(null, dir));
+      ConfigCache.getTransferDir()
+        .then((dir) => cb(null, dir))
+        .catch();
     },
     filename(req, file, cb) {
       const t = Date.now();

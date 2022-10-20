@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+
 import { getCachesDir, getDownloadsDir } from './_utils';
 
 export namespace ConfigCache {

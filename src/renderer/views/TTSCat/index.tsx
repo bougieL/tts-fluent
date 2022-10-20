@@ -1,8 +1,9 @@
-import { Stack } from 'renderer/components';
 import { useState } from 'react';
+import { Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
-import { Inputs } from './Inputs';
+
 import { Options, SsmlConfig } from '../MicrosoftTTS/Options';
+import { Inputs } from './Inputs';
 
 const defaultConfig: SsmlConfig = {
   locale: 'Chinese (Mandarin, Simplified)',

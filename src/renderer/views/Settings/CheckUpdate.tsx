@@ -1,5 +1,5 @@
-import { CompoundButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
+import { CompoundButton, Label, Stack } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
 
 const CheckUpdate = () => {

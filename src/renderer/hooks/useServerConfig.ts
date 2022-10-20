@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import address from 'address';
-import fs from 'fs-extra';
 import { TransferCache } from 'caches/transfer';
+import fs from 'fs-extra';
+import { useState } from 'react';
+
 import { useAsync } from './external';
 
 export function useServerConfig() {

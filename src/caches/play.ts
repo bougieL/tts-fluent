@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+
 import { getCachesDir } from './_utils';
 
 export namespace PlayCache {

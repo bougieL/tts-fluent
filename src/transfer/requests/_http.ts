@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { v4 } from 'uuid';
 import md5 from 'md5';
+import { v4 } from 'uuid';
 
 export const baseURL =
   process.env.NODE_ENV === 'development'

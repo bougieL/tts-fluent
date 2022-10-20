@@ -1,9 +1,11 @@
-import { createRoot } from 'react-dom/client';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
+import { createRoot } from 'react-dom/client';
 import { HashRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
 import { App } from './App';
-import 'react-toastify/dist/ReactToastify.css';
 
 initializeIcons();
 

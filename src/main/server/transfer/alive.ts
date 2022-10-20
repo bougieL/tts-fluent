@@ -2,9 +2,10 @@ import { TransferCache } from 'caches/transfer';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import { ipcMain } from 'electron';
-import { Router, Response } from 'express';
+import { Response, Router } from 'express';
 import { v4 } from 'uuid';
-import { getServerName, getServerHost } from '../utils';
+
+import { getServerHost, getServerName } from '../utils';
 
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
 
@@ -40,7 +41,7 @@ export function setupAliveRouter(router: Router) {
       setTimeout(() => {
         TransferCache.disconnect(deviceId);
         timerMap.delete(deviceId);
-        responses.delete(deviceId)
+        responses.delete(deviceId);
       }, 10000)
     );
     res.status(200).send({
