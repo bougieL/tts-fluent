@@ -1,5 +1,6 @@
-import { TransferType } from 'const/Transfer';
 import { Id, toast } from 'react-toastify';
+
+import { TransferType } from 'const/Transfer';
 import { Text } from 'transfer/components';
 import { detectMobile } from 'transfer/lib/detectMobile';
 import { saveByObjectUrl } from 'transfer/lib/saveFile';

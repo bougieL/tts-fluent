@@ -1,7 +1,8 @@
-import axios from 'axios';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import axios from 'axios';
 
 import { version } from '../../../release/app/package.json';
+
 import { useAsync } from './external';
 
 function formatVersion(version: string) {

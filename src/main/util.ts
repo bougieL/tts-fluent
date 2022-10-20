@@ -1,7 +1,8 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
-import { app } from 'electron';
 import path from 'path';
 import { URL } from 'url';
+
+import { app } from 'electron';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 

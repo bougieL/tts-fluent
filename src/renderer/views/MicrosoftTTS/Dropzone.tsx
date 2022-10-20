@@ -1,4 +1,5 @@
 import { useDropzone } from 'react-dropzone';
+
 import { Text } from 'renderer/components';
 
 interface Props {

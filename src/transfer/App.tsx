@@ -1,11 +1,12 @@
-import './App.scss';
-
 import { useState } from 'react';
+
 import { MessageBar, MessageBarType, Stack } from 'transfer/components';
 
 import { serverContext, useAsync, useInterval } from './hooks';
 import { deviceAlivePolling } from './requests';
 import { Send } from './Views';
+
+import './App.scss';
 
 export function App() {
   const [server, setServer] = useState<{

@@ -1,6 +1,8 @@
-import { IpcEvents } from 'const';
-import { app, ipcMain, ipcRenderer } from 'electron';
 import path from 'path';
+
+import { app, ipcMain, ipcRenderer } from 'electron';
+
+import { IpcEvents } from 'const';
 
 export async function getCachesDir() {
   let userData = '';

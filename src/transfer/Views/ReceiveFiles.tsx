@@ -1,6 +1,7 @@
-import { humanFileSize } from 'lib/humanFileSize';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+
+import { humanFileSize } from 'lib/humanFileSize';
 import {
   Icon,
   Label,

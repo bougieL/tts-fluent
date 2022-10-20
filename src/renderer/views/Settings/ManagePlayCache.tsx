@@ -1,8 +1,9 @@
-import { PlayCache } from 'caches';
+import { useRef, useState } from 'react';
 import { shell } from 'electron';
 import fs from 'fs-extra';
+
+import { PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
-import { useRef, useState } from 'react';
 import { DefaultButton, Label, Stack } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 

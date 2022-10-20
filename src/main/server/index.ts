@@ -1,6 +1,7 @@
-import { TransferCache } from 'caches/transfer';
-import cookieParser from 'cookie-parser';
 import express from 'express';
+import cookieParser from 'cookie-parser';
+
+import { TransferCache } from 'caches/transfer';
 
 import { router as transferRouter } from './transfer';
 import { router as ttsCatRouter } from './ttsCat';

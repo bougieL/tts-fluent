@@ -1,9 +1,10 @@
-import { DownloadsCache } from 'caches';
-import { IpcEvents } from 'const';
+import { useMemo, useState } from 'react';
 import { clipboard, ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
+
+import { DownloadsCache } from 'caches';
+import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
-import { useMemo, useState } from 'react';
 import {
   IconButton,
   ProgressIndicator,

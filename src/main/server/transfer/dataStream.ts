@@ -1,8 +1,9 @@
-import { ConfigCache } from 'caches';
-import { clipboard, Notification, shell } from 'electron';
 import { Request, Router } from 'express';
+import { clipboard, Notification, shell } from 'electron';
 import fs from 'fs-extra';
 import multer from 'multer';
+
+import { ConfigCache } from 'caches';
 
 export function setupDataStreamRouter(router: Router) {
   router.get('/file/:path', async (req: Request<{ path: string }>, res) => {

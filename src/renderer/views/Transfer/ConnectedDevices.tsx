@@ -1,6 +1,7 @@
-import { TransferCache } from 'caches/transfer';
-import fs from 'fs-extra';
 import { Fragment, useState } from 'react';
+import fs from 'fs-extra';
+
+import { TransferCache } from 'caches/transfer';
 import {
   ActivityItem,
   Icon,

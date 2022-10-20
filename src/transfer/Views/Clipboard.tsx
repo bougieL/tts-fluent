@@ -1,7 +1,8 @@
-import { TransferType } from 'const/Transfer';
-import copy from 'copy-to-clipboard';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import copy from 'copy-to-clipboard';
+
+import { TransferType } from 'const/Transfer';
 import {
   DefaultButton,
   Label,

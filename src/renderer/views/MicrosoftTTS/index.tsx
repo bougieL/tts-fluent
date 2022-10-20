@@ -1,9 +1,10 @@
-import { IpcEvents } from 'const';
-import { ipcRenderer } from 'electron';
 import { useState } from 'react';
+import { ipcRenderer } from 'electron';
+import * as uuid from 'uuid';
+
+import { IpcEvents } from 'const';
 import { Stack } from 'renderer/components';
 import { useAudio, useFn } from 'renderer/hooks';
-import * as uuid from 'uuid';
 
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';

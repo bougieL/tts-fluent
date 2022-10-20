@@ -1,6 +1,7 @@
+import os from 'os';
+
 import address from 'address';
 import detectPort from 'detect-port';
-import os from 'os';
 
 let port = 1236;
 

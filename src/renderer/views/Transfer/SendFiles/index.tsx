@@ -1,8 +1,9 @@
-import { IpcEvents } from 'const';
-import { TransferType } from 'const/Transfer';
+import { useState } from 'react';
 import { ipcRenderer } from 'electron';
 import fs from 'fs-extra';
-import { useState } from 'react';
+
+import { IpcEvents } from 'const';
+import { TransferType } from 'const/Transfer';
 import {
   DefaultButton,
   Label,

@@ -1,5 +1,6 @@
-import { shell } from 'electron';
 import React, { useMemo } from 'react';
+import { shell } from 'electron';
+
 import { Link, Separator, Stack, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 

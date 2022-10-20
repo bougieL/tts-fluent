@@ -1,6 +1,7 @@
+import { useEffect, useRef } from 'react';
 import { clipboard, shell } from 'electron';
 import qrcode from 'qrcode';
-import { useEffect, useRef } from 'react';
+
 import {
   Label,
   Link,

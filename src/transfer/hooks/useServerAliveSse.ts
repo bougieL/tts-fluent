@@ -1,5 +1,6 @@
-import { TransferType } from 'const/Transfer';
 import { useEffect } from 'react';
+
+import { TransferType } from 'const/Transfer';
 import { serverAliveSse } from 'transfer/requests';
 
 type Callback = (data: { type: TransferType; payload: any }) => void;

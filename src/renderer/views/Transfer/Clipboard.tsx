@@ -1,7 +1,8 @@
+import { useState } from 'react';
+import { clipboard, ipcRenderer } from 'electron';
+
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { clipboard, ipcRenderer } from 'electron';
-import { useState } from 'react';
 import {
   DefaultButton,
   Label,

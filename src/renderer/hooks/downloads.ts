@@ -1,8 +1,9 @@
-import { DownloadsCache } from 'caches';
-import { IpcEvents } from 'const';
+import { useState } from 'react';
 import { ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
-import { useState } from 'react';
+
+import { DownloadsCache } from 'caches';
+import { IpcEvents } from 'const';
 
 import { useAsync } from './external';
 
