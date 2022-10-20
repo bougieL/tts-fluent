@@ -95,7 +95,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
           resizable={false}
           styles={{
             root: { width: '100%' },
-            field: { height: 'calc(100vh - 348px)' },
+            field: { height: 'calc(100vh - 352px)' },
           }}
           value={isText ? text : ssml}
           placeholder="Type something here (max 25000 characters, 200 requests per day)..."

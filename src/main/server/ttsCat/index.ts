@@ -4,7 +4,6 @@ import { ssmlToStream, textToSsml } from '@bougiel/tts-node';
 const router = Router();
 
 router.get('/', async (req, res) => {
-  // const text = req.query.text
   const { text, voice, style, rate, pitch, outputFormat } = req.query as Record<
     string,
     string
@@ -23,7 +22,9 @@ router.get('/', async (req, res) => {
     outputFormat
   ).catch((error) => {
     if (String(error).includes('429')) {
-      res.status(429).send('Reach api limit');
+      res
+        .status(429)
+        .send('Reach api limit, try change your ip or retry tommorrow');
       return;
     }
     res.sendStatus(500);

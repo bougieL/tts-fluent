@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
-import { Separator, Stack, Text } from 'renderer/components';
+import { shell } from 'electron';
+import React, { useMemo } from 'react';
+import { Link, Separator, Stack, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 import { SsmlConfig } from '../MicrosoftTTS/Options';
 
@@ -13,38 +14,77 @@ export function Inputs({ ssmlConfig }: Props) {
   const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
 
   const params = useMemo(() => {
-    return `voice=${encodeURIComponent(voice)}&style=${encodeURIComponent(
-      style
-    )}&rate=${encodeURIComponent(rate)}&pitch=${encodeURIComponent(
-      pitch
-    )}&outputFormat=${encodeURIComponent(outputFormat)}&text=$TTSTEXT`;
+    return `${new URLSearchParams({
+      voice,
+      style,
+      rate,
+      pitch,
+      outputFormat,
+    }).toString()}`;
   }, [outputFormat, pitch, rate, style, voice]);
 
-  const url1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
-  const url2 = `${serverHost}/ttsCat?${params}`;
+  const base1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
+  const base2 = `${serverHost}/ttsCat?${params}`;
 
-  const copy = (url: string) => {
-    navigator.clipboard.writeText(url);
-    new Notification('Url copied to clipboard 😄').onclick = () => {};
-  };
+  const url1 = `${base1}&text=$TTSTEXT`;
+  const url2 = `${base2}&text=$TTSTEXT`;
+
+  const example1 = `${base1}&text=${encodeURIComponent('黱榎韡縩赑')}`;
+  const example2 = `${base2}&text=${encodeURIComponent('黱榎韡縩赑')}`;
+
+  const createClick =
+    (url: string, open = false) =>
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      navigator.clipboard.writeText(url);
+      new Notification('Url copied to clipboard 😄').onclick = () => {};
+      if (open) {
+        shell.openExternal(url);
+      }
+    };
 
   const renderContent = () => {
     if (!serverPort) {
       return null;
     }
     return (
-      <Stack
-        style={{ paddingLeft: 12, cursor: 'pointer' }}
-        tokens={{ childrenGap: 12 }}
-      >
-        <Stack onClick={() => copy(url1)}>
-          <Text variant="large">Used for local device</Text>
-          <Text>{url1}</Text>
+      <Stack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
+        <Stack>
+          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
+            Used for local device
+          </Text>
+          <Link href="##" style={{ fontSize: 12 }} onClick={createClick(url1)}>
+            {url1}
+          </Link>
+        </Stack>
+        <Stack>
+          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Example</Text>
+          <Link
+            href="##"
+            style={{ fontSize: 12 }}
+            onClick={createClick(example1, true)}
+          >
+            {example1}
+          </Link>
         </Stack>
         <Separator />
-        <Stack onClick={() => copy(url2)}>
-          <Text variant="large">Used for LAN devices</Text>
-          <Text onClick={() => copy(url2)}>{url2}</Text>
+        <Stack>
+          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
+            Used for LAN devices
+          </Text>
+          <Link href="##" style={{ fontSize: 12 }} onClick={createClick(url2)}>
+            {url2}
+          </Link>
+        </Stack>
+        <Stack>
+          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Example</Text>
+          <Link
+            href="##"
+            style={{ fontSize: 12 }}
+            onClick={createClick(example2, true)}
+          >
+            {example2}
+          </Link>
         </Stack>
       </Stack>
     );
@@ -56,7 +96,7 @@ export function Inputs({ ssmlConfig }: Props) {
       styles={{
         root: {
           width: '100%',
-          height: 'calc(100vh - 290px)',
+          height: 'calc(100vh - 294px)',
         },
       }}
     >
