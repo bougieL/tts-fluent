@@ -1,6 +1,8 @@
-import fs from 'fs';
-import chalk from 'chalk';
 import { execSync } from 'child_process';
+import fs from 'fs';
+
+import chalk from 'chalk';
+
 import { dependencies } from '../../package.json';
 
 if (dependencies) {
