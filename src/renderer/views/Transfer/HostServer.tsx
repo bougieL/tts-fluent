@@ -1,3 +1,7 @@
+import { clipboard, shell } from 'electron';
+import { useEffect, useRef } from 'react';
+import qrcode from 'qrcode';
+import { useServerConfig } from 'renderer/hooks';
 import {
   Label,
   Link,
@@ -5,10 +9,6 @@ import {
   MessageBarType,
   Stack,
 } from 'renderer/components';
-import { clipboard, shell } from 'electron';
-import { useEffect, useRef } from 'react';
-import qrcode from 'qrcode';
-import { useServerConfig } from 'renderer/hooks';
 
 interface HostServerProps {
   bottomSlot: React.ReactNode;
@@ -44,11 +44,11 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
         <Link
-          href={serverHost}
+          href={serverUrl}
           target="_blank"
           onClick={(event) => {
             event.preventDefault();
-            shell.openExternal(serverHost);
+            shell.openExternal(serverUrl);
           }}
         >
           Open transfer page

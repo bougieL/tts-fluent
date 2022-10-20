@@ -1,4 +1,4 @@
-import qs from 'query-string';
+import { useMemo } from 'react';
 import { Separator, Stack, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 import { SsmlConfig } from '../MicrosoftTTS/Options';
@@ -10,16 +10,18 @@ interface Props {
 export function Inputs({ ssmlConfig }: Props) {
   const { serverHost, serverPort } = useServerConfig();
 
-  const params = qs.stringify({
-    voice: ssmlConfig.voice,
-    style: ssmlConfig.style,
-    rate: ssmlConfig.rate,
-    pitch: ssmlConfig.pitch,
-    outputFormat: ssmlConfig.outputFormat,
-  });
+  const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
 
-  const url1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}&text=$TTSTEXT`;
-  const url2 = `${serverHost}/ttsCat?${params}&text=$TTSTEXT`;
+  const params = useMemo(() => {
+    return `voice=${encodeURIComponent(voice)}&style=${encodeURIComponent(
+      style
+    )}&rate=${encodeURIComponent(rate)}&pitch=${encodeURIComponent(
+      pitch
+    )}&outputFormat=${encodeURIComponent(outputFormat)}&text=$TTSTEXT`;
+  }, [outputFormat, pitch, rate, style, voice]);
+
+  const url1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
+  const url2 = `${serverHost}/ttsCat?${params}`;
 
   const copy = (url: string) => {
     navigator.clipboard.writeText(url);

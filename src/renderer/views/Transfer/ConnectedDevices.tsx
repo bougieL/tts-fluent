@@ -1,3 +1,6 @@
+import fs from 'fs-extra';
+import { Fragment, useState } from 'react';
+import { useAsync } from 'renderer/hooks';
 import {
   ActivityItem,
   Icon,
@@ -7,9 +10,6 @@ import {
   Text,
 } from 'renderer/components';
 import { TransferCache } from 'caches/transfer';
-import fs from 'fs-extra';
-import { Fragment, useState } from 'react';
-import { useAsync } from 'renderer/hooks';
 
 export function ConnectedDevices() {
   const [devices, setDevices] = useState<TransferCache.Device[]>([]);

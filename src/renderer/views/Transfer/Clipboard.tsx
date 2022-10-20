@@ -1,3 +1,5 @@
+import { clipboard, ipcRenderer } from 'electron';
+import { useState } from 'react';
 import {
   DefaultButton,
   Label,
@@ -7,8 +9,6 @@ import {
 } from 'renderer/components';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { clipboard, ipcRenderer } from 'electron';
-import { useState } from 'react';
 
 export function Clipboard() {
   const [value, setValue] = useState('');
