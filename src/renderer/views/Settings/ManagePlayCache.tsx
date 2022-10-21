@@ -8,29 +8,32 @@ import { DefaultButton, Label, Stack } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {
-  const cacheDirRef = useRef('');
+  const cachePathRef = useRef('');
   const [size, setSize] = useState('0 B');
   const handleClearCache = async () => {
     const sure = confirm(
       'Are you sure to clear cache? This operation can not revoke'
     );
+    const cachePath = await PlayCache.getCachePath();
     if (sure) {
-      fs.remove(cacheDirRef.current);
+      await fs.remove(cachePath);
+      await updateSize();
     }
   };
-  const handleOpenCache = () => {
-    shell.showItemInFolder(cacheDirRef.current);
+  const handleOpenCache = async () => {
+    await fs.ensureDir(cachePathRef.current);
+    shell.showItemInFolder(cachePathRef.current);
+  };
+  const updateSize = async () => {
+    await fs.ensureDir(cachePathRef.current);
+    const size = await getSize(cachePathRef.current);
+    setSize(size);
   };
   useAsync(async () => {
-    const cacheDir = await PlayCache.getCachePath();
-    await fs.ensureDir(cacheDir);
-    cacheDirRef.current = cacheDir;
-    const size = await getSize(cacheDir);
-    setSize(size);
-    const watcher = fs.watch(cacheDir, { recursive: true }, async () => {
-      const size = await getSize(cacheDir);
-      setSize(size);
-    });
+    const cachePath = await PlayCache.getCachePath();
+    cachePathRef.current = cachePath;
+    await updateSize();
+    const watcher = fs.watch(cachePath, updateSize);
     return watcher.close;
   }, []);
   return (

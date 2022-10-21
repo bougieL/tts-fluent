@@ -18,29 +18,32 @@ function formatVersion(version: string) {
 interface VersionContextValue {
   remoteVersion: string;
   hasUpdate: boolean;
+  changeLog: string;
 }
 
 export async function checkUpdate(): Promise<VersionContextValue> {
   let remoteVersion = '';
   let hasUpdate = false;
+  let changeLog = '';
   try {
-    const localVersion = version;
-    remoteVersion = await axios
+    [remoteVersion, changeLog] = await axios
       .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
-      .then(({ data }) => data.tag_name);
-    hasUpdate = formatVersion(remoteVersion) > formatVersion(localVersion);
+      .then(({ data }) => [data.tag_name, data.body]);
+    hasUpdate = formatVersion(remoteVersion) > formatVersion(version);
   } catch (error) {
     hasUpdate = false;
   }
   return {
     remoteVersion,
     hasUpdate,
+    changeLog,
   };
 }
 
 const defaultValue: VersionContextValue = {
   remoteVersion: '',
   hasUpdate: false,
+  changeLog: '',
 };
 
 const context = createContext<VersionContextValue>(defaultValue);

@@ -1,17 +1,19 @@
 import { shell } from 'electron';
 
+import { isProd } from 'lib/env';
 import { CompoundButton, Label, Stack } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
+import { showMarkdown } from 'renderer/lib';
 
 const CheckUpdate = () => {
   const { hasUpdate, remoteVersion } = useVersion();
 
-  if (!hasUpdate) {
+  if (!hasUpdate && isProd) {
     return null;
   }
   return (
     <>
-      <Label>New version!</Label>
+      <Label>New version! {isProd ? '' : `hasUpdate = ${hasUpdate}`}</Label>
       <Stack
         horizontal
         horizontalAlign="start"
@@ -29,6 +31,23 @@ const CheckUpdate = () => {
           styles={{ label: { fontSize: 18 } }}
         >
           🤡 Download 🤡
+        </CompoundButton>
+        <CompoundButton
+          secondaryText="Click here to view"
+          onClick={() => {
+            // shell.openExternal(
+            //   'https://github.com/bougieL/tts-fluent/releases'
+            // );
+            // window.open(
+            //   WindowType.markdown,
+            //   '_blank',
+            //   'top=500,left=200,frame=false,nodeIntegration=no'
+            // );
+            showMarkdown();
+          }}
+          styles={{ label: { fontSize: 18 } }}
+        >
+          Change log
         </CompoundButton>
       </Stack>
     </>

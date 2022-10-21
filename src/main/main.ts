@@ -8,10 +8,11 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
+import { setupWindowOpenHandler } from './windows/windowOpen';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
 import { getAssetPath, resolveHtmlPath } from './util';
@@ -102,11 +103,7 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  // Open urls in the user's browser
-  mainWindow.webContents.setWindowOpenHandler((edata) => {
-    shell.openExternal(edata.url);
-    return { action: 'deny' };
-  });
+  setupWindowOpenHandler(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

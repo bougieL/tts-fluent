@@ -99,7 +99,10 @@ export default () => {
     <Router>
       <AudioProvider>
         <Version>
-          <App />
+          <Routes>
+            <Route path="/markdown" element={<div>hello world</div>} />
+            <Route path="*" element={<App />} />
+          </Routes>
         </Version>
       </AudioProvider>
     </Router>
