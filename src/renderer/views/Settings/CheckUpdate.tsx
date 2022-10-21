@@ -6,7 +6,7 @@ import { useVersion } from 'renderer/hooks';
 import { showMarkdown } from 'renderer/lib';
 
 const CheckUpdate = () => {
-  const { hasUpdate, remoteVersion } = useVersion();
+  const { hasUpdate, remoteVersion, changeLog } = useVersion();
 
   if (!hasUpdate && isProd) {
     return null;
@@ -33,17 +33,9 @@ const CheckUpdate = () => {
           🤡 Download 🤡
         </CompoundButton>
         <CompoundButton
-          secondaryText="Click here to view"
+          secondaryText="Click here to view change log"
           onClick={() => {
-            // shell.openExternal(
-            //   'https://github.com/bougieL/tts-fluent/releases'
-            // );
-            // window.open(
-            //   WindowType.markdown,
-            //   '_blank',
-            //   'top=500,left=200,frame=false,nodeIntegration=no'
-            // );
-            showMarkdown();
+            showMarkdown(changeLog, { title: 'Change log' });
           }}
           styles={{ label: { fontSize: 18 } }}
         >

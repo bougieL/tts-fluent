@@ -1,6 +1,19 @@
 // import { app, dialog, ipcRenderer } from 'electron';
 // import { Channels } from 'main/preload';
 
+import { MarkdownType } from 'const/Markdown';
+
+declare global {
+  interface Window {
+    global: Window;
+    markdown: {
+      type: MarkdownType;
+      title: string;
+      content: string;
+    };
+  }
+}
+
 // declare global {
 //   interface Window {
 //     electron: {
@@ -28,5 +41,3 @@
 //     };
 //   }
 // }
-
-// export {};

@@ -33,8 +33,19 @@ async function main(arg) {
     exec('pnpm electron-builder build --publish never --win --mac --linux');
     console.log(chalk.blueBright('Finish build all platform'));
   }
+
+  if (!arg) {
+    console.log(chalk.blueBright('Start build current platform'));
+    exec('rm -r release/build || true');
+    exec('rm -r release/app/dist || true');
+    buildTransfer();
+    exec('npm run build');
+    exec('pnpm electron-builder build --publish never');
+    console.log(chalk.blueBright('Finish build current platform'));
+  }
 }
 
 if (require.main === module) {
+  // console.log(arg)
   main(arg);
 }

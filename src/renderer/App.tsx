@@ -9,6 +9,7 @@ import {
 import { Pivot, PivotItem, Stack } from 'renderer/components';
 
 import Downloads from './Views/Downloads';
+import { Markdown } from './Views/Markdown';
 import MicrosoftTTS from './Views/MicrosoftTTS';
 import Settings from './Views/Settings';
 import { Transfer } from './Views/Transfer';
@@ -48,49 +49,42 @@ const App = () => {
     navigate(pathCache.get());
   }, []);
   return (
-    <>
-      <Stack styles={{ root: { height: 36 } }} className="header" />
-      <Stack tokens={{ childrenGap: 12 }} className="main">
-        <Stack
-          horizontal
-          horizontalAlign="space-between"
-          verticalAlign="center"
+    <Stack tokens={{ childrenGap: 12 }} className="main">
+      <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+        <Pivot
+          selectedKey={location.pathname}
+          onLinkClick={handlePivotClick}
+          styles={{
+            text: { fontSize: 16 },
+            count: { fontSize: 16 },
+            link: { height: 32 },
+          }}
+          // linkFormat="tabs"
         >
-          <Pivot
-            selectedKey={location.pathname}
-            onLinkClick={handlePivotClick}
-            styles={{
-              text: { fontSize: 16 },
-              count: { fontSize: 16 },
-              link: { height: 32 },
-            }}
-            // linkFormat="tabs"
-          >
-            <PivotItem headerText="Microsoft TTS" itemKey="/" />
-            <PivotItem headerText="TTS Cat" itemKey="/ttsCat" />
-            <PivotItem headerText="Transfer" itemKey="/transfer" />
-            <PivotItem
-              headerText="Downloads"
-              itemKey="/downloads"
-              itemCount={downloadsNum || undefined}
-            />
-            <PivotItem
-              headerText="Settings"
-              itemKey="/settings"
-              itemCount={hasUpdate ? '🤡 New version !' : undefined}
-            />
-          </Pivot>
-          <AudioIndicator />
-        </Stack>
-        <Routes>
-          <Route path="/" element={<MicrosoftTTS />} />
-          <Route path="/ttsCat" element={<TTSCat />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/downloads" element={<Downloads />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+          <PivotItem headerText="Microsoft TTS" itemKey="/" />
+          <PivotItem headerText="TTS Cat" itemKey="/ttsCat" />
+          <PivotItem headerText="Transfer" itemKey="/transfer" />
+          <PivotItem
+            headerText="Downloads"
+            itemKey="/downloads"
+            itemCount={downloadsNum || undefined}
+          />
+          <PivotItem
+            headerText="Settings"
+            itemKey="/settings"
+            itemCount={hasUpdate ? '🤡 New version !' : undefined}
+          />
+        </Pivot>
+        <AudioIndicator />
       </Stack>
-    </>
+      <Routes>
+        <Route path="/" element={<MicrosoftTTS />} />
+        <Route path="/ttsCat" element={<TTSCat />} />
+        <Route path="/transfer" element={<Transfer />} />
+        <Route path="/downloads" element={<Downloads />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </Stack>
   );
 };
 
@@ -99,8 +93,9 @@ export default () => {
     <Router>
       <AudioProvider>
         <Version>
+          <Stack styles={{ root: { height: 36 } }} className="header" />
           <Routes>
-            <Route path="/markdown" element={<div>hello world</div>} />
+            <Route path="/markdown" element={<Markdown />} />
             <Route path="*" element={<App />} />
           </Routes>
         </Version>
