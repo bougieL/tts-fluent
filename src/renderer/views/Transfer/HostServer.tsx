@@ -17,9 +17,10 @@ interface HostServerProps {
 }
 
 export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
-  const { serverHost, serverName } = useServerConfig();
+  const { serverOrigin, serverName, serverIp } = useServerConfig();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const serverUrl = `http://${serverHost}/transfer`;
+  const serverUrl = `${serverOrigin}/transfer`;
+  const debugUrl = `http://${serverIp}:1213/transfer`;
   useEffect(() => {
     if (!serverName) return;
     qrcode.toCanvas(
@@ -45,8 +46,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
         <Link
-          href={serverUrl}
-          target="_blank"
+          href="##"
           onClick={(event) => {
             event.preventDefault();
             shell.openExternal(serverUrl);
@@ -54,6 +54,17 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         >
           Open transfer page
         </Link>
+        {process.env.NODE_ENV === 'development' && (
+          <Link
+            href="##"
+            onClick={(event) => {
+              event.preventDefault();
+              shell.openExternal(debugUrl);
+            }}
+          >
+            Open debug transfer page
+          </Link>
+        )}
       </MessageBar>
       <Stack horizontal tokens={{ childrenGap: 12 }}>
         <Stack tokens={{ childrenGap: 12 }}>
@@ -63,7 +74,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
               ref={canvasRef}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                clipboard.writeText(serverHost);
+                clipboard.writeText(serverUrl);
                 new Notification('Server url copied to clipboard 😁').onclick =
                   () => {};
               }}

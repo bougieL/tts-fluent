@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function Inputs({ ssmlConfig }: Props) {
-  const { serverHost, serverPort } = useServerConfig();
+  const { serverOrigin, serverPort } = useServerConfig();
 
   const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
 
@@ -26,13 +26,13 @@ export function Inputs({ ssmlConfig }: Props) {
   }, [outputFormat, pitch, rate, style, voice]);
 
   const base1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
-  const base2 = `${serverHost}/ttsCat?${params}`;
+  const base2 = `${serverOrigin}/ttsCat?${params}`;
 
   const url1 = `${base1}&text=$TTSTEXT`;
   const url2 = `${base2}&text=$TTSTEXT`;
 
-  const example1 = `${base1}&text=${encodeURIComponent('黱榎韡縩赑')}`;
-  const example2 = `${base2}&text=${encodeURIComponent('黱榎韡縩赑')}`;
+  const example1 = `${base1}&text=${encodeURIComponent('主播这操作六六六')}`;
+  const example2 = `${base2}&text=${encodeURIComponent('主播这操作六六六')}`;
 
   const createClick =
     (url: string, open = false) =>

@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 export const serverContext = createContext<
   | {
       serverName: string;
-      serverHost: string;
+      serverOrigin: string;
     }
   | undefined
 >(undefined);

@@ -18,9 +18,12 @@ export function useServerConfig() {
     fs.watch(p, updater);
   }, []);
 
+  const ip = address.ip();
+
   return {
-    serverHost: `http://${address.ip()}:${config?.serverPort}`,
+    serverOrigin: `http://${ip}:${config?.serverPort}`,
     serverName: config?.serverName,
     serverPort: config?.serverPort,
+    serverIp: ip,
   };
 }

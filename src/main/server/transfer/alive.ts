@@ -6,7 +6,7 @@ import { TransferCache } from 'caches/transfer';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 
-import { getServerHost, getServerName } from '../utils';
+import { getServerName, getServerOrigin } from '../utils';
 
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
 
@@ -47,7 +47,7 @@ export function setupAliveRouter(router: Router) {
     );
     res.status(200).send({
       serverName: getServerName(),
-      serverHost: await getServerHost(),
+      serverOrigin: await getServerOrigin(),
     });
   });
 
@@ -62,7 +62,7 @@ export function setupAliveRouter(router: Router) {
       type: TransferType.heartbeat,
       payload: {
         serverName: getServerName(),
-        serverHost: await getServerHost(),
+        serverOrigin: await getServerOrigin(),
       },
     });
     res.write(heartbeatData);

@@ -20,7 +20,7 @@ export async function getServerPort(): Promise<number> {
   });
 }
 
-export async function getServerHost() {
+export async function getServerOrigin() {
   const port = await getServerPort();
   return `http://${address.ip()}:${port}`;
 }

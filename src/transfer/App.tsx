@@ -11,7 +11,7 @@ import './App.scss';
 export function App() {
   const [server, setServer] = useState<{
     serverName: string;
-    serverHost: string;
+    serverOrigin: string;
   }>();
   const polling = async () => {
     try {
