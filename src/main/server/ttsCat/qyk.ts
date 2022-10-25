@@ -61,7 +61,7 @@ export function setupQykRouter(router: Router) {
 
 function text2ssml(a: string, b: string) {
   const feifei = b
-    ? `<voice name="zh-CN-XiaoxiaoNeural">
+    ? `<voice name="zh-CN-XiaoyouNeural">
   <break time="500ms" />
   ${escapeText(b)}
 </voice>`
@@ -69,7 +69,7 @@ function text2ssml(a: string, b: string) {
   return `<speak xmlns="http://www.w3.org/2001/10/synthesis"
   xmlns:mstts="http://www.w3.org/2001/mstts"
   xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="zh-CN">
-  <voice name="zh-CN-XiaoshuangNeural">
+  <voice name="zh-CN-YunxiNeural">
     ${escapeText(a)}
   </voice>
   ${feifei}

@@ -16,12 +16,18 @@ export function showMarkdown(
   const title = options?.title || '';
   const width = options?.width || 400;
   const height = options?.height || 500;
-  const prodUrl = `file://${path.resolve(__dirname, 'index.html')}#/markdown`;
-  const p = isDev ? '/#/markdown' : prodUrl;
-  const w = window.open(p, '', `width=${width},height=${height}`);
-  if (w) {
-    w.global = w;
-    w.markdown = {
+  const prodUrl = `file://${path.resolve(
+    __dirname,
+    'index.html'
+  )}#/window/markdown`;
+  const href = isDev ? '/#/window/markdown' : prodUrl;
+  const subWindow = window.open(href, '', `width=${width},height=${height}`);
+  if (subWindow) {
+    subWindow.global = subWindow;
+    if (title) {
+      subWindow.document.title = title;
+    }
+    subWindow.initialData = {
       title,
       type,
       content,

@@ -9,7 +9,7 @@ import {
 import { Pivot, PivotItem, Stack } from 'renderer/components';
 
 import Downloads from './Views/Downloads';
-import { Markdown } from './Views/Markdown';
+import Markdown from './Views/Markdown';
 import MicrosoftTTS from './Views/MicrosoftTTS';
 import Settings from './Views/Settings';
 import { Transfer } from './Views/Transfer';
@@ -78,11 +78,11 @@ const App = () => {
         <AudioIndicator />
       </Stack>
       <Routes>
-        <Route path="/" element={<MicrosoftTTS />} />
-        <Route path="/ttsCat" element={<TTSCat />} />
-        <Route path="/transfer" element={<Transfer />} />
-        <Route path="/downloads" element={<Downloads />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="" element={<MicrosoftTTS />} />
+        <Route path="ttsCat" element={<TTSCat />} />
+        <Route path="transfer" element={<Transfer />} />
+        <Route path="downloads" element={<Downloads />} />
+        <Route path="settings" element={<Settings />} />
       </Routes>
     </Stack>
   );
@@ -95,8 +95,10 @@ export default () => {
         <Version>
           <Stack styles={{ root: { height: 36 } }} className="header" />
           <Routes>
-            <Route path="/markdown" element={<Markdown />} />
-            <Route path="*" element={<App />} />
+            <Route path="/window">
+              <Route path="markdown" element={<Markdown />} />
+            </Route>
+            <Route path="/*" element={<App />} />
           </Routes>
         </Version>
       </AudioProvider>
