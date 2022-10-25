@@ -102,7 +102,7 @@ specifiers:
   webpack-merge: ^5.8.0
 
 dependencies:
-  '@bougiel/tts-node': 1.3.0
+  '@bougiel/tts-node': link:../tts-node
   '@fluentui/font-icons-mdl2': 8.4.8_a1bdd43be9504ec770a838d8189f6868
   '@fluentui/react': 8.90.0_ff80cd9dfb626a6c6c4251864122e347
   address: 1.2.0
@@ -556,19 +556,6 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
-
-  /@bougiel/tts-node/1.3.0:
-    resolution: {integrity: sha512-sXqKDZ0bOHjCg5twZBdg4fAnof85g9h13hGuMF0R8z/P2hev1uCrP9tCmfbr5Fzohroz4oXSuibzf6QlkzHw0Q==}
-    dependencies:
-      axios: 0.27.2
-      uuid: 8.3.2
-      ws: 8.8.1
-      xss: 1.0.14
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-    dev: false
 
   /@cspotcode/source-map-support/0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3239,6 +3226,7 @@ packages:
 
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+    dev: true
 
   /commander/2.9.0:
     resolution: {integrity: sha512-bmkUukX8wAOjHdN26xj5c4ctEV22TQ7dQYhSmuckKhToXrkUn0iIaolHdIxYYqD55nhpSPA9zPQ1yP57GdXP2A==}
@@ -3528,10 +3516,6 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dev: true
-
-  /cssfilter/0.0.10:
-    resolution: {integrity: sha512-FAaLDaplstoRsDR8XGYH51znUN0UY7nMc6Z9/fvE8EXGwvJE9hu7W2vHwx1+bd6gCYnln9nLbzxFTrcO9YQDZw==}
-    dev: false
 
   /cssnano-preset-default/5.2.12_postcss@8.4.16:
     resolution: {integrity: sha512-OyCBTZi+PXgylz9HAA5kHyoYhfGcYdwFmyaJzWnzxuGRtnMw/kR6ilW9XzlzlRAtB6PLT/r+prYgkef7hngFew==}
@@ -10711,6 +10695,7 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: true
 
   /xml-name-validator/4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
@@ -10725,15 +10710,6 @@ packages:
   /xmlchars/2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
     dev: true
-
-  /xss/1.0.14:
-    resolution: {integrity: sha512-og7TEJhXvn1a7kzZGQ7ETjdQVS2UfZyTlsEdDOqvQF7GoxNfY+0YLCzBy1kPdsDDx4QuNAonQPddpsn6Xl/7sw==}
-    engines: {node: '>= 0.10.0'}
-    hasBin: true
-    dependencies:
-      commander: 2.20.3
-      cssfilter: 0.0.10
-    dev: false
 
   /xtend/4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}

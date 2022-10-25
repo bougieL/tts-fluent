@@ -15,24 +15,47 @@ export function Inputs({ ssmlConfig }: Props) {
 
   const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
 
-  const params = useMemo(() => {
-    return `${new URLSearchParams({
+  const danmuUrls = useMemo(() => {
+    const params = `${new URLSearchParams({
       voice,
       style,
       rate,
       pitch,
       outputFormat,
     }).toString()}`;
-  }, [outputFormat, pitch, rate, style, voice]);
 
-  const base1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
-  const base2 = `${serverOrigin}/ttsCat?${params}`;
+    const base1 = `http://127.0.0.1:${serverPort}/ttsCat?${params}`;
+    const base2 = `${serverOrigin}/ttsCat?${params}`;
 
-  const url1 = `${base1}&text=$TTSTEXT`;
-  const url2 = `${base2}&text=$TTSTEXT`;
+    const url1 = `${base1}&text=$TTSTEXT`;
+    const url2 = `${base2}&text=$TTSTEXT`;
+    const url3 = `${base1}&text=${encodeURIComponent('主播这操作六六六')}`;
 
-  const example1 = `${base1}&text=${encodeURIComponent('主播这操作六六六')}`;
-  const example2 = `${base2}&text=${encodeURIComponent('主播这操作六六六')}`;
+    return {
+      url1,
+      url2,
+      url3,
+    };
+  }, [outputFormat, pitch, rate, serverOrigin, serverPort, style, voice]);
+
+  const qykUrls = useMemo(() => {
+    const params = `${new URLSearchParams({
+      outputFormat,
+    }).toString()}`;
+
+    const base1 = `http://127.0.0.1:${serverPort}/ttsCat/qyk?${params}`;
+    const base2 = `${serverOrigin}/ttsCat/qyk?${params}`;
+
+    const url1 = `${base1}&text=$TTSTEXT`;
+    const url2 = `${base2}&text=$TTSTEXT`;
+    const url3 = `${base1}&text=${encodeURIComponent('主播这操作六六六')}`;
+
+    return {
+      url1,
+      url2,
+      url3,
+    };
+  }, [outputFormat, serverOrigin, serverPort]);
 
   const createClick =
     (url: string, open = false) =>
@@ -52,41 +75,61 @@ export function Inputs({ ssmlConfig }: Props) {
     return (
       <Stack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
         <Stack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
-            Used for local device
+          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
+            Danmuji
           </Text>
-          <Link href="##" style={{ fontSize: 12 }} onClick={createClick(url1)}>
-            {url1}
-          </Link>
-        </Stack>
-        <Stack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Example</Text>
-          <Link
-            href="##"
-            style={{ fontSize: 12 }}
-            onClick={createClick(example1, true)}
-          >
-            {example1}
-          </Link>
+          <Stack tokens={{ childrenGap: 6 }}>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url1)}
+            >
+              {danmuUrls.url1}
+            </Link>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url2)}
+            >
+              {danmuUrls.url2}
+            </Link>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url3, true)}
+            >
+              {danmuUrls.url3}
+            </Link>
+          </Stack>
         </Stack>
         <Separator />
         <Stack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
-            Used for LAN devices
+          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
+            Danmuji with qingyunke
           </Text>
-          <Link href="##" style={{ fontSize: 12 }} onClick={createClick(url2)}>
-            {url2}
-          </Link>
-        </Stack>
-        <Stack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Example</Text>
-          <Link
-            href="##"
-            style={{ fontSize: 12 }}
-            onClick={createClick(example2, true)}
-          >
-            {example2}
-          </Link>
+          <Stack tokens={{ childrenGap: 6 }}>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(qykUrls.url1)}
+            >
+              {qykUrls.url1}
+            </Link>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(qykUrls.url2)}
+            >
+              {qykUrls.url2}
+            </Link>
+            <Link
+              href="##"
+              style={{ fontSize: 12 }}
+              onClick={createClick(qykUrls.url3, true)}
+            >
+              {qykUrls.url3}
+            </Link>
+          </Stack>
         </Stack>
       </Stack>
     );
