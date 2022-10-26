@@ -5,7 +5,7 @@ import { useFn } from 'renderer/hooks';
 
 import { Options, SsmlConfig } from '../MicrosoftTTS/Options';
 
-import { Inputs } from './Inputs';
+import { Display } from './Display';
 
 const defaultConfig: SsmlConfig = {
   locale: 'Chinese (Mandarin, Simplified)',
@@ -41,7 +41,7 @@ const TTSCat = () => {
 
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
-      <Inputs ssmlConfig={config} />
+      <Display ssmlConfig={config} />
       <Options value={config} onChange={handleConfigChange} />
     </Stack>
   );

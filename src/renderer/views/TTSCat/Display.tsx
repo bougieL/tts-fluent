@@ -10,7 +10,7 @@ interface Props {
   ssmlConfig: SsmlConfig;
 }
 
-export function Inputs({ ssmlConfig }: Props) {
+export function Display({ ssmlConfig }: Props) {
   const { serverOrigin, serverPort } = useServerConfig();
 
   const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
