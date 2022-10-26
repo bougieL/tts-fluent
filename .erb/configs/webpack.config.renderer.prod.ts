@@ -34,7 +34,7 @@ const configuration: webpack.Configuration = {
   output: {
     path: webpackPaths.distRendererPath,
     publicPath: './',
-    filename: 'renderer.[contenthash].js',
+    filename: '[name].[contenthash].js',
     // library: {
     //   type: 'umd',
     // },
@@ -81,28 +81,52 @@ const configuration: webpack.Configuration = {
   },
 
   optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        extractComments: false,
-        terserOptions: {
-          format: {
-            comments: false,
-          },
-        },
-      }),
-      new CssMinimizerPlugin(),
-    ],
     splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          filename: 'vendors.[contenthash].js',
-          chunks: 'all',
-        },
-      },
+      // chunks: 'all',
+      chunks: 'async',
     },
+    // minimize: true,
+    // minimizer: [
+    //   new TerserPlugin({
+    //     parallel: true,
+    //     extractComments: false,
+    //     terserOptions: {
+    //       format: {
+    //         comments: false,
+    //       },
+    //     },
+    //   }),
+    //   new CssMinimizerPlugin(),
+    // ],
+    // splitChunks: {
+    //   chunks: 'async',
+    //   cacheGroups: {
+    //     default: {
+    //       minChunks: 1,
+    //       reuseExistingChunk: true,
+    //     },
+    //     vendor_react: {
+    //       test: /.*\/node_modules\/react\/index\.js/,
+    //       name: 'vendor-react',
+    //       chunks: 'initial',
+    //       enforce: true,
+    //     },
+    //   },
+    // },
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       filename: 'vendors.[contenthash].js',
+    //       chunks: 'all',
+    //     },
+    //     asyncs: {
+    //       chunks: 'async',
+    //       enforce: true,
+    //       filename: 'asyncs.[contenthash].js',
+    //     },
+    //   },
+    // },
   },
 
   plugins: [

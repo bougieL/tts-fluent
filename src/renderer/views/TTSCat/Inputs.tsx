@@ -38,13 +38,13 @@ export function Inputs({ ssmlConfig }: Props) {
     };
   }, [outputFormat, pitch, rate, serverOrigin, serverPort, style, voice]);
 
-  const qykUrls = useMemo(() => {
+  const aiChatUrls = useMemo(() => {
     const params = `${new URLSearchParams({
       outputFormat,
     }).toString()}`;
 
-    const base1 = `http://127.0.0.1:${serverPort}/ttsCat/qyk?${params}`;
-    const base2 = `${serverOrigin}/ttsCat/qyk?${params}`;
+    const base1 = `http://127.0.0.1:${serverPort}/ttsCat/aiChat?${params}`;
+    const base2 = `${serverOrigin}/ttsCat/aiChat?${params}`;
 
     const url1 = `${base1}&text=$TTSTEXT`;
     const url2 = `${base2}&text=$TTSTEXT`;
@@ -111,23 +111,23 @@ export function Inputs({ ssmlConfig }: Props) {
             <Link
               href="##"
               style={{ fontSize: 12 }}
-              onClick={createClick(qykUrls.url1)}
+              onClick={createClick(aiChatUrls.url1)}
             >
-              {qykUrls.url1}
+              {aiChatUrls.url1}
             </Link>
             <Link
               href="##"
               style={{ fontSize: 12 }}
-              onClick={createClick(qykUrls.url2)}
+              onClick={createClick(aiChatUrls.url2)}
             >
-              {qykUrls.url2}
+              {aiChatUrls.url2}
             </Link>
             <Link
               href="##"
               style={{ fontSize: 12 }}
-              onClick={createClick(qykUrls.url3, true)}
+              onClick={createClick(aiChatUrls.url3, true)}
             >
-              {qykUrls.url3}
+              {aiChatUrls.url3}
             </Link>
           </Stack>
         </Stack>

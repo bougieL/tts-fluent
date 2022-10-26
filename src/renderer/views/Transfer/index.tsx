@@ -5,7 +5,7 @@ import { ConnectedDevices } from './ConnectedDevices';
 import { HostServer } from './HostServer';
 import { SendFiles } from './SendFiles';
 
-export function Transfer() {
+function Transfer() {
   return (
     <Stack horizontal tokens={{ childrenGap: 12 }}>
       <HostServer
@@ -20,3 +20,5 @@ export function Transfer() {
     </Stack>
   );
 }
+
+export default Transfer;

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es2021",
-    "module": "commonjs",
+    "module": "CommonJS",
     "lib": ["dom", "es2021"],
     "declaration": true,
     "declarationMap": true,
@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": "release/app/dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "exclude": [
     "test",

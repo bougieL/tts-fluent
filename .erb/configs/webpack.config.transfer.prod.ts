@@ -34,10 +34,10 @@ const configuration: webpack.Configuration = {
   output: {
     path: webpackPaths.distTransferPath,
     publicPath: '/transfer',
-    filename: 'main.[contenthash].js',
-    // library: {
-    //   type: 'umd',
-    // },
+    filename: '[name].[contenthash].js',
+    library: {
+      type: 'umd',
+    },
   },
 
   module: {
@@ -92,8 +92,18 @@ const configuration: webpack.Configuration = {
     ],
     splitChunks: {
       cacheGroups: {
+        react: {
+          test: /node_modules\/react/,
+          filename: 'react.[contenthash].js',
+          chunks: 'all',
+        },
+        fluent: {
+          test: /node_modules\/@fluent/,
+          filename: 'fluent.[contenthash].js',
+          chunks: 'all',
+        },
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /\/node_modules\//,
           filename: 'vendors.[contenthash].js',
           chunks: 'all',
         },
@@ -117,7 +127,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].[contenthash].css',
     }),
 
     new BundleAnalyzerPlugin({

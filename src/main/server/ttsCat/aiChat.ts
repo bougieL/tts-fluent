@@ -8,15 +8,24 @@ import md5 from 'md5';
 
 import { PlayCache } from 'caches';
 
-export function setupQykRouter(router: Router) {
-  router.get('/qyk', async (req, res) => {
-    const { text, outputFormat } = req.query as Record<string, string>;
+export function setupAiChatRouter(router: Router) {
+  router.get('/aiChat', async (req, res) => {
+    const {
+      text,
+      voiceA = 'zh-CN-YunxiNeural',
+      voiceB = 'zh-CN-XiaoyouNeural',
+      outputFormat,
+    } = req.query as Record<string, string>;
     if (!text) {
       res.sendStatus(400);
       return;
     }
-    const feifei = await getQyk(text.slice(text.indexOf('：') + 1));
-    const ssml = text2ssml(text, feifei);
+    const danmu = text.slice(text.indexOf(':') + 1).trim();
+    const feifei = await getQyk(danmu);
+    const ssml = text2ssml(
+      { text, voice: voiceA },
+      { text: feifei, voice: voiceB }
+    );
     const hash = md5(ssml);
     const cachePath = path.join(await PlayCache.getCachePath(), hash);
     const [isFinised, isExisted] = await Promise.all([
@@ -32,7 +41,7 @@ export function setupQykRouter(router: Router) {
     function handleError(error: any) {
       const errorMessage = String(error);
       res.header('Content-Type', 'text/plain');
-      if (error.includes('429')) {
+      if (error?.includes('429')) {
         res
           .status(429)
           .send(
@@ -59,18 +68,23 @@ export function setupQykRouter(router: Router) {
   });
 }
 
-function text2ssml(a: string, b: string) {
+interface IVoiceItem {
+  text: string;
+  voice: string;
+}
+
+function text2ssml(a: IVoiceItem, b: IVoiceItem) {
   const feifei = b
-    ? `<voice name="zh-CN-XiaoyouNeural">
+    ? `<voice name="${b.voice}">
   <break time="500ms" />
-  ${escapeText(b)}
+  ${escapeText(b.text)}
 </voice>`
     : '';
   return `<speak xmlns="http://www.w3.org/2001/10/synthesis"
   xmlns:mstts="http://www.w3.org/2001/mstts"
   xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="zh-CN">
-  <voice name="zh-CN-YunxiNeural">
-    ${escapeText(a)}
+  <voice name="${a.voice}">
+    ${escapeText(a.text)}
   </voice>
   ${feifei}
 </speak>`;

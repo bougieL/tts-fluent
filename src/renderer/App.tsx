@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -8,12 +9,12 @@ import {
 
 import { Pivot, PivotItem, Stack } from 'renderer/components';
 
-import Downloads from './Views/Downloads';
-import Markdown from './Views/Markdown';
-import MicrosoftTTS from './Views/MicrosoftTTS';
-import Settings from './Views/Settings';
-import { Transfer } from './Views/Transfer';
-import TTSCat from './Views/TTSCat';
+// import Downloads from './Views/Downloads';
+// import Markdown from './Views/Markdown';
+// import MicrosoftTTS from './Views/MicrosoftTTS';
+// import Settings from './Views/Settings';
+// import Transfer from './Views/Transfer';
+// import TTSCat from './Views/TTSCat';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import {
   AudioProvider,
@@ -34,6 +35,13 @@ const pathCache = {
     return localStorage.getItem(this.key) || '/';
   },
 };
+
+const MicrosoftTTS = React.lazy(() => import('./Views/MicrosoftTTS'));
+const TTSCat = React.lazy(() => import('./Views/TTSCat'));
+const Transfer = React.lazy(() => import('./Views/Transfer'));
+const Downloads = React.lazy(() => import('./Views/Downloads'));
+const Settings = React.lazy(() => import('./Views/Settings'));
+const Markdown = React.lazy(() => import('./Views/Markdown'));
 
 const App = () => {
   const location = useLocation();

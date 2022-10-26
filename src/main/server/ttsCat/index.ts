@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { setupQykRouter } from './qyk';
+import { setupAiChatRouter } from './aiChat';
 import { setupTextRouter } from './text';
 
 const router = Router();
 
 setupTextRouter(router);
-setupQykRouter(router);
+setupAiChatRouter(router);
 
 export { router };
