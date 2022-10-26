@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import copy from 'copy-to-clipboard';
 
-// import copy from 'copy-to-clipboard';
 import { TransferType } from 'const/Transfer';
 import {
   DefaultButton,
@@ -24,14 +24,8 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
   useServerAliveSse(({ type, payload }) => {
     if (type === TransferType.sendClipboard) {
       setText(payload);
-      import('copy-to-clipboard')
-        .then(({ default: copy }) => {
-          copy(payload);
-          return toast.success(
-            <Text>Get clipboard from {server?.serverName}</Text>
-          );
-        })
-        .catch();
+      copy(payload);
+      toast.success(<Text>Get clipboard from {server?.serverName}</Text>);
     }
     if (type === TransferType.getClipboard) {
       sendClipboard(text).catch();
@@ -64,7 +58,6 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
                 <Text>Get clipboard from {server?.serverName}</Text>
               );
             }
-            // copy(text);
           }}
         >
           Get clipboard
@@ -72,8 +65,8 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
         <PrimaryButton
           iconProps={{ iconName: 'Send' }}
           disabled={!text || disabled}
-          onClick={async () => {
-            await sendClipboard(text).catch();
+          onClick={() => {
+            sendClipboard(text);
           }}
         >
           Send text

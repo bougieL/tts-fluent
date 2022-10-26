@@ -93,12 +93,12 @@ const configuration: webpack.Configuration = {
     splitChunks: {
       cacheGroups: {
         react: {
-          test: /node_modules\/react/,
+          test: /\/node_modules\/react/,
           filename: 'react.[contenthash].js',
           chunks: 'all',
         },
         fluent: {
-          test: /node_modules\/@fluent/,
+          test: /\/node_modules\/@fluent/,
           filename: 'fluent.[contenthash].js',
           chunks: 'all',
         },

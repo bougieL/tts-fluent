@@ -81,52 +81,38 @@ const configuration: webpack.Configuration = {
   },
 
   optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
     splitChunks: {
-      // chunks: 'all',
-      chunks: 'async',
+      cacheGroups: {
+        react: {
+          test: /\/node_modules\/react/,
+          filename: 'react.[contenthash].js',
+          chunks: 'all',
+        },
+        fluent: {
+          test: /\/node_modules\/@fluent/,
+          filename: 'fluent.[contenthash].js',
+          chunks: 'all',
+        },
+        vendors: {
+          test: /\/node_modules\//,
+          filename: 'vendors.[contenthash].js',
+          chunks: 'all',
+        },
+      },
     },
-    // minimize: true,
-    // minimizer: [
-    //   new TerserPlugin({
-    //     parallel: true,
-    //     extractComments: false,
-    //     terserOptions: {
-    //       format: {
-    //         comments: false,
-    //       },
-    //     },
-    //   }),
-    //   new CssMinimizerPlugin(),
-    // ],
-    // splitChunks: {
-    //   chunks: 'async',
-    //   cacheGroups: {
-    //     default: {
-    //       minChunks: 1,
-    //       reuseExistingChunk: true,
-    //     },
-    //     vendor_react: {
-    //       test: /.*\/node_modules\/react\/index\.js/,
-    //       name: 'vendor-react',
-    //       chunks: 'initial',
-    //       enforce: true,
-    //     },
-    //   },
-    // },
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       filename: 'vendors.[contenthash].js',
-    //       chunks: 'all',
-    //     },
-    //     asyncs: {
-    //       chunks: 'async',
-    //       enforce: true,
-    //       filename: 'asyncs.[contenthash].js',
-    //     },
-    //   },
-    // },
   },
 
   plugins: [
@@ -145,7 +131,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
+      filename: '[name].[contenthash].css',
     }),
 
     new BundleAnalyzerPlugin({

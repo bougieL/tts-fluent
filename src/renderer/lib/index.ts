@@ -1,1 +1,1 @@
-export * from './windows/showMarkdown';
+export { openWindow } from './windows/utils';
