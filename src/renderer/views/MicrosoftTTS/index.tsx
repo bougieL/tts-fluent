@@ -5,6 +5,7 @@ import * as uuid from 'uuid';
 import { IpcEvents } from 'const';
 import { Stack } from 'renderer/components';
 import { useAudio, useFn } from 'renderer/hooks';
+import { createStorage } from 'renderer/lib';
 
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
@@ -19,27 +20,13 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-const configCacheKey = 'microsoft_tts';
-
-const configCache = {
-  set(config: SsmlConfig) {
-    localStorage.setItem(configCacheKey, JSON.stringify(config));
-  },
-  get(): SsmlConfig {
-    try {
-      const config = JSON.parse(localStorage.getItem(configCacheKey) || '');
-      return config || defaultConfig;
-    } catch (error) {
-      return defaultConfig;
-    }
-  },
-};
+const configStorage = createStorage('microsoft_tts', defaultConfig);
 
 const MicrosoftTTS = () => {
   const [empty, setEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
-  const [config, setConfig] = useState(configCache.get());
+  const [config, setConfig] = useState(configStorage.get());
   const { audio, streamAudio, setIsStreamAudio } = useAudio();
   const handlePlayStream = async () => {
     setLoading(true);
@@ -105,7 +92,7 @@ const MicrosoftTTS = () => {
   };
   const handleConfigChange = useFn((config: SsmlConfig) => {
     setConfig(config);
-    configCache.set(config);
+    configStorage.set(config);
   });
 
   return (

@@ -9,7 +9,7 @@ export function openWindow<
   const width = options?.width || 400;
   const height = options?.height || 500;
   const prodUrl = `file://${path.resolve(__dirname, 'index.html')}#${url}`;
-  const href = isDev ? '/#/window/markdown' : prodUrl;
+  const href = isDev ? `/#${url}` : prodUrl;
   const subWindow = window.open(href, '', `width=${width},height=${height}`);
   if (subWindow) {
     subWindow.global = subWindow;

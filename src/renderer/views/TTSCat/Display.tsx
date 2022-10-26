@@ -105,7 +105,7 @@ export function Display({ ssmlConfig }: Props) {
         <Separator />
         <Stack>
           <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
-            Danmuji with qingyunke
+            Danmuji with AI chat
           </Text>
           <Stack tokens={{ childrenGap: 6 }}>
             <Link

@@ -1,9 +1,10 @@
 import { ComponentType, FC } from 'react';
 
-export function withWindow<P>(
-  Component: ComponentType<P & { initialData: any }>
+export function withWindow<P extends { initialData: any }>(
+  Component: ComponentType<P>
 ) {
-  const NamedComponent: FC<P> = (props) => {
+  const NamedComponent: FC<Omit<P, 'initialData'>> = (props) => {
+    // @ts-ignore
     return <Component {...props} initialData={window.initialData} />;
   };
 

@@ -1,48 +1,38 @@
 import { useState } from 'react';
 
-import { Separator, Stack } from 'renderer/components';
+import { Separator, Stack, withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
 
-const defaultConfig: SsmlConfig = {
-  locale: 'Chinese (Mandarin, Simplified)',
-  voice: 'zh-CN-XiaoxiaoNeural',
-  rate: '0%',
-  pitch: '0%',
-  style: 'general',
-  outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
-};
+interface Props {
+  initialData: {
+    textConfig: SsmlConfig;
+    onTextConfigChange: (v: SsmlConfig) => void;
+  };
+}
 
-const configCacheKey = 'tts_cat';
-
-const configCache = {
-  set(config: SsmlConfig) {
-    localStorage.setItem(configCacheKey, JSON.stringify(config));
-  },
-  get(): SsmlConfig {
-    try {
-      const config = JSON.parse(localStorage.getItem(configCacheKey) || '');
-      return config || defaultConfig;
-    } catch (error) {
-      return defaultConfig;
-    }
-  },
-};
-
-function TTSCatEditor() {
-  const [config, setConfig] = useState(configCache.get());
-  const handleConfigChange = useFn((config: SsmlConfig) => {
-    setConfig(config);
-    configCache.set(config);
+function TTSCatEditor({
+  initialData: { textConfig, onTextConfigChange },
+}: Props) {
+  const [privTextConfig, setPrivTextConfig] = useState(textConfig);
+  const handleTextConfigChange = useFn(async (config: SsmlConfig) => {
+    setPrivTextConfig(config);
+    onTextConfigChange(config);
   });
 
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
-      <SsmlDistributor value={config} onChange={handleConfigChange} />
+    <Stack
+      tokens={{ childrenGap: 12 }}
+      styles={{ root: { paddingLeft: 12, paddingRight: 12 } }}
+    >
+      <SsmlDistributor
+        value={privTextConfig}
+        onChange={handleTextConfigChange}
+      />
       <Separator />
     </Stack>
   );
 }
 
-export default TTSCatEditor;
+export default withWindow(TTSCatEditor);

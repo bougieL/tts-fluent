@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { Stack } from 'renderer/components';
+import { PrimaryButton, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
+import { createStorage, openWindow } from 'renderer/lib';
 
-import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
+import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
 import { Display } from './Display';
 
@@ -16,33 +17,31 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-const configCacheKey = 'tts_cat';
-
-const configCache = {
-  set(config: SsmlConfig) {
-    localStorage.setItem(configCacheKey, JSON.stringify(config));
-  },
-  get(): SsmlConfig {
-    try {
-      const config = JSON.parse(localStorage.getItem(configCacheKey) || '');
-      return config || defaultConfig;
-    } catch (error) {
-      return defaultConfig;
-    }
-  },
-};
+const textConfigStorage = createStorage('tts_cat', defaultConfig);
 
 const TTSCat = () => {
-  const [config, setConfig] = useState(configCache.get());
-  const handleConfigChange = useFn((config: SsmlConfig) => {
-    setConfig(config);
-    configCache.set(config);
+  const [textConfig, setTextConfig] = useState(textConfigStorage.get());
+  const handleTextConfigChange = useFn((config: SsmlConfig) => {
+    setTextConfig(config);
+    textConfigStorage.set(config);
   });
+
+  const handleEdit = () => {
+    openWindow('/window/ttsCatEditor', {
+      title: 'TTSCat edit',
+      width: 600,
+      textConfig,
+      onTextConfigChange: handleTextConfigChange,
+    });
+  };
 
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
-      <Display ssmlConfig={config} />
-      <SsmlDistributor value={config} onChange={handleConfigChange} />
+      <Display ssmlConfig={textConfig} />
+      <Stack horizontalAlign="end">
+        <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
+      </Stack>
+      {/* <SsmlDistributor value={config} onChange={handleConfigChange} /> */}
     </Stack>
   );
 };

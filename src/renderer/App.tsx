@@ -23,18 +23,11 @@ import {
   useVersion,
   Version,
 } from './hooks';
+import { createStorage } from './lib';
 
 import './App.scss';
 
-const pathCache = {
-  key: '__path__',
-  set(path: string) {
-    localStorage.setItem(this.key, path);
-  },
-  get() {
-    return localStorage.getItem(this.key) || '/';
-  },
-};
+const pathStorage = createStorage('__path__', '/');
 
 const App = () => {
   const location = useLocation();
@@ -44,10 +37,10 @@ const App = () => {
   const handlePivotClick = (item?: PivotItem) => {
     const path = item?.props.itemKey || '/';
     navigate(path);
-    pathCache.set(path);
+    pathStorage.set(path);
   };
   useAsync(async () => {
-    navigate(pathCache.get());
+    navigate(pathStorage.get());
   }, []);
   return (
     <Stack tokens={{ childrenGap: 12 }} className="main">

@@ -6,7 +6,10 @@ import { useAsync } from 'renderer/hooks';
 import './style.scss';
 
 interface Props {
-  initialData: any;
+  initialData: {
+    title: string;
+    content: string;
+  };
 }
 
 function Markdown({ initialData }: Props) {
