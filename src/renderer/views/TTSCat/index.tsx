@@ -19,11 +19,20 @@ const defaultConfig: SsmlConfig = {
 
 const textConfigStorage = createStorage('tts_cat', defaultConfig);
 
+const defaultAiConfig = ['zh-CN-YunxiNeural', 'zh-CN-XiaoyouNeural'];
+
+const aiConfigStorage = createStorage('tts_cat_ai_chat', defaultAiConfig);
+
 const TTSCat = () => {
   const [textConfig, setTextConfig] = useState(textConfigStorage.get());
+  const [aiConfig, setAiConfig] = useState(aiConfigStorage.get());
   const handleTextConfigChange = useFn((config: SsmlConfig) => {
     setTextConfig(config);
     textConfigStorage.set(config);
+  });
+  const handleAiConfigChange = useFn((config: string[]) => {
+    setAiConfig(config);
+    aiConfigStorage.set(config);
   });
 
   const handleEdit = () => {
@@ -32,12 +41,14 @@ const TTSCat = () => {
       width: 600,
       textConfig,
       onTextConfigChange: handleTextConfigChange,
+      aiConfig,
+      onAiConfigChange: handleAiConfigChange,
     });
   };
 
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
-      <Display ssmlConfig={textConfig} />
+      <Display textConfig={textConfig} aiChatConfig={aiConfig} />
       <Stack horizontalAlign="end">
         <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
       </Stack>

@@ -7,13 +7,14 @@ import { useServerConfig } from 'renderer/hooks';
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
 interface Props {
-  ssmlConfig: SsmlConfig;
+  textConfig: SsmlConfig;
+  aiChatConfig: string[];
 }
 
-export function Display({ ssmlConfig }: Props) {
+export function Display({ textConfig, aiChatConfig }: Props) {
   const { serverOrigin, serverPort } = useServerConfig();
 
-  const { voice, style, rate, pitch, outputFormat } = ssmlConfig;
+  const { voice, style, rate, pitch, outputFormat } = textConfig;
 
   const danmuUrls = useMemo(() => {
     const params = `${new URLSearchParams({
@@ -41,6 +42,8 @@ export function Display({ ssmlConfig }: Props) {
   const aiChatUrls = useMemo(() => {
     const params = `${new URLSearchParams({
       outputFormat,
+      voiceA: aiChatConfig[0],
+      voiceB: aiChatConfig[1],
     }).toString()}`;
 
     const base1 = `http://127.0.0.1:${serverPort}/ttsCat/aiChat?${params}`;
@@ -55,7 +58,7 @@ export function Display({ ssmlConfig }: Props) {
       url2,
       url3,
     };
-  }, [outputFormat, serverOrigin, serverPort]);
+  }, [aiChatConfig, outputFormat, serverOrigin, serverPort]);
 
   const createClick =
     (url: string, open = false) =>
