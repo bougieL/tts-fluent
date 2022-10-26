@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Separator, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
-import { Options, SsmlConfig } from '../MicrosoftTTS/Options';
+import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
 
 const defaultConfig: SsmlConfig = {
   locale: 'Chinese (Mandarin, Simplified)',
@@ -39,7 +39,7 @@ function TTSCatEditor() {
 
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
-      <Options value={config} onChange={handleConfigChange} />
+      <SsmlDistributor value={config} onChange={handleConfigChange} />
       <Separator />
     </Stack>
   );

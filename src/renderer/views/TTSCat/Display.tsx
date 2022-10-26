@@ -4,7 +4,7 @@ import { shell } from 'electron';
 import { Link, Separator, Stack, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
-import { SsmlConfig } from '../MicrosoftTTS/Options';
+import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
 interface Props {
   ssmlConfig: SsmlConfig;

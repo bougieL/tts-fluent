@@ -60,7 +60,7 @@ interface Props {
   onChange: (value: SsmlConfig) => void;
 }
 
-function OptionsComponent({ value, onChange }: Props) {
+function C({ value, onChange }: Props) {
   const rate2n = (v: string) => Number.parseInt(v, 10) / 100 || 0 + 1;
   const pitch2n = (v: string) => Number.parseInt(v, 10) / 50 || 0 + 1;
 
@@ -187,6 +187,6 @@ function isEqual<T extends {}>(a: T, b: T) {
   });
 }
 
-export const Options = memo(OptionsComponent, (prevProps, nextProps) => {
+export const SsmlDistributor = memo(C, (prevProps, nextProps) => {
   return isEqual(prevProps.value, nextProps.value);
 });

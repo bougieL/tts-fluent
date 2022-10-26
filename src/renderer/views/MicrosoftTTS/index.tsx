@@ -8,7 +8,7 @@ import { useAudio, useFn } from 'renderer/hooks';
 
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
-import { Options, SsmlConfig } from './Options';
+import { SsmlConfig, SsmlDistributor } from './SsmlDistributor';
 
 const defaultConfig: SsmlConfig = {
   locale: 'Chinese (Mandarin, Simplified)',
@@ -119,7 +119,7 @@ const MicrosoftTTS = () => {
           }
         }}
       />
-      <Options value={config} onChange={handleConfigChange} />
+      <SsmlDistributor value={config} onChange={handleConfigChange} />
       <Buttons
         onPlayClick={handlePlayStream}
         onDownloadClick={handleDownloadClick}

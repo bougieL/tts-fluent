@@ -5,7 +5,7 @@ import { Pivot, PivotItem, Stack, TextField } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { Dropzone } from './Dropzone';
-import { SsmlConfig } from './Options';
+import { SsmlConfig } from './SsmlDistributor';
 
 export enum InputType {
   text = 'text',

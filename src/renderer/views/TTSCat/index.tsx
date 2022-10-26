@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
-import { Options, SsmlConfig } from '../MicrosoftTTS/Options';
+import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
 
 import { Display } from './Display';
 
@@ -42,7 +42,7 @@ const TTSCat = () => {
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Display ssmlConfig={config} />
-      <Options value={config} onChange={handleConfigChange} />
+      <SsmlDistributor value={config} onChange={handleConfigChange} />
     </Stack>
   );
 };
