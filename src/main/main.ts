@@ -9,23 +9,22 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import { app, BrowserWindow } from 'electron';
-import log from 'electron-log';
-import { autoUpdater } from 'electron-updater';
 
-import { setupWindowOpenHandler } from './windows/windowOpen';
+// import log from 'electron-log';
+// import { autoUpdater } from 'electron-updater';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
 import { getAssetPath, resolveHtmlPath } from './util';
 
 import './ipcEvents';
 
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+// class AppUpdater {
+//   constructor() {
+//     log.transports.file.level = 'info';
+//     autoUpdater.logger = log;
+//     autoUpdater.checkForUpdatesAndNotify();
+//   }
+// }
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -103,11 +102,29 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  setupWindowOpenHandler(mainWindow);
+  mainWindow.webContents.setWindowOpenHandler((data) => {
+    console.log(data);
+    return {
+      action: 'allow',
+      overrideBrowserWindowOptions: {
+        titleBarOverlay: {
+          color: '#ffffff',
+          height: 36,
+        },
+        titleBarStyle: 'hidden',
+        frame: false,
+        webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: false,
+          webSecurity: false,
+        },
+      },
+    };
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+  // new AppUpdater();
 };
 
 /**

@@ -1,2 +1,2 @@
+export { openWindow } from './openWindow';
 export { createStorage } from './storage';
-export { openWindow } from './windows/openWindow';

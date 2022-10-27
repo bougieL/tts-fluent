@@ -24,6 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (_, res) => res.send('TTS Fluent services running.'));
 app.use('/transfer', transferRouter);
 app.use('/ttsCat', ttsCatRouter);
 
