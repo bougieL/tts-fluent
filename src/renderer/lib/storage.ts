@@ -8,7 +8,8 @@ export function createStorage<T>(key: string, defaultValue: T) {
       try {
         return JSON.parse(str) as T;
       } catch (error) {
-        return str as unknown as T;
+        // return str as unknown as T;
+        return defaultValue;
       }
     },
     set(value: T) {
