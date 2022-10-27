@@ -36,7 +36,7 @@ export function setupTextRouter(router: Router) {
     function handleError(error: any) {
       const errorMessage = String(error);
       res.header('Content-Type', 'text/plain');
-      if (error.includes('429')) {
+      if (errorMessage.includes('429')) {
         res
           .status(429)
           .send(
