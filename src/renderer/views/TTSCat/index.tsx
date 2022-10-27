@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { PrimaryButton, Stack } from 'renderer/components';
+import { DefaultButton, PrimaryButton, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 import { createStorage, openWindow } from 'renderer/lib';
 
@@ -46,10 +46,26 @@ const TTSCat = () => {
     });
   };
 
+  const handleEditInterceptor = () => {
+    openWindow('/window/codeEditor', {
+      title: 'TTSCat edit',
+      width: 600,
+      content: 'console.log("hello world")',
+    });
+  };
+
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Display textConfig={textConfig} aiChatConfig={aiConfig} />
-      <Stack horizontalAlign="end">
+      <Stack
+        horizontal
+        horizontalAlign="end"
+        styles={{ root: { paddingTop: 36 } }}
+        tokens={{ childrenGap: 12 }}
+      >
+        <DefaultButton onClick={handleEditInterceptor}>
+          Edit interceptor
+        </DefaultButton>
         <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
       </Stack>
       {/* <SsmlDistributor value={config} onChange={handleConfigChange} /> */}

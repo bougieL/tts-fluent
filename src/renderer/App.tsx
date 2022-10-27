@@ -8,6 +8,7 @@ import {
 
 import { Pivot, PivotItem, Stack } from 'renderer/components';
 
+import CodeEditor from './Views/CodeEditor';
 import Downloads from './Views/Downloads';
 import Markdown from './Views/Markdown';
 import MicrosoftTTS from './Views/MicrosoftTTS';
@@ -92,6 +93,7 @@ export default () => {
             <Route path="/window">
               <Route path="markdown" element={<Markdown />} />
               <Route path="ttsCatEditor" element={<TTSCatEditor />} />
+              <Route path="codeEditor" element={<CodeEditor />} />
             </Route>
             <Route path="/*" element={<App />} />
           </Routes>
