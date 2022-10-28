@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { PrimaryButton, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
-import { createStorage, openWindow } from 'renderer/lib';
+import { createStorage } from 'renderer/lib';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
@@ -35,22 +35,22 @@ const TTSCat = () => {
     aiConfigStorage.set(config);
   });
 
-  const handleEdit = () => {
-    openWindow('/window/ttsCatEditor', {
-      title: 'TTSCat edit',
-      width: 600,
-      textConfig,
-      onTextConfigChange: handleTextConfigChange,
-      aiConfig,
-      onAiConfigChange: handleAiConfigChange,
-    });
-  };
+  // const handleEdit = () => {
+  //   openWindow('/window/ttsCatEditor', {
+  //     title: 'TTSCat edit',
+  //     width: 600,
+  //     textConfig,
+  //     onTextConfigChange: handleTextConfigChange,
+  //     aiConfig,
+  //     onAiConfigChange: handleAiConfigChange,
+  //   });
+  // };
 
   return (
     <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Display textConfig={textConfig} aiChatConfig={aiConfig} />
       <Stack horizontalAlign="end">
-        <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
+        {/* <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton> */}
       </Stack>
       {/* <SsmlDistributor value={config} onChange={handleConfigChange} /> */}
     </Stack>

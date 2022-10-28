@@ -3,7 +3,7 @@ import { shell } from 'electron';
 import { isProd } from 'lib/env';
 import { CompoundButton, Label, Stack } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
-import { openWindow } from 'renderer/lib';
+import { openSubWindow } from 'renderer/lib';
 
 const CheckUpdate = () => {
   const { hasUpdate, remoteVersion, changeLog } = useVersion();
@@ -35,7 +35,7 @@ const CheckUpdate = () => {
         <CompoundButton
           secondaryText="Click here to view change log"
           onClick={() => {
-            openWindow('/window/markdown', {
+            openSubWindow('/window/markdown', {
               title: 'Change log',
               content: changeLog,
             });

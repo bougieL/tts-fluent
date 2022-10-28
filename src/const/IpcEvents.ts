@@ -13,4 +13,7 @@ export enum IpcEvents {
   transferDevicesUpdate = 'transfer.devices.update',
   transferServerStarted = 'transfer.server.started',
   transferSSEData = 'transfer.sse.data',
+
+  subWindowOpen = 'subWindow.open',
+  subWindowInitialData = 'subWindow.initial.data',
 }
