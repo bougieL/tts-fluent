@@ -18,5 +18,8 @@ export function createStorage<T>(key: string, defaultValue: T) {
         localStorage.setItem(key, str);
       } catch (error) {}
     },
+    reset() {
+      this.set(defaultValue);
+    },
   };
 }

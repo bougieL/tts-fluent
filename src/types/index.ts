@@ -1,4 +1,5 @@
-export type OpenSubWindow = (
-  path: string,
-  options?: { title?: string; content?: string }
-) => void;
+export interface SubWindowBaseOptions {
+  title?: string;
+  content?: string;
+  singleton?: true;
+}
