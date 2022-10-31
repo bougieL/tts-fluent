@@ -4,30 +4,27 @@ import { Separator, Stack, Text, withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
+import { aiConfigStorage, textConfigStorage } from '../TTSCat';
 
 import { AiChatEditor } from './AiChatEditor';
 
 interface Props {
   initialData: {
     textConfig: SsmlConfig;
-    onTextConfigChange: (v: SsmlConfig) => void;
     aiConfig: string[];
-    onAiConfigChange: (v: string[]) => void;
   };
 }
 
-function TTSCatEditor({
-  initialData: { textConfig, onTextConfigChange, aiConfig, onAiConfigChange },
-}: Props) {
+function TTSCatEditor({ initialData: { textConfig, aiConfig } }: Props) {
   const [privTextConfig, setPrivTextConfig] = useState(textConfig);
   const [privAiConfig, setPrivAiConfig] = useState(aiConfig);
   const handleTextConfigChange = useFn((config: SsmlConfig) => {
     setPrivTextConfig(config);
-    onTextConfigChange(config);
+    textConfigStorage.set(config);
   });
   const handleAiConfigChange = useFn((config: string[]) => {
     setPrivAiConfig(config);
-    onAiConfigChange(config);
+    aiConfigStorage.set(config);
   });
 
   return (

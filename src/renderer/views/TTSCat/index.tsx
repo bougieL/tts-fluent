@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DefaultButton, PrimaryButton, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
-import { createStorage, openWindow } from 'renderer/lib';
+import { createStorage, openSubWindow } from 'renderer/lib';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
@@ -17,41 +17,53 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-const textConfigStorage = createStorage('tts_cat', defaultConfig);
+export const textConfigStorage = createStorage('tts_cat', defaultConfig);
 
 const defaultAiConfig = ['zh-CN-YunxiNeural', 'zh-CN-XiaoyouNeural'];
 
-const aiConfigStorage = createStorage('tts_cat_ai_chat', defaultAiConfig);
+export const aiConfigStorage = createStorage(
+  'tts_cat_ai_chat',
+  defaultAiConfig
+);
 
 const TTSCat = () => {
   const [textConfig, setTextConfig] = useState(textConfigStorage.get());
   const [aiConfig, setAiConfig] = useState(aiConfigStorage.get());
-  const handleTextConfigChange = useFn((config: SsmlConfig) => {
-    setTextConfig(config);
-    textConfigStorage.set(config);
+  const handleConfigChange = useFn(() => {
+    setTextConfig(textConfigStorage.get());
+    setAiConfig(aiConfigStorage.get());
   });
-  const handleAiConfigChange = useFn((config: string[]) => {
-    setAiConfig(config);
-    aiConfigStorage.set(config);
-  });
+  useEffect(() => {
+    window.addEventListener('storage', handleConfigChange);
+
+    return () => {
+      window.removeEventListener('storage', handleConfigChange);
+    };
+  }, [handleConfigChange]);
 
   const handleEdit = () => {
-    openWindow('/window/ttsCatEditor', {
+    openSubWindow('/window/ttsCatEditor', {
       title: 'TTSCat edit',
-      width: 600,
       textConfig,
-      onTextConfigChange: handleTextConfigChange,
       aiConfig,
-      onAiConfigChange: handleAiConfigChange,
     });
   };
 
   const handleEditInterceptor = () => {
-    openWindow('/window/codeEditor', {
+    openSubWindow('/window/codeEditor', {
       title: 'TTSCat edit',
       width: 600,
       content: 'console.log("hello world")',
     });
+  };
+
+  const handleReset = () => {
+    if (confirm('Reset to default value ?')) {
+      textConfigStorage.reset();
+      aiConfigStorage.reset();
+      setTextConfig(defaultConfig);
+      setAiConfig(defaultAiConfig);
+    }
   };
 
   return (
@@ -66,9 +78,9 @@ const TTSCat = () => {
         <DefaultButton onClick={handleEditInterceptor}>
           Edit interceptor
         </DefaultButton>
+        <DefaultButton onClick={handleReset}>Reset</DefaultButton>
         <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
       </Stack>
-      {/* <SsmlDistributor value={config} onChange={handleConfigChange} /> */}
     </Stack>
   );
 };

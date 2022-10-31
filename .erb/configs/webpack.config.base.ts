@@ -53,6 +53,7 @@ const configuration: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.env.HOST_IP': JSON.stringify(address.ip()),
     }),
+    new webpack.ProgressPlugin(),
   ],
 };
 

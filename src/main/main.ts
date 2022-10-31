@@ -10,21 +10,12 @@
  */
 import { app, BrowserWindow } from 'electron';
 
-// import log from 'electron-log';
-// import { autoUpdater } from 'electron-updater';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
 import { getAssetPath, resolveHtmlPath } from './util';
+import { createMainWindow } from './windows';
 
 import './ipcEvents';
-
-// class AppUpdater {
-//   constructor() {
-//     log.transports.file.level = 'info';
-//     autoUpdater.logger = log;
-//     autoUpdater.checkForUpdatesAndNotify();
-//   }
-// }
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -58,31 +49,7 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  mainWindow = new BrowserWindow({
-    show: false,
-    width: 800,
-    height: 600,
-    minWidth: 800,
-    minHeight: 600,
-    icon: getAssetPath('icon.png'),
-    // transparent: true,
-    titleBarOverlay: {
-      color: '#ffffff',
-      height: 36,
-    },
-    titleBarStyle: 'hidden',
-    frame: false,
-    webPreferences: {
-      // preload: app.isPackaged
-      //   ? path.join(__dirname, 'preload.js')
-      //   : path.join(__dirname, '../../.erb/dll/preload.js'),
-      nodeIntegration: true,
-      contextIsolation: false,
-      webSecurity: false,
-    },
-  });
-
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow = createMainWindow();
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -101,30 +68,6 @@ const createWindow = async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
-
-  mainWindow.webContents.setWindowOpenHandler((data) => {
-    console.log(data);
-    return {
-      action: 'allow',
-      overrideBrowserWindowOptions: {
-        titleBarOverlay: {
-          color: '#ffffff',
-          height: 36,
-        },
-        titleBarStyle: 'hidden',
-        frame: false,
-        webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
-          webSecurity: false,
-        },
-      },
-    };
-  });
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  // new AppUpdater();
 };
 
 /**

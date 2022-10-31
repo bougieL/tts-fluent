@@ -1,2 +1,2 @@
-export { openWindow } from './openWindow';
+export * from './openSubWindow';
 export { createStorage } from './storage';
