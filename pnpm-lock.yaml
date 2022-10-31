@@ -2,6 +2,10 @@ lockfileVersion: 5.3
 
 specifiers:
   '@bougiel/tts-node': ^1.5.0
+  '@codemirror/commands': ^6.1.2
+  '@codemirror/lang-javascript': ^6.1.1
+  '@codemirror/state': ^6.1.2
+  '@codemirror/view': ^6.4.0
   '@fluentui/font-icons-mdl2': ^8.4.8
   '@fluentui/react': ^8.90.0
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.7
@@ -28,7 +32,6 @@ specifiers:
   axios: ^0.27.2
   browserslist-config-erb: ^0.0.3
   chalk: ^4.1.2
-  codemirror: ^6.0.1
   cookie-parser: ^1.4.6
   copy-to-clipboard: ^3.3.2
   cross-env: ^7.0.3
@@ -75,7 +78,6 @@ specifiers:
   prettier: ^2.7.1
   qrcode: ^1.5.1
   react: ^18.2.0
-  react-codemirror2: ^7.2.1
   react-dom: ^18.2.0
   react-dropzone: ^14.2.2
   react-refresh: ^0.13.0
@@ -105,11 +107,14 @@ specifiers:
 
 dependencies:
   '@bougiel/tts-node': 1.5.0
+  '@codemirror/commands': 6.1.2
+  '@codemirror/lang-javascript': 6.1.1
+  '@codemirror/state': 6.1.2
+  '@codemirror/view': 6.4.0
   '@fluentui/font-icons-mdl2': 8.4.8_a1bdd43be9504ec770a838d8189f6868
   '@fluentui/react': 8.90.0_ff80cd9dfb626a6c6c4251864122e347
   address: 1.2.0
   axios: 0.27.2
-  codemirror: 6.0.1
   cookie-parser: 1.4.6
   copy-to-clipboard: 3.3.2
   electron-debug: 3.2.0
@@ -123,7 +128,6 @@ dependencies:
   multer: 1.4.5-lts.1
   qrcode: 1.5.1
   react: 18.2.0
-  react-codemirror2: 7.2.1_codemirror@6.0.1+react@18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-dropzone: 14.2.2_react@18.2.0
   react-router-dom: 6.3.0_react-dom@18.2.0+react@18.2.0
@@ -592,6 +596,18 @@ packages:
       '@lezer/common': 1.0.1
     dev: false
 
+  /@codemirror/lang-javascript/6.1.1:
+    resolution: {integrity: sha512-F4+kiuC5d5dUSJmff96tJQwpEXs/tX/4bapMRnZWW6bHKK1Fx6MunTzopkCUWRa9bF87GPmb9m7Qtg7Yv8f3uQ==}
+    dependencies:
+      '@codemirror/autocomplete': 6.3.0
+      '@codemirror/language': 6.3.0
+      '@codemirror/lint': 6.0.0
+      '@codemirror/state': 6.1.2
+      '@codemirror/view': 6.4.0
+      '@lezer/common': 1.0.1
+      '@lezer/javascript': 1.0.2
+    dev: false
+
   /@codemirror/language/6.3.0:
     resolution: {integrity: sha512-6jOE5DEt6sKD46SXhn3xPbBehn+l48ACcA6Uxs2k+E2YNH9XGF5WdGMTYr2DlggfK4h0QZBK6zEb5S7lkTriWA==}
     dependencies:
@@ -605,14 +621,6 @@ packages:
 
   /@codemirror/lint/6.0.0:
     resolution: {integrity: sha512-nUUXcJW1Xp54kNs+a1ToPLK8MadO0rMTnJB8Zk4Z8gBdrN0kqV7uvUraU/T2yqg+grDNR38Vmy/MrhQN/RgwiA==}
-    dependencies:
-      '@codemirror/state': 6.1.2
-      '@codemirror/view': 6.4.0
-      crelt: 1.0.5
-    dev: false
-
-  /@codemirror/search/6.2.2:
-    resolution: {integrity: sha512-2pWY599zXk+lSoJ2iv9EuTO4gB7lhgBPLPwFb/zTbimFH4NmZSaKzJSV51okjABZ7/Rj0DYy5klWbIgaJh2LoQ==}
     dependencies:
       '@codemirror/state': 6.1.2
       '@codemirror/view': 6.4.0
@@ -1201,6 +1209,13 @@ packages:
     resolution: {integrity: sha512-CAun1WR1glxG9ZdOokTZwXbcwB7PXkIEyZRUMFBVwSrhTcogWq634/ByNImrkUnQhjju6xsIaOBIxvcRJtplXQ==}
     dependencies:
       '@lezer/common': 1.0.1
+    dev: false
+
+  /@lezer/javascript/1.0.2:
+    resolution: {integrity: sha512-IjOVeIRhM8IuafWNnk+UzRz7p4/JSOKBNINLYLsdSGuJS9Ju7vFdc82AlTt0jgtV5D8eBZf4g0vK4d3ttBNz7A==}
+    dependencies:
+      '@lezer/highlight': 1.1.2
+      '@lezer/lr': 1.2.3
     dev: false
 
   /@lezer/lr/1.2.3:
@@ -3266,18 +3281,6 @@ packages:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
     dev: true
-
-  /codemirror/6.0.1:
-    resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
-    dependencies:
-      '@codemirror/autocomplete': 6.3.0
-      '@codemirror/commands': 6.1.2
-      '@codemirror/language': 6.3.0
-      '@codemirror/lint': 6.0.0
-      '@codemirror/search': 6.2.2
-      '@codemirror/state': 6.1.2
-      '@codemirror/view': 6.4.0
-    dev: false
 
   /collect-v8-coverage/1.0.1:
     resolution: {integrity: sha512-iBPtljfCNcTKNAto0KEtDfZ3qzjJvqE3aTGZsbhjSBlorqpXJlaWWtPO35D+ZImoC3KWejX64o+yPGxhWSTzfg==}
@@ -8711,16 +8714,6 @@ packages:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
-
-  /react-codemirror2/7.2.1_codemirror@6.0.1+react@18.2.0:
-    resolution: {integrity: sha512-t7YFmz1AXdlImgHXA9Ja0T6AWuopilub24jRaQdPVbzUJVNKIYuy3uCFZYa7CE5S3UW6SrSa5nAqVQvtzRF9gw==}
-    peerDependencies:
-      codemirror: 5.x
-      react: '>=15.5 <=16.x'
-    dependencies:
-      codemirror: 6.0.1
-      react: 18.2.0
-    dev: false
 
   /react-dom/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
