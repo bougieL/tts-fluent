@@ -39,6 +39,7 @@ npm run package:all
 - [Electron React Boilerplate](https://electron-react-boilerplate.js.org/docs/installation)
 - [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web)
 - [React Cmdk](https://github.com/albingroen/react-cmdk)
+- [Mantine](https://mantine.dev/core/app-shell/)
 
 ## License
 

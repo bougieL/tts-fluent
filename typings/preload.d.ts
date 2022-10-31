@@ -4,7 +4,7 @@
 declare global {
   interface Window {
     global: Window;
-    initialData: any;
+    initialData: unknown;
   }
 }
 

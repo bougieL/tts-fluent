@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import { Pivot, PivotItem, Stack } from 'renderer/components';
+import { FStack, Header, Pivot, PivotItem } from 'renderer/components';
 
 import CodeEditor from './Views/CodeEditor';
 import Downloads from './Views/Downloads';
@@ -44,8 +44,8 @@ const App = () => {
     navigate(pathStorage.get());
   }, []);
   return (
-    <Stack tokens={{ childrenGap: 12 }} className="main">
-      <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+    <FStack tokens={{ childrenGap: 12 }} className="main">
+      <FStack horizontal horizontalAlign="space-between" verticalAlign="center">
         <Pivot
           selectedKey={location.pathname}
           onLinkClick={handlePivotClick}
@@ -71,7 +71,7 @@ const App = () => {
           />
         </Pivot>
         <AudioIndicator />
-      </Stack>
+      </FStack>
       <Routes>
         <Route path="" element={<MicrosoftTTS />} />
         <Route path="ttsCat" element={<TTSCat />} />
@@ -79,7 +79,7 @@ const App = () => {
         <Route path="downloads" element={<Downloads />} />
         <Route path="settings" element={<Settings />} />
       </Routes>
-    </Stack>
+    </FStack>
   );
 };
 
@@ -88,7 +88,10 @@ export default () => {
     <Router>
       <AudioProvider>
         <Version>
-          <Stack styles={{ root: { height: 36 } }} className="header" />
+          {/* <Space className="header" /> */}
+          <Header height={36} className="header">
+            TTS Fluent
+          </Header>
           <Routes>
             <Route path="/window">
               <Route path="markdown" element={<Markdown />} />

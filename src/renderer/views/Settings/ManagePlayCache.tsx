@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 
 import { PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
-import { DefaultButton, Label, Stack } from 'renderer/components';
+import { Button, Grid, Label, Space } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {
@@ -39,19 +39,11 @@ const ManagePlayCache = () => {
   return (
     <>
       <Label>Manage play cache</Label>
-      <Stack
-        horizontal
-        horizontalAlign="start"
-        tokens={{ childrenGap: 12 }}
-        styles={{ root: { marginTop: '0 !important' } }}
-      >
-        <DefaultButton onClick={handleClearCache}>
-          Clear cache ({size})
-        </DefaultButton>
-        <DefaultButton onClick={handleOpenCache}>
-          Open cache directory
-        </DefaultButton>
-      </Stack>
+      <Grid>
+        <Button onClick={handleClearCache}>Clear cache ({size})</Button>
+        <Space w="xs" />
+        <Button onClick={handleOpenCache}>Open cache directory</Button>
+      </Grid>
     </>
   );
 };

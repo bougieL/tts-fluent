@@ -3,11 +3,11 @@ import { clipboard, shell } from 'electron';
 import qrcode from 'qrcode';
 
 import {
+  FStack,
   Label,
   Link,
   MessageBar,
   MessageBarType,
-  Stack,
 } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
@@ -41,7 +41,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
     return null;
   }
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
+    <FStack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
       <MessageBar messageBarType={MessageBarType.success}>
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
@@ -66,9 +66,9 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
           </Link>
         )}
       </MessageBar>
-      <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <Stack tokens={{ childrenGap: 12 }}>
-          <Stack>
+      <FStack horizontal tokens={{ childrenGap: 12 }}>
+        <FStack tokens={{ childrenGap: 12 }}>
+          <FStack>
             <Label>Qrcode</Label>
             <canvas
               ref={canvasRef}
@@ -79,11 +79,11 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
                   () => {};
               }}
             />
-          </Stack>
+          </FStack>
           {bottomSlot}
-        </Stack>
+        </FStack>
         {rightSlot}
-      </Stack>
-    </Stack>
+      </FStack>
+    </FStack>
   );
 }

@@ -2,39 +2,39 @@ import { memo, useEffect, useMemo } from 'react';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
 
-import { Dropdown, Slider, Stack } from 'renderer/components';
+import { Grid, InputWrapper, NativeSelect, Slider } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 const locales = list
   .map((item) => {
     return {
-      key: item.LocaleName,
-      text: item.LocaleName,
+      value: item.LocaleName,
+      label: item.LocaleName,
     };
   })
-  .reduce<Array<{ key: string; text: string }>>((acc, cur) => {
-    return acc.find((item) => item.key === cur.key) ? acc : acc.concat(cur);
+  .reduce<Array<{ value: string; label: string }>>((acc, cur) => {
+    return acc.find((item) => item.value === cur.value) ? acc : acc.concat(cur);
   }, [])
-  .sort((a, b) => (a.text > b.text ? 1 : -1));
+  .sort((a, b) => (a.label > b.label ? 1 : -1));
 
 function getVoicesByLocale(locale: string) {
   return list
     .filter((item) => item.LocaleName === locale)
     .map((item) => {
       return {
-        key: item.ShortName,
-        text: `${item.LocalName} - ${item.DisplayName}`,
+        value: item.ShortName,
+        label: `${item.LocalName} - ${item.DisplayName}`,
       };
     });
 }
 
 function getStyles(name: string) {
-  return [{ key: 'genreal', text: 'General' }].concat(
+  return [{ value: 'genreal', label: 'General' }].concat(
     (list.find((item) => item.ShortName === name)?.StyleList || []).map(
       (item) => {
         return {
-          key: item,
-          text: item.replace(/^(\w)/, ($1) => $1.toUpperCase()),
+          value: item,
+          label: item.replace(/^(\w)/, ($1) => $1.toUpperCase()),
         };
       }
     )
@@ -42,8 +42,8 @@ function getStyles(name: string) {
 }
 
 const outputFormatsList = outputFormats.map((item) => ({
-  key: item,
-  text: item,
+  value: item,
+  label: item,
 }));
 
 export interface SsmlConfig {
@@ -76,111 +76,117 @@ function C({ value, onChange }: Props) {
   });
 
   useEffect(() => {
-    if (voices.length > 0 && !voices.find((item) => item.key === voice)) {
+    if (voices.length > 0 && !voices.find((item) => item.value === voice)) {
       handleChange({
         ...value,
-        voice: voices[0].key,
+        voice: voices[0].value,
       });
     }
   }, [handleChange, value, voice, voices]);
 
   useEffect(() => {
-    if (styles.length > 0 && !styles.find((item) => item.key === style)) {
+    if (styles.length > 0 && !styles.find((item) => item.value === style)) {
       handleChange({
         ...value,
-        style: styles[0].key,
+        style: styles[0].value,
       });
     }
   }, [handleChange, style, styles, value]);
 
   return (
-    <Stack tokens={{ childrenGap: 12 }}>
-      <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
-        <Dropdown
-          options={locales}
+    <Grid>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={locales}
           label="Language"
           placeholder="Select a language"
-          styles={{ root: { width: '33%' }, callout: { height: 400 } }}
-          selectedKey={locale}
-          onChange={(_, item) => {
+          value={locale}
+          onChange={(event) => {
             handleChange({
               ...value,
-              locale: item?.key as string,
+              locale: event.target.value,
             });
           }}
         />
-        <Dropdown
-          options={voices}
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={voices}
           label="Voice"
           placeholder="Select a voice"
-          styles={{ root: { width: '33%' }, callout: { height: 400 } }}
-          selectedKey={voice}
+          value={voice}
           disabled={voices.length === 0}
-          onChange={(_, item) => {
+          onChange={(event) => {
             handleChange({
               ...value,
-              voice: item?.key as string,
+              voice: event.target.value,
             });
           }}
         />
-        <Dropdown
-          options={styles}
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={styles}
           label="Style"
           placeholder="Select a style"
-          styles={{ root: { width: '33%' }, callout: { height: 400 } }}
           disabled={styles.length === 0}
-          selectedKey={style}
-          onChange={(_, item) => {
-            handleChange({ ...value, style: item?.key as string });
+          value={style}
+          onChange={(event) => {
+            handleChange({ ...value, style: event.target.value });
           }}
         />
-      </Stack>
-      <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
-        <Slider
-          label="Speed"
-          max={3}
-          value={rate2n(rate)}
-          step={0.1}
-          styles={{ root: { width: '33%' } }}
-          onChange={(rate) => {
-            handleChange({
-              ...value,
-              rate: `${(rate - 1) * 100}%`,
-            });
-          }}
-        />
-        <Slider
-          label="Pitch"
-          max={2}
-          value={pitch2n(pitch)}
-          step={0.1}
-          styles={{ root: { width: '33%' } }}
-          onChange={(pitch) => {
-            handleChange({
-              ...value,
-              pitch: `${(pitch - 1) * 50}%`,
-            });
-          }}
-        />
-        <Dropdown
-          options={outputFormatsList}
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <InputWrapper label="Speed">
+          <Slider
+            label="Speed"
+            max={3}
+            value={rate2n(rate)}
+            step={0.1}
+            onChange={(rate) => {
+              handleChange({
+                ...value,
+                rate: `${(rate - 1) * 100}%`,
+              });
+            }}
+          />
+        </InputWrapper>
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <InputWrapper label="Pitch">
+          <Slider
+            label="Pitch"
+            max={2}
+            value={pitch2n(pitch)}
+            step={0.1}
+            onChange={(pitch) => {
+              handleChange({
+                ...value,
+                pitch: `${(pitch - 1) * 50}%`,
+              });
+            }}
+          />
+        </InputWrapper>
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={outputFormatsList}
           label="Output format"
           placeholder="Select output format"
-          styles={{ root: { width: '33%' }, callout: { height: 400 } }}
-          // disabled={styles.length === 0}
-          selectedKey={outputFormat}
-          onChange={(_, item) => {
+          value={outputFormat}
+          onChange={(event) => {
             handleChange({
               ...value,
-              outputFormat: item?.key as string,
+              outputFormat: event.target.value,
             });
           }}
         />
-      </Stack>
-    </Stack>
+      </Grid.Col>
+    </Grid>
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 function isEqual<T extends {}>(a: T, b: T) {
   return Object.keys(a).every((key) => {
     return a[key as keyof T] === b[key as keyof T];

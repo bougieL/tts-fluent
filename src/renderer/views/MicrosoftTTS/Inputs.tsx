@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ssmlToText, textToSsml } from '@bougiel/tts-node/lib/ssml';
 
-import { Pivot, PivotItem, Stack, TextField } from 'renderer/components';
+import { FStack, Pivot, PivotItem, TextField } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { Dropzone } from './Dropzone';
@@ -72,7 +72,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
     };
   };
   return (
-    <Stack tokens={{ childrenGap: 18 }}>
+    <FStack tokens={{ childrenGap: 18 }}>
       <Pivot
         styles={{
           text: { fontSize: 14 },
@@ -113,6 +113,6 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
       ) : (
         <Dropzone value={file} onChange={handleFileChange} />
       )}
-    </Stack>
+    </FStack>
   );
 }

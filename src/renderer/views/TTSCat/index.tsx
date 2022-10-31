@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { DefaultButton, PrimaryButton, Stack } from 'renderer/components';
+import {
+  Button,
+  DefaultButton,
+  FStack,
+  PrimaryButton,
+} from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 import { createStorage, openSubWindow } from 'renderer/lib';
 
@@ -67,21 +72,19 @@ const TTSCat = () => {
   };
 
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
+    <FStack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
       <Display textConfig={textConfig} aiChatConfig={aiConfig} />
-      <Stack
+      <FStack
         horizontal
         horizontalAlign="end"
         styles={{ root: { paddingTop: 36 } }}
         tokens={{ childrenGap: 12 }}
       >
-        <DefaultButton onClick={handleEditInterceptor}>
-          Edit interceptor
-        </DefaultButton>
-        <DefaultButton onClick={handleReset}>Reset</DefaultButton>
-        <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
-      </Stack>
-    </Stack>
+        <Button onClick={handleEditInterceptor}>Edit interceptor</Button>
+        <Button onClick={handleReset}>Reset</Button>
+        <Button onClick={handleEdit}>Edit</Button>
+      </FStack>
+    </FStack>
   );
 };
 

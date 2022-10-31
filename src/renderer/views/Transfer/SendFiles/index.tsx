@@ -5,10 +5,11 @@ import fs from 'fs-extra';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import {
+  Button,
   DefaultButton,
+  FStack,
   Label,
   PrimaryButton,
-  Stack,
 } from 'renderer/components';
 
 import { Dropzone, File } from './Dropzone';
@@ -38,29 +39,29 @@ export function SendFiles() {
     });
   };
   return (
-    <Stack horizontal>
-      <Stack horizontalAlign="end" tokens={{ childrenGap: 12 }}>
-        <Stack>
+    <FStack horizontal>
+      <FStack horizontalAlign="end" tokens={{ childrenGap: 12 }}>
+        <FStack>
           <Label>Transfer files</Label>
           <Dropzone value={files} onChange={setFiles} />
-        </Stack>
-        <Stack horizontal tokens={{ childrenGap: 12 }}>
-          <DefaultButton
-            iconProps={{ iconName: 'delete' }}
+        </FStack>
+        <FStack horizontal tokens={{ childrenGap: 12 }}>
+          <Button
+            // iconProps={{ iconName: 'delete' }}
             disabled={files.length === 0}
             onClick={() => setFiles([])}
           >
             Clear Files
-          </DefaultButton>
-          <PrimaryButton
-            iconProps={{ iconName: 'send' }}
+          </Button>
+          <Button
+            // iconProps={{ iconName: 'send' }}
             disabled={files.length === 0}
             onClick={sendFiles}
           >
             Send Files
-          </PrimaryButton>
-        </Stack>
-      </Stack>
-    </Stack>
+          </Button>
+        </FStack>
+      </FStack>
+    </FStack>
   );
 }

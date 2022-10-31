@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { shell } from 'electron';
 
-import { Link, Separator, Stack, Text } from 'renderer/components';
+import { FStack, Link, Separator, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
@@ -76,12 +76,12 @@ export function Display({ textConfig, aiChatConfig }: Props) {
       return null;
     }
     return (
-      <Stack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
-        <Stack>
+      <FStack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
+        <FStack>
           <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
             Danmuji
           </Text>
-          <Stack tokens={{ childrenGap: 6 }}>
+          <FStack tokens={{ childrenGap: 6 }}>
             <Link
               href="##"
               style={{ fontSize: 12 }}
@@ -103,14 +103,14 @@ export function Display({ textConfig, aiChatConfig }: Props) {
             >
               {danmuUrls.url3}
             </Link>
-          </Stack>
-        </Stack>
+          </FStack>
+        </FStack>
         <Separator />
-        <Stack>
+        <FStack>
           <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
             Danmuji with AI chat
           </Text>
-          <Stack tokens={{ childrenGap: 6 }}>
+          <FStack tokens={{ childrenGap: 6 }}>
             <Link
               href="##"
               style={{ fontSize: 12 }}
@@ -132,14 +132,14 @@ export function Display({ textConfig, aiChatConfig }: Props) {
             >
               {aiChatUrls.url3}
             </Link>
-          </Stack>
-        </Stack>
-      </Stack>
+          </FStack>
+        </FStack>
+      </FStack>
     );
   };
 
   return (
-    <Stack
+    <FStack
       tokens={{ childrenGap: 18 }}
       styles={{
         root: {
@@ -149,6 +149,6 @@ export function Display({ textConfig, aiChatConfig }: Props) {
       }}
     >
       {renderContent()}
-    </Stack>
+    </FStack>
   );
 }

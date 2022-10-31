@@ -4,10 +4,10 @@ import fs from 'fs-extra';
 import { TransferCache } from 'caches/transfer';
 import {
   ActivityItem,
+  FStack,
   Icon,
   Label,
   Separator,
-  Stack,
   Text,
 } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
@@ -24,9 +24,9 @@ export function ConnectedDevices() {
     fs.watch(p, updater);
   }, []);
   return (
-    <Stack>
+    <FStack>
       <Label>Connected devices</Label>
-      <Stack
+      <FStack
         styles={{
           // @ts-ignore
           root: {
@@ -56,7 +56,7 @@ export function ConnectedDevices() {
             </Fragment>
           );
         })}
-      </Stack>
-    </Stack>
+      </FStack>
+    </FStack>
   );
 }

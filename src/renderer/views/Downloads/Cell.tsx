@@ -6,10 +6,10 @@ import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
+  FStack,
   IconButton,
   ProgressIndicator,
   Separator,
-  Stack,
   Text,
   TooltipHost,
 } from 'renderer/components';
@@ -117,7 +117,7 @@ export function Cell({ item }: CellProps) {
     return () => {};
   }, [item.path, item.status]);
   return (
-    <Stack>
+    <FStack>
       <Separator />
       <Text variant="xLarge">{item.text.slice(0, 20)}</Text>
       <Text>
@@ -127,7 +127,7 @@ export function Cell({ item }: CellProps) {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
             return (
-              <Stack
+              <FStack
                 horizontal
                 horizontalAlign="space-between"
                 verticalAlign="center"
@@ -139,11 +139,11 @@ export function Cell({ item }: CellProps) {
                   styles={{ root: { flex: 1 } }}
                 />
                 {renderDelete()}
-              </Stack>
+              </FStack>
             );
           case DownloadsCache.Status.error:
             return (
-              <Stack
+              <FStack
                 horizontal
                 verticalAlign="center"
                 horizontalAlign="end"
@@ -163,11 +163,11 @@ export function Cell({ item }: CellProps) {
                   />
                 </TooltipHost>
                 {renderActions()}
-              </Stack>
+              </FStack>
             );
           case DownloadsCache.Status.finished:
             return (
-              <Stack
+              <FStack
                 horizontal
                 horizontalAlign="end"
                 verticalAlign="center"
@@ -178,7 +178,7 @@ export function Cell({ item }: CellProps) {
                   {new Date(item.date).toLocaleString()}
                 </Text>
                 {renderActions()}
-              </Stack>
+              </FStack>
             );
           default:
             return null;
@@ -191,6 +191,6 @@ export function Cell({ item }: CellProps) {
         renderDelete,
         size,
       ])}
-    </Stack>
+    </FStack>
   );
 }

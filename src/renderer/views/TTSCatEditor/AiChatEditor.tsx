@@ -1,6 +1,6 @@
 import list from '@bougiel/tts-node/lib/ssml/list';
 
-import { Dropdown, Stack } from 'renderer/components';
+import { Dropdown, FStack } from 'renderer/components';
 
 const voices = list
   .filter((item) => item.Locale === 'zh-CN')
@@ -18,7 +18,7 @@ interface Props {
 
 export function AiChatEditor({ value, onChange }: Props) {
   return (
-    <Stack horizontal tokens={{ childrenGap: 24 }}>
+    <FStack horizontal tokens={{ childrenGap: 24 }}>
       <Dropdown
         options={voices}
         label="Voice"
@@ -41,6 +41,6 @@ export function AiChatEditor({ value, onChange }: Props) {
           onChange([value[0], item?.key as string]);
         }}
       />
-    </Stack>
+    </FStack>
   );
 }

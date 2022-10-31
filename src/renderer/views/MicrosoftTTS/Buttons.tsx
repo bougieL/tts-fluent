@@ -1,9 +1,4 @@
-import {
-  DefaultButton,
-  PrimaryButton,
-  Spinner,
-  Stack,
-} from 'renderer/components';
+import { Button, Grid, Space, Spinner } from 'renderer/components';
 
 interface Props {
   onPlayClick: () => void;
@@ -19,22 +14,15 @@ export function Buttons({
   onDownloadClick,
 }: Props) {
   return (
-    <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
+    <Grid justify="flex-end" style={{ width: '100%' }}>
       {loading && <Spinner />}
-      <PrimaryButton
-        text="Play"
-        iconProps={{ iconName: 'TriangleSolidRight12' }}
-        onClick={onPlayClick}
-        allowDisabledFocus
-        disabled={disabled}
-      />
-      <DefaultButton
-        text="Download"
-        iconProps={{ iconName: 'save' }}
-        onClick={onDownloadClick}
-        allowDisabledFocus
-        disabled={disabled}
-      />
-    </Stack>
+      <Button onClick={onPlayClick} disabled={disabled} size="xs">
+        Play
+      </Button>
+      <Space w="sm" />
+      <Button onClick={onDownloadClick} disabled={disabled} size="xs">
+        Download
+      </Button>
+    </Grid>
   );
 }
