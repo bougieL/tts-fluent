@@ -5,14 +5,22 @@ const chalk = require('chalk');
 const arg = process.argv[2];
 
 function exec(command) {
-  return nativeExecSync(command, { stdio: 'inherit' });
+  return nativeExecSync(command, {
+    stdio: 'inherit',
+    env: {
+      ...process.env,
+      NODE_ENV: 'production',
+      CSC_IDENTITY_AUTO_DISCOVERY: false,
+      TS_NODE_TRANSPILE_ONLY: true,
+    },
+  });
 }
 
 async function main(arg) {
   function buildTransfer() {
     console.log(chalk.blueBright('Start build transfer'));
     exec(
-      'pnpm cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.transfer.prod.ts'
+      'pnpm webpack --config ./.erb/configs/webpack.config.transfer.prod.ts'
     );
     exec('rm -r assets/transfer || true');
     exec('cp -r release/app/dist/transfer assets');
