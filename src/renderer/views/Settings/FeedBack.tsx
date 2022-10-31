@@ -8,6 +8,7 @@ const Feedback = () => {
       <Label>Feedback</Label>
       <Grid>
         <Button
+          size="xs"
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
@@ -18,6 +19,7 @@ const Feedback = () => {
         </Button>
         <Space w="sm" />
         <Button
+          size="xs"
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/issues/new?assignees=&labels=enhancement&template=3-Feature_request.md'

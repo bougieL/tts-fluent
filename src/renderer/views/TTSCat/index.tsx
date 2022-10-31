@@ -80,9 +80,15 @@ const TTSCat = () => {
         styles={{ root: { paddingTop: 36 } }}
         tokens={{ childrenGap: 12 }}
       >
-        <Button onClick={handleEditInterceptor}>Edit interceptor</Button>
-        <Button onClick={handleReset}>Reset</Button>
-        <Button onClick={handleEdit}>Edit</Button>
+        <Button size="xs" onClick={handleEditInterceptor}>
+          Edit interceptor
+        </Button>
+        <Button size="xs" onClick={handleReset}>
+          Reset
+        </Button>
+        <Button size="xs" onClick={handleEdit}>
+          Edit
+        </Button>
       </FStack>
     </FStack>
   );

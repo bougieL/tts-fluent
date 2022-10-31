@@ -47,6 +47,7 @@ export function SendFiles() {
         </FStack>
         <FStack horizontal tokens={{ childrenGap: 12 }}>
           <Button
+            size="xs"
             // iconProps={{ iconName: 'delete' }}
             disabled={files.length === 0}
             onClick={() => setFiles([])}
@@ -54,6 +55,7 @@ export function SendFiles() {
             Clear Files
           </Button>
           <Button
+            size="xs"
             // iconProps={{ iconName: 'send' }}
             disabled={files.length === 0}
             onClick={sendFiles}

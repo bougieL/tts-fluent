@@ -24,12 +24,12 @@ export { Toggle } from '@fluentui/react/lib/Toggle';
 export { TooltipHost } from '@fluentui/react/lib/Tooltip';
 export {
   Button,
-  Col,
   Grid,
   Header,
   Menu,
   NativeSelect,
   Slider,
   Space,
+  Stack,
 } from '@mantine/core';
 export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
