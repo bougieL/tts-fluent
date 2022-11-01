@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/exports */
 export { ActivityItem } from '@fluentui/react/lib/ActivityItem';
 export {
   CompoundButton,
@@ -18,18 +19,23 @@ export { Separator } from '@fluentui/react/lib/Separator';
 export { Slider as FSlider } from '@fluentui/react/lib/Slider';
 export { Spinner } from '@fluentui/react/lib/Spinner';
 export { Stack as FStack } from '@fluentui/react/lib/Stack';
-export { Text } from '@fluentui/react/lib/Text';
+export { Text as FText } from '@fluentui/react/lib/Text';
 export { TextField } from '@fluentui/react/lib/TextField';
 export { Toggle } from '@fluentui/react/lib/Toggle';
 export { TooltipHost } from '@fluentui/react/lib/Tooltip';
+
 export {
   Button,
   Grid,
+  Group,
   Header,
   Menu,
   NativeSelect,
   Slider,
   Space,
   Stack,
+  Text,
 } from '@mantine/core';
 export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
+
+export { IconMenu2 } from '@tabler/icons';

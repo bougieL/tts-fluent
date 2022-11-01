@@ -1,3 +1,5 @@
+import { FC } from 'react';
+
 import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
 import Feedback from './FeedBack';
@@ -5,7 +7,7 @@ import ManagePlayCache from './ManagePlayCache';
 import TransferDirectory from './TransferDirectory';
 import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 
-const Settings = () => {
+const Settings: FC = () => {
   return (
     <>
       <TTSDownloadsDirectory />
@@ -17,5 +19,7 @@ const Settings = () => {
     </>
   );
 };
+
+Settings.displayName = 'Settings';
 
 export default Settings;

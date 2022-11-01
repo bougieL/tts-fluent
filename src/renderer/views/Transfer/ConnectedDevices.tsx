@@ -5,10 +5,10 @@ import { TransferCache } from 'caches/transfer';
 import {
   ActivityItem,
   FStack,
+  FText,
   Icon,
   Label,
   Separator,
-  Text,
 } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
@@ -44,7 +44,7 @@ export function ConnectedDevices() {
               <ActivityItem
                 activityIcon={<Icon iconName="Devices3" />}
                 activityDescription={item.deviceId}
-                comments={<Text>{item.deviceName}</Text>}
+                comments={<FText>{item.deviceName}</FText>}
                 timeStamp={item.deviceHost}
                 styles={{
                   root: {

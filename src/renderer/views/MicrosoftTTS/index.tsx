@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import * as uuid from 'uuid';
 
@@ -22,7 +22,7 @@ const defaultConfig: SsmlConfig = {
 
 const configStorage = createStorage('microsoft_tts', defaultConfig);
 
-const MicrosoftTTS = () => {
+const MicrosoftTTS: FC = () => {
   const [empty, setEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
@@ -116,5 +116,7 @@ const MicrosoftTTS = () => {
     </FStack>
   );
 };
+
+MicrosoftTTS.displayName = 'Microsoft TTS';
 
 export default MicrosoftTTS;

@@ -2,7 +2,7 @@ import { useDropzone } from 'react-dropzone';
 import { ipcRenderer } from 'electron';
 
 import { IpcEvents } from 'const';
-import { Text } from 'renderer/components';
+import { FText } from 'renderer/components';
 
 export interface File {
   name: string;
@@ -57,10 +57,10 @@ export function Dropzone({ value = [], onChange }: Props) {
     >
       <input {...getInputProps()} multiple />
       {isDragActive ? (
-        <Text>Drop files here ...</Text>
+        <FText>Drop files here ...</FText>
       ) : (
         <>
-          <Text
+          <FText
             style={{
               display: 'block',
               width: '100%',
@@ -70,7 +70,7 @@ export function Dropzone({ value = [], onChange }: Props) {
             Drag and drop files here, or click to select files
             <br />
             {value.length > 0 && 'Current selected files:'}
-          </Text>
+          </FText>
           {(() => {
             if (value.length === 0) {
               return null;
@@ -86,7 +86,7 @@ export function Dropzone({ value = [], onChange }: Props) {
                 {value.map((item) => {
                   return (
                     <li key={item.path}>
-                      <Text>{item.name}</Text>
+                      <FText>{item.name}</FText>
                     </li>
                   );
                 })}

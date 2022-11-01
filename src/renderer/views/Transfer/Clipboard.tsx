@@ -33,6 +33,7 @@ export function Clipboard() {
         <FStack horizontal tokens={{ childrenGap: 12 }} horizontalAlign="end">
           <Button
             // iconProps={{ iconName: 'download' }}
+            variant="default"
             size="xs"
             onClick={handleGetClick}
           >
@@ -40,6 +41,7 @@ export function Clipboard() {
           </Button>
           <Button
             // iconProps={{ iconName: 'send' }}
+            variant="default"
             size="xs"
             onClick={handleSendClick}
           >

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 import { ssmlToText } from '@bougiel/tts-node/lib/ssml/index';
 import fs from 'fs-extra';
 
@@ -18,7 +18,7 @@ const globalState = {
   filter: '',
 };
 
-function Downloads() {
+const Downloads: FC = () => {
   const [list, setList] = useState<Item[]>([]);
   const [filterReg, setFilterReg] = useState<RegExp>(
     new RegExp(globalState.filter.split(/\s+/).join('.*'))
@@ -76,6 +76,8 @@ function Downloads() {
       </FStack>
     </FocusZone>
   );
-}
+};
+
+Downloads.displayName = 'Downloads';
 
 export default Downloads;

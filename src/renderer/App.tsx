@@ -1,85 +1,25 @@
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { FStack, Header, Pivot, PivotItem } from 'renderer/components';
+import { Stack } from 'renderer/components';
 
-import CodeEditor from './Views/CodeEditor';
-import Downloads from './Views/Downloads';
-import Markdown from './Views/Markdown';
-import MicrosoftTTS from './Views/MicrosoftTTS';
-import Settings from './Views/Settings';
-import Transfer from './Views/Transfer';
-import TTSCat from './Views/TTSCat';
-import TTSCatEditor from './Views/TTSCatEditor';
-import { AudioIndicator } from './Widgets/AudioIndicator';
-import {
-  AudioProvider,
-  useAsync,
-  useDownloadsNum,
-  useVersion,
-  Version,
-} from './hooks';
-import { createStorage } from './lib';
+import { Header } from './Views/Header';
+import { mainRoutes, windowRoutes } from './Views/routes';
+import { AudioProvider, Version } from './hooks';
 
 import './App.scss';
 
-const pathStorage = createStorage('__path__', '/');
-
 const App = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const downloadsNum = useDownloadsNum();
-  const { hasUpdate } = useVersion();
-  const handlePivotClick = (item?: PivotItem) => {
-    const path = item?.props.itemKey || '/';
-    navigate(path);
-    pathStorage.set(path);
-  };
-  useAsync(async () => {
-    navigate(pathStorage.get());
-  }, []);
   return (
-    <FStack tokens={{ childrenGap: 12 }} className="main">
-      <FStack horizontal horizontalAlign="space-between" verticalAlign="center">
-        <Pivot
-          selectedKey={location.pathname}
-          onLinkClick={handlePivotClick}
-          styles={{
-            text: { fontSize: 16 },
-            count: { fontSize: 16 },
-            link: { height: 32 },
-          }}
-          // linkFormat="tabs"
-        >
-          <PivotItem headerText="Microsoft TTS" itemKey="/" />
-          <PivotItem headerText="TTS Cat" itemKey="/ttsCat" />
-          <PivotItem headerText="Transfer" itemKey="/transfer" />
-          <PivotItem
-            headerText="Downloads"
-            itemKey="/downloads"
-            itemCount={downloadsNum || undefined}
-          />
-          <PivotItem
-            headerText="Settings"
-            itemKey="/settings"
-            itemCount={hasUpdate ? '🤡 New version !' : undefined}
-          />
-        </Pivot>
-        <AudioIndicator />
-      </FStack>
-      <Routes>
-        <Route path="" element={<MicrosoftTTS />} />
-        <Route path="ttsCat" element={<TTSCat />} />
-        <Route path="transfer" element={<Transfer />} />
-        <Route path="downloads" element={<Downloads />} />
-        <Route path="settings" element={<Settings />} />
-      </Routes>
-    </FStack>
+    <>
+      <Header />
+      <Stack className="main">
+        <Routes>
+          {mainRoutes.map(({ path, Component }) => {
+            return <Route path={path} element={<Component />} />;
+          })}
+        </Routes>
+      </Stack>
+    </>
   );
 };
 
@@ -88,15 +28,11 @@ export default () => {
     <Router>
       <AudioProvider>
         <Version>
-          {/* <Space className="header" /> */}
-          <Header height={36} className="header">
-            TTS Fluent
-          </Header>
           <Routes>
             <Route path="/window">
-              <Route path="markdown" element={<Markdown />} />
-              <Route path="ttsCatEditor" element={<TTSCatEditor />} />
-              <Route path="codeEditor" element={<CodeEditor />} />
+              {windowRoutes.map(({ path, Component }) => {
+                return <Route path={path} element={<Component />} />;
+              })}
             </Route>
             <Route path="/*" element={<App />} />
           </Routes>

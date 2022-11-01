@@ -1,11 +1,6 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import {
-  Button,
-  DefaultButton,
-  FStack,
-  PrimaryButton,
-} from 'renderer/components';
+import { Button, FStack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 import { createStorage, openSubWindow } from 'renderer/lib';
 
@@ -31,7 +26,7 @@ export const aiConfigStorage = createStorage(
   defaultAiConfig
 );
 
-const TTSCat = () => {
+const TTSCat: FC = () => {
   const [textConfig, setTextConfig] = useState(textConfigStorage.get());
   const [aiConfig, setAiConfig] = useState(aiConfigStorage.get());
   const handleConfigChange = useFn(() => {
@@ -93,5 +88,7 @@ const TTSCat = () => {
     </FStack>
   );
 };
+
+TTSCat.displayName = 'TTS Cat';
 
 export default TTSCat;

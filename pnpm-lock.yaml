@@ -12,6 +12,7 @@ specifiers:
   '@mantine/core': ^5.6.3
   '@mantine/hooks': ^5.6.3
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.7
+  '@tabler/icons': ^1.109.0
   '@teamsupercell/typings-for-css-modules-loader': ^2.5.1
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^13.3.0
@@ -119,6 +120,7 @@ dependencies:
   '@fluentui/react': 8.90.0_ff80cd9dfb626a6c6c4251864122e347
   '@mantine/core': 5.6.3_2887709deb37f666f85fa30b999b3851
   '@mantine/hooks': 5.6.3_react@18.2.0
+  '@tabler/icons': 1.109.0_react-dom@18.2.0+react@18.2.0
   address: 1.2.0
   axios: 0.27.2
   cookie-parser: 1.4.6
@@ -1697,6 +1699,21 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
+
+  /@tabler/icons/1.109.0_react-dom@18.2.0+react@18.2.0:
+    resolution: {integrity: sha512-B0YetE4pB6HY2Wa57v/LJ3NgkJzKYPze4U0DurIqPoKSptatKv2ga76FZSkO6EUpkYfHMtGPM6QjpJljfuCmAQ==}
+    peerDependencies:
+      react: ^16.x || 17.x || 18.x
+      react-dom: ^16.x || 17.x || 18.x
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@teamsupercell/typings-for-css-modules-loader/2.5.1:
     resolution: {integrity: sha512-8Dz/2awNbkrFHf3IpF8YGUPniXAZW/z7OTiosO+xucIU1+jVg/cT4uyGZ7z9cmAsnExsxq4igazxwgGBXVpUgA==}
