@@ -71,17 +71,17 @@ const TTSCat: FC = () => {
       <Display textConfig={textConfig} aiChatConfig={aiConfig} />
       <FStack
         horizontal
-        horizontalAlign="end"
+        horizontalAlign='end'
         styles={{ root: { paddingTop: 36 } }}
         tokens={{ childrenGap: 12 }}
       >
-        <Button size="xs" onClick={handleEditInterceptor}>
+        <Button size='xs' onClick={handleEditInterceptor}>
           Edit interceptor
         </Button>
-        <Button size="xs" onClick={handleReset}>
+        <Button size='xs' onClick={handleReset}>
           Reset
         </Button>
-        <Button size="xs" onClick={handleEdit}>
+        <Button size='xs' onClick={handleEdit}>
           Edit
         </Button>
       </FStack>

@@ -5,7 +5,7 @@ import { version } from '../../../../release/app/package.json';
 const AppVersion = () => {
   return (
     <TextField
-      label="Version"
+      label='Version'
       readOnly
       value={version}
       style={{ textAlign: 'left' }}

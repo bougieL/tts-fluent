@@ -21,8 +21,8 @@ export function AiChatEditor({ value, onChange }: Props) {
     <FStack horizontal tokens={{ childrenGap: 24 }}>
       <Dropdown
         options={voices}
-        label="Voice"
-        placeholder="Select voice A"
+        label='Voice'
+        placeholder='Select voice A'
         styles={{ root: { width: '33%' }, callout: { height: 400 } }}
         selectedKey={value[0]}
         disabled={voices.length === 0}
@@ -32,8 +32,8 @@ export function AiChatEditor({ value, onChange }: Props) {
       />
       <Dropdown
         options={voices}
-        label="Voice"
-        placeholder="Select voice B"
+        label='Voice'
+        placeholder='Select voice B'
         styles={{ root: { width: '33%' }, callout: { height: 400 } }}
         selectedKey={value[1]}
         disabled={voices.length === 0}

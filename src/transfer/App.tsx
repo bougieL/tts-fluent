@@ -25,7 +25,7 @@ export function App() {
   useInterval(polling, 5000);
   return (
     <serverContext.Provider value={server}>
-      <Stack horizontalAlign="center" styles={{ root: { padding: 12 } }}>
+      <Stack horizontalAlign='center' styles={{ root: { padding: 12 } }}>
         <Stack
           tokens={{ childrenGap: 12 }}
           styles={{

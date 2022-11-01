@@ -14,13 +14,13 @@ export function Buttons({
   onDownloadClick,
 }: Props) {
   return (
-    <Grid justify="flex-end" style={{ width: '100%' }}>
+    <Grid justify='flex-end' style={{ width: '100%' }}>
       {loading && <Spinner />}
-      <Button onClick={onPlayClick} disabled={disabled} size="xs">
+      <Button onClick={onPlayClick} disabled={disabled} size='xs'>
         Play
       </Button>
-      <Space w="sm" />
-      <Button onClick={onDownloadClick} disabled={disabled} size="xs">
+      <Space w='sm' />
+      <Button onClick={onDownloadClick} disabled={disabled} size='xs'>
         Download
       </Button>
     </Grid>

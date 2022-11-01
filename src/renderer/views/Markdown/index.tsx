@@ -22,7 +22,7 @@ function Markdown({ initialData }: Props) {
   }, []);
   return (
     <article
-      className="markdown-body"
+      className='markdown-body'
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: html }}
     />

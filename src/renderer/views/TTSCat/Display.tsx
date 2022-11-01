@@ -83,21 +83,21 @@ export function Display({ textConfig, aiChatConfig }: Props) {
           </FText>
           <FStack tokens={{ childrenGap: 6 }}>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(danmuUrls.url1)}
             >
               {danmuUrls.url1}
             </Link>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(danmuUrls.url2)}
             >
               {danmuUrls.url2}
             </Link>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(danmuUrls.url3, true)}
             >
@@ -112,21 +112,21 @@ export function Display({ textConfig, aiChatConfig }: Props) {
           </FText>
           <FStack tokens={{ childrenGap: 6 }}>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(aiChatUrls.url1)}
             >
               {aiChatUrls.url1}
             </Link>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(aiChatUrls.url2)}
             >
               {aiChatUrls.url2}
             </Link>
             <Link
-              href="##"
+              href='##'
               style={{ fontSize: 12 }}
               onClick={createClick(aiChatUrls.url3, true)}
             >

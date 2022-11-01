@@ -86,9 +86,9 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
           globalState.type = type;
         }}
       >
-        <PivotItem headerText="Text" itemKey={InputType.text} />
-        <PivotItem headerText="File" itemKey={InputType.file} />
-        <PivotItem headerText="SSML" itemKey={InputType.ssml} />
+        <PivotItem headerText='Text' itemKey={InputType.text} />
+        <PivotItem headerText='File' itemKey={InputType.file} />
+        <PivotItem headerText='SSML' itemKey={InputType.ssml} />
       </Pivot>
       {type !== InputType.file ? (
         <TextField
@@ -100,7 +100,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
             field: { height: 'calc(100vh - 352px)' },
           }}
           value={isText ? text : ssml}
-          placeholder="Type something here (max 25000 characters, 200 requests per day)..."
+          placeholder='Type something here (max 25000 characters, 200 requests per day)...'
           maxLength={25000}
           onChange={(_, value = '') => {
             if (isText) {

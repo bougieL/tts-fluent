@@ -16,7 +16,7 @@ const CheckUpdate = () => {
       <Label>New version! {isProd ? '' : `hasUpdate = ${hasUpdate}`}</Label>
       <FStack
         horizontal
-        horizontalAlign="start"
+        horizontalAlign='start'
         tokens={{ childrenGap: 12 }}
         styles={{ root: { marginTop: '0 !important' } }}
       >
@@ -33,7 +33,7 @@ const CheckUpdate = () => {
           🤡 Download 🤡
         </CompoundButton>
         <CompoundButton
-          secondaryText="Click here to view change log"
+          secondaryText='Click here to view change log'
           onClick={() => {
             openSubWindow('/window/markdown', {
               title: 'Change log',

@@ -31,11 +31,11 @@ export const Header = () => {
   }, []);
 
   return (
-    <Group align="center" spacing="sm" className="header">
+    <Group align='center' spacing='sm' className='header'>
       <Text>TTS Fluent</Text>
-      <Menu trigger="hover">
+      <Menu trigger='hover'>
         <Menu.Target>
-          <Button variant="default" compact leftIcon={<IconMenu2 size={12} />}>
+          <Button variant='default' compact leftIcon={<IconMenu2 size={12} />}>
             {pathName}
           </Button>
         </Menu.Target>

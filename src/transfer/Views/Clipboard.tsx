@@ -41,7 +41,7 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
         }}
       />
       <Stack
-        horizontalAlign="end"
+        horizontalAlign='end'
         horizontal
         styles={{ root: { paddingTop: 12 } }}
         tokens={{ childrenGap: 12 }}

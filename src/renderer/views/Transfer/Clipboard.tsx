@@ -30,19 +30,19 @@ export function Clipboard() {
           value={value}
           onChange={(_, newValue = '') => setValue(newValue)}
         />
-        <FStack horizontal tokens={{ childrenGap: 12 }} horizontalAlign="end">
+        <FStack horizontal tokens={{ childrenGap: 12 }} horizontalAlign='end'>
           <Button
             // iconProps={{ iconName: 'download' }}
-            variant="default"
-            size="xs"
+            variant='default'
+            size='xs'
             onClick={handleGetClick}
           >
             Get text
           </Button>
           <Button
             // iconProps={{ iconName: 'send' }}
-            variant="default"
-            size="xs"
+            variant='default'
+            size='xs'
             onClick={handleSendClick}
           >
             Send {value.length > 0 ? 'text' : 'clipboard'}

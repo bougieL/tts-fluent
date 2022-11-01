@@ -29,8 +29,8 @@ const TransferDirectory = () => {
   }, []);
   return (
     <TextField
-      label="Transfer files directory"
-      type="button"
+      label='Transfer files directory'
+      type='button'
       value={path}
       onClick={handleSetFilePath}
       style={{ textAlign: 'left' }}

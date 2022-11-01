@@ -36,7 +36,7 @@ export function Send({ disabled = false }: SendProps) {
       <>
         <Text>Upload files to {server?.serverName}</Text>
         <br />
-        <Text variant="small">Do not close this page before success</Text>
+        <Text variant='small'>Do not close this page before success</Text>
       </>,
       { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
     );
@@ -74,7 +74,7 @@ export function Send({ disabled = false }: SendProps) {
           <Label>Files</Label>
           <Dropzone value={files} onChange={setFiles} />
           <Stack
-            horizontalAlign="end"
+            horizontalAlign='end'
             horizontal
             styles={{ root: { paddingTop: 12 } }}
             tokens={{ childrenGap: 12 }}

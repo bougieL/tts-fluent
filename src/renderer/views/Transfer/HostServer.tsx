@@ -46,7 +46,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
         <Link
-          href="##"
+          href='##'
           onClick={(event) => {
             event.preventDefault();
             shell.openExternal(serverUrl);
@@ -56,7 +56,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         </Link>
         {process.env.NODE_ENV === 'development' && (
           <Link
-            href="##"
+            href='##'
             onClick={(event) => {
               event.preventDefault();
               shell.openExternal(debugUrl);

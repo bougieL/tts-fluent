@@ -42,7 +42,7 @@ export function ConnectedDevices() {
           return (
             <Fragment key={item.deviceId}>
               <ActivityItem
-                activityIcon={<Icon iconName="Devices3" />}
+                activityIcon={<Icon iconName='Devices3' />}
                 activityDescription={item.deviceId}
                 comments={<FText>{item.deviceName}</FText>}
                 timeStamp={item.deviceHost}

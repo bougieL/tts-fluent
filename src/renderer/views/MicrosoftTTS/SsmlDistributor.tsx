@@ -98,8 +98,8 @@ function C({ value, onChange }: Props) {
       <Grid.Col span={4}>
         <NativeSelect
           data={locales}
-          label="Language"
-          placeholder="Select a language"
+          label='Language'
+          placeholder='Select a language'
           value={locale}
           onChange={(event) => {
             handleChange({
@@ -112,8 +112,8 @@ function C({ value, onChange }: Props) {
       <Grid.Col span={4}>
         <NativeSelect
           data={voices}
-          label="Voice"
-          placeholder="Select a voice"
+          label='Voice'
+          placeholder='Select a voice'
           value={voice}
           disabled={voices.length === 0}
           onChange={(event) => {
@@ -127,8 +127,8 @@ function C({ value, onChange }: Props) {
       <Grid.Col span={4}>
         <NativeSelect
           data={styles}
-          label="Style"
-          placeholder="Select a style"
+          label='Style'
+          placeholder='Select a style'
           disabled={styles.length === 0}
           value={style}
           onChange={(event) => {
@@ -137,9 +137,9 @@ function C({ value, onChange }: Props) {
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <InputWrapper label="Speed">
+        <InputWrapper label='Speed'>
           <Slider
-            label="Speed"
+            label='Speed'
             max={3}
             value={rate2n(rate)}
             step={0.1}
@@ -153,9 +153,9 @@ function C({ value, onChange }: Props) {
         </InputWrapper>
       </Grid.Col>
       <Grid.Col span={4}>
-        <InputWrapper label="Pitch">
+        <InputWrapper label='Pitch'>
           <Slider
-            label="Pitch"
+            label='Pitch'
             max={2}
             value={pitch2n(pitch)}
             step={0.1}
@@ -171,8 +171,8 @@ function C({ value, onChange }: Props) {
       <Grid.Col span={4}>
         <NativeSelect
           data={outputFormatsList}
-          label="Output format"
-          placeholder="Select output format"
+          label='Output format'
+          placeholder='Select output format'
           value={outputFormat}
           onChange={(event) => {
             handleChange({

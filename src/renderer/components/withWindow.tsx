@@ -19,7 +19,7 @@ export function withWindow<P extends { initialData: any }>(
     }
     return (
       <>
-        <Space className="header" />
+        <Space className='header' />
         {/* @ts-ignore */}
         <Component {...props} initialData={initialData} />
       </>

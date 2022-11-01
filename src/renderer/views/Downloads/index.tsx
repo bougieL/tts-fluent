@@ -55,10 +55,10 @@ const Downloads: FC = () => {
   return (
     <FocusZone direction={FocusZoneDirection.vertical}>
       <TextField
-        label="Search content"
+        label='Search content'
         value={filter}
         onChange={(_, value) => handleFilterChange(value!)}
-        placeholder="Type some keywords here (use blank space separate) ..."
+        placeholder='Type some keywords here (use blank space separate) ...'
       />
       <FStack
         styles={{

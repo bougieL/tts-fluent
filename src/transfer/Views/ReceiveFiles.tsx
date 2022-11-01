@@ -26,7 +26,7 @@ export function ReceiveFiles() {
         <>
           <Text>Receive files from {server?.serverName}</Text>
           <br />
-          <Text variant="small">
+          <Text variant='small'>
             {files.length === 1
               ? 'Your browser doesn‘t support auto download'
               : 'Doesn‘t support auto download multi files'}
@@ -47,10 +47,10 @@ export function ReceiveFiles() {
 
   return (
     <Stack>
-      <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+      <Stack horizontal horizontalAlign='space-between' verticalAlign='center'>
         <Label>Receive files</Label>
         <Link
-          href="##"
+          href='##'
           style={{ fontSize: 14 }}
           onClick={(event) => {
             event.preventDefault();
@@ -70,22 +70,22 @@ export function ReceiveFiles() {
               <Link download={item!.name} href={item!.download}>
                 <Stack
                   horizontal
-                  horizontalAlign="space-between"
-                  verticalAlign="center"
+                  horizontalAlign='space-between'
+                  verticalAlign='center'
                   // styles={{ root: { paddingTop: 4, paddingBottom: 4 } }}
                   tokens={{ childrenGap: 12 }}
                 >
-                  <Text variant="smallPlus">{item!.name}</Text>
+                  <Text variant='smallPlus'>{item!.name}</Text>
                   <Stack
                     horizontal
-                    horizontalAlign="end"
-                    verticalAlign="center"
+                    horizontalAlign='end'
+                    verticalAlign='center'
                     tokens={{ childrenGap: 12 }}
                   >
-                    <Text variant="smallPlus" style={{ whiteSpace: 'nowrap' }}>
+                    <Text variant='smallPlus' style={{ whiteSpace: 'nowrap' }}>
                       {humanFileSize(item!.size)}
                     </Text>
-                    <Icon iconName="download" />
+                    <Icon iconName='download' />
                   </Stack>
                 </Stack>
               </Link>

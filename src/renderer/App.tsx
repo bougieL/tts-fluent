@@ -12,7 +12,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <Stack className="main">
+      <Stack className='main'>
         <Routes>
           {mainRoutes.map(({ path, Component }) => {
             return <Route path={path} element={<Component />} />;
@@ -29,12 +29,12 @@ export default () => {
       <AudioProvider>
         <Version>
           <Routes>
-            <Route path="/window">
+            <Route path='/window'>
               {windowRoutes.map(({ path, Component }) => {
                 return <Route path={path} element={<Component />} />;
               })}
             </Route>
-            <Route path="/*" element={<App />} />
+            <Route path='/*' element={<App />} />
           </Routes>
         </Version>
       </AudioProvider>

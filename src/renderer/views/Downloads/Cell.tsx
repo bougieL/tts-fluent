@@ -47,10 +47,10 @@ export function Cell({ item }: CellProps) {
   const fileTip = useFn((text: string) => (exists ? text : 'File removed'));
   const renderDelete = useFn(() => {
     return (
-      <TooltipHost content="Delete" setAriaDescribedBy={false}>
+      <TooltipHost content='Delete' setAriaDescribedBy={false}>
         <IconButton
           iconProps={{ iconName: 'Delete' }}
-          aria-label="Delete"
+          aria-label='Delete'
           onClick={handleRemove}
         />
       </TooltipHost>
@@ -62,24 +62,24 @@ export function Cell({ item }: CellProps) {
         <TooltipHost content={fileTip('Play')} setAriaDescribedBy={false}>
           <IconButton
             iconProps={{ iconName: 'Play' }}
-            aria-label="Play"
+            aria-label='Play'
             disabled={!exists}
             onClick={handlePlayClick}
           />
         </TooltipHost>
-        <TooltipHost content="Copy SSML" setAriaDescribedBy={false}>
+        <TooltipHost content='Copy SSML' setAriaDescribedBy={false}>
           <IconButton
             iconProps={{ iconName: 'Copy' }}
-            aria-label="Copy"
+            aria-label='Copy'
             onClick={() => {
               clipboard.writeText(item.content);
             }}
           />
         </TooltipHost>
-        <TooltipHost content="Copy pure text" setAriaDescribedBy={false}>
+        <TooltipHost content='Copy pure text' setAriaDescribedBy={false}>
           <IconButton
             iconProps={{ iconName: 'PasteAsText' }}
-            aria-label="Copy"
+            aria-label='Copy'
             onClick={() => {
               clipboard.writeText(item.text);
             }}
@@ -91,7 +91,7 @@ export function Cell({ item }: CellProps) {
         >
           <IconButton
             iconProps={{ iconName: 'MusicInCollection' }}
-            aria-label="MusicInCollection"
+            aria-label='MusicInCollection'
             disabled={!exists}
             onClick={() => {
               shell.showItemInFolder(item.path);
@@ -119,7 +119,7 @@ export function Cell({ item }: CellProps) {
   return (
     <FStack>
       <Separator />
-      <FText variant="xLarge">{item.text.slice(0, 20)}</FText>
+      <FText variant='xLarge'>{item.text.slice(0, 20)}</FText>
       <FText>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
       </FText>
@@ -129,12 +129,12 @@ export function Cell({ item }: CellProps) {
             return (
               <FStack
                 horizontal
-                horizontalAlign="space-between"
-                verticalAlign="center"
+                horizontalAlign='space-between'
+                verticalAlign='center'
                 tokens={{ childrenGap: 20 }}
               >
                 <ProgressIndicator
-                  label="Downloading"
+                  label='Downloading'
                   description={size}
                   styles={{ root: { flex: 1 } }}
                 />
@@ -145,20 +145,20 @@ export function Cell({ item }: CellProps) {
             return (
               <FStack
                 horizontal
-                verticalAlign="center"
-                horizontalAlign="end"
+                verticalAlign='center'
+                horizontalAlign='end'
                 tokens={{ childrenGap: 10 }}
               >
-                <FText variant="small" color="red">
+                <FText variant='small' color='red'>
                   Download failed
                 </FText>
-                <FText variant="small">
+                <FText variant='small'>
                   {new Date(item.date).toLocaleString()}
                 </FText>
-                <TooltipHost content="Retry" setAriaDescribedBy={false}>
+                <TooltipHost content='Retry' setAriaDescribedBy={false}>
                   <IconButton
                     iconProps={{ iconName: 'Refresh' }}
-                    aria-label="Retry"
+                    aria-label='Retry'
                     onClick={handleRetryClick}
                   />
                 </TooltipHost>
@@ -169,12 +169,12 @@ export function Cell({ item }: CellProps) {
             return (
               <FStack
                 horizontal
-                horizontalAlign="end"
-                verticalAlign="center"
+                horizontalAlign='end'
+                verticalAlign='center'
                 styles={{ root: { paddingTop: 12 } }}
                 tokens={{ childrenGap: 10 }}
               >
-                <FText variant="small">
+                <FText variant='small'>
                   {new Date(item.date).toLocaleString()}
                 </FText>
                 {renderActions()}

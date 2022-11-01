@@ -29,8 +29,8 @@ const TTSDownloadsDirectory = () => {
   }, []);
   return (
     <TextField
-      label="TTS Downloads directory"
-      type="button"
+      label='TTS Downloads directory'
+      type='button'
       value={path}
       onClick={handleSetFilePath}
       style={{ textAlign: 'left' }}

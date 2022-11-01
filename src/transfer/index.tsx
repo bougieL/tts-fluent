@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(
-  <Router basename="/">
+  <Router basename='/'>
     <App />
     <ToastContainer autoClose={3000} draggable={false} />
   </Router>
