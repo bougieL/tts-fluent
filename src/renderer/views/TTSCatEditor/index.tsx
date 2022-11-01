@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { FStack, FText, Separator, withWindow } from 'renderer/components';
+import { FStack, Separator, Text, withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
@@ -32,13 +32,13 @@ function TTSCatEditor({ initialData: { textConfig, aiConfig } }: Props) {
       tokens={{ childrenGap: 12 }}
       styles={{ root: { paddingLeft: 12, paddingRight: 12 } }}
     >
-      <FText style={{ fontWeight: 'bold' }}>Danmuji</FText>
+      <Text style={{ fontWeight: 'bold' }}>Danmuji</Text>
       <SsmlDistributor
         value={privTextConfig}
         onChange={handleTextConfigChange}
       />
       <Separator />
-      <FText style={{ fontWeight: 'bold' }}>Danmuji with AI chat</FText>
+      <Text style={{ fontWeight: 'bold' }}>Danmuji with AI chat</Text>
       <AiChatEditor value={privAiConfig} onChange={handleAiConfigChange} />
     </FStack>
   );

@@ -7,10 +7,10 @@ import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
   FStack,
-  FText,
   IconButton,
   ProgressIndicator,
   Separator,
+  Text,
   TooltipHost,
 } from 'renderer/components';
 import { useAsync, useAudio, useFn } from 'renderer/hooks';
@@ -119,10 +119,10 @@ export function Cell({ item }: CellProps) {
   return (
     <FStack>
       <Separator />
-      <FText variant='xLarge'>{item.text.slice(0, 20)}</FText>
-      <FText>
+      <Text size='lg'>{item.text.slice(0, 20)}</Text>
+      <Text>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
-      </FText>
+      </Text>
       {useMemo(() => {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
@@ -149,12 +149,10 @@ export function Cell({ item }: CellProps) {
                 horizontalAlign='end'
                 tokens={{ childrenGap: 10 }}
               >
-                <FText variant='small' color='red'>
+                <Text size='sm' color='red'>
                   Download failed
-                </FText>
-                <FText variant='small'>
-                  {new Date(item.date).toLocaleString()}
-                </FText>
+                </Text>
+                <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
                 <TooltipHost content='Retry' setAriaDescribedBy={false}>
                   <IconButton
                     iconProps={{ iconName: 'Refresh' }}
@@ -174,9 +172,7 @@ export function Cell({ item }: CellProps) {
                 styles={{ root: { paddingTop: 12 } }}
                 tokens={{ childrenGap: 10 }}
               >
-                <FText variant='small'>
-                  {new Date(item.date).toLocaleString()}
-                </FText>
+                <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
                 {renderActions()}
               </FStack>
             );

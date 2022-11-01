@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { shell } from 'electron';
 
-import { FStack, FText, Link, Separator } from 'renderer/components';
+import { FStack, Link, Separator, Text } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
@@ -78,9 +78,9 @@ export function Display({ textConfig, aiChatConfig }: Props) {
     return (
       <FStack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
         <FStack>
-          <FText style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
             Danmuji
-          </FText>
+          </Text>
           <FStack tokens={{ childrenGap: 6 }}>
             <Link
               href='##'
@@ -107,9 +107,9 @@ export function Display({ textConfig, aiChatConfig }: Props) {
         </FStack>
         <Separator />
         <FStack>
-          <FText style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
             Danmuji with AI chat
-          </FText>
+          </Text>
           <FStack tokens={{ childrenGap: 6 }}>
             <Link
               href='##'

@@ -3,8 +3,8 @@ import {
   Grid,
   IconDownload,
   IconPlayerPlay,
+  Loader,
   Space,
-  Spinner,
 } from 'renderer/components';
 
 interface Props {
@@ -22,7 +22,7 @@ export function Buttons({
 }: Props) {
   return (
     <Grid justify='flex-end' style={{ width: '100%' }}>
-      {loading && <Spinner />}
+      {loading && <Loader size='sm' />}
       <Button
         variant='default'
         leftIcon={<IconPlayerPlay size={14} />}
