@@ -6,10 +6,10 @@ import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import {
   Button,
-  DefaultButton,
   FStack,
+  IconClearAll,
+  IconSend,
   Label,
-  PrimaryButton,
 } from 'renderer/components';
 
 import { Dropzone, File } from './Dropzone';
@@ -47,16 +47,18 @@ export function SendFiles() {
         </FStack>
         <FStack horizontal tokens={{ childrenGap: 12 }}>
           <Button
+            variant='default'
             size='xs'
-            // iconProps={{ iconName: 'delete' }}
+            leftIcon={<IconClearAll size={14} />}
             disabled={files.length === 0}
             onClick={() => setFiles([])}
           >
             Clear Files
           </Button>
           <Button
+            variant='default'
             size='xs'
-            // iconProps={{ iconName: 'send' }}
+            leftIcon={<IconSend size={14} />}
             disabled={files.length === 0}
             onClick={sendFiles}
           >

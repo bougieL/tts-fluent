@@ -16,14 +16,20 @@ export const Header = () => {
   const downloadsNum = useDownloadsNum();
   const { hasUpdate } = useVersion();
 
-  const pathName = useMemo(() => {
+  const currentRoute = useMemo(() => {
     for (let i = 0; i < mainRoutes.length; i += 1) {
-      const { path, Component } = mainRoutes[i];
-      if (matchPath(path, location.pathname)) {
-        return Component.displayName;
+      const route = mainRoutes[i];
+      if (matchPath(route.path, location.pathname)) {
+        return {
+          Icon: route.Icon,
+          name: route.Component.displayName,
+        };
       }
     }
-    return 'Menu';
+    return {
+      Icon: IconMenu2,
+      name: 'Menu',
+    };
   }, [location.pathname]);
 
   useAsync(async () => {
@@ -32,21 +38,26 @@ export const Header = () => {
 
   return (
     <Group align='center' spacing='sm' className='header'>
-      <Text>TTS Fluent</Text>
+      <Text size='sm'>TTS Fluent</Text>
       <Menu trigger='hover'>
         <Menu.Target>
-          <Button variant='default' compact leftIcon={<IconMenu2 size={12} />}>
-            {pathName}
+          <Button
+            variant='default'
+            compact
+            leftIcon={<currentRoute.Icon size={12} />}
+          >
+            {currentRoute.name}
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {mainRoutes.map(({ path, Component }, index) => {
+          {mainRoutes.map(({ path, Component, Icon }, index) => {
             return (
               <>
                 {index === mainRoutes.length - 1 && <Menu.Divider />}
                 <Menu.Item
                   component={Link}
                   to={path}
+                  icon={<Icon size={14} />}
                   onClick={() => pathStorage.set(path)}
                 >
                   {Component.displayName}

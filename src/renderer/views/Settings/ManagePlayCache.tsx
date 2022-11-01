@@ -40,11 +40,11 @@ const ManagePlayCache = () => {
     <>
       <Label>Manage play cache</Label>
       <Grid>
-        <Button size='xs' onClick={handleClearCache}>
+        <Button variant='default' size='xs' onClick={handleClearCache}>
           Clear cache ({size})
         </Button>
         <Space w='xs' />
-        <Button size='xs' onClick={handleOpenCache}>
+        <Button variant='default' size='xs' onClick={handleOpenCache}>
           Open cache directory
         </Button>
       </Grid>

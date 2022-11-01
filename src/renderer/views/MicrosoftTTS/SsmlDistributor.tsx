@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo } from 'react';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
 
-import { Grid, InputWrapper, NativeSelect, Slider } from 'renderer/components';
+import { Grid, Input, NativeSelect, Slider } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 const locales = list
@@ -137,7 +137,7 @@ function C({ value, onChange }: Props) {
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <InputWrapper label='Speed'>
+        <Input.Wrapper label='Speed'>
           <Slider
             label='Speed'
             max={3}
@@ -150,10 +150,10 @@ function C({ value, onChange }: Props) {
               });
             }}
           />
-        </InputWrapper>
+        </Input.Wrapper>
       </Grid.Col>
       <Grid.Col span={4}>
-        <InputWrapper label='Pitch'>
+        <Input.Wrapper label='Pitch'>
           <Slider
             label='Pitch'
             max={2}
@@ -166,7 +166,7 @@ function C({ value, onChange }: Props) {
               });
             }}
           />
-        </InputWrapper>
+        </Input.Wrapper>
       </Grid.Col>
       <Grid.Col span={4}>
         <NativeSelect

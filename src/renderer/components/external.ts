@@ -35,7 +35,23 @@ export {
   Space,
   Stack,
   Text,
+  Tabs,
+  Input,
+  TextInput,
+  Textarea,
 } from '@mantine/core';
-export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
+// export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
 
-export { IconMenu2 } from '@tabler/icons';
+export {
+  IconMenu2,
+  IconPlayerPlay,
+  IconDownload,
+  IconSend,
+  IconClearAll,
+  IconBlockquote,
+  IconFile,
+  IconCode,
+  IconSettings,
+  IconMicrophone,
+  IconPokeball,
+} from '@tabler/icons';

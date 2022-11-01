@@ -3,7 +3,14 @@ import { clipboard, ipcRenderer } from 'electron';
 
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { Button, FStack, Label, TextField } from 'renderer/components';
+import {
+  Button,
+  FStack,
+  IconDownload,
+  IconSend,
+  Label,
+  TextField,
+} from 'renderer/components';
 
 export function Clipboard() {
   const [value, setValue] = useState('');
@@ -32,7 +39,7 @@ export function Clipboard() {
         />
         <FStack horizontal tokens={{ childrenGap: 12 }} horizontalAlign='end'>
           <Button
-            // iconProps={{ iconName: 'download' }}
+            leftIcon={<IconDownload size={14} />}
             variant='default'
             size='xs'
             onClick={handleGetClick}
@@ -40,7 +47,7 @@ export function Clipboard() {
             Get text
           </Button>
           <Button
-            // iconProps={{ iconName: 'send' }}
+            leftIcon={<IconSend size={14} />}
             variant='default'
             size='xs'
             onClick={handleSendClick}

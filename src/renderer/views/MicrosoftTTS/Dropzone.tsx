@@ -18,11 +18,12 @@ export function Dropzone({ value, onChange }: Props) {
     <div
       {...getRootProps()}
       style={{
-        height: 'calc(100vh - 352px + 2px)',
+        height: 'calc(100vh - 352px)',
         border: '1px solid #ccc',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: '4px',
       }}
     >
       <input {...getInputProps()} multiple={false} />
