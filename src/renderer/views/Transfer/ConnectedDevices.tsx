@@ -1,15 +1,8 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import fs from 'fs-extra';
 
 import { TransferCache } from 'caches/transfer';
-import {
-  ActivityItem,
-  Divider,
-  Icon,
-  Input,
-  Stack,
-  Text,
-} from 'renderer/components';
+import { IconDevices2, Input, List, Stack, Text } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 export function ConnectedDevices() {
@@ -25,7 +18,7 @@ export function ConnectedDevices() {
   }, []);
   return (
     <Input.Wrapper label='Connected devices'>
-      <Stack
+      <List
         styles={{
           // @ts-ignore
           root: {
@@ -39,23 +32,20 @@ export function ConnectedDevices() {
       >
         {devices.filter(Boolean).map((item) => {
           return (
-            <Fragment key={item.deviceId}>
-              <ActivityItem
-                activityIcon={<Icon iconName='Devices3' />}
-                activityDescription={item.deviceId}
-                comments={<Text>{item.deviceName}</Text>}
-                timeStamp={item.deviceHost}
-                styles={{
-                  root: {
-                    width: 250,
-                  },
-                }}
-              />
-              <Divider />
-            </Fragment>
+            <List.Item icon={<IconDevices2 />}>
+              <Stack spacing={0}>
+                <Text>{item.deviceName}</Text>
+                <Text size='xs' color='dimmed'>
+                  {item.deviceHost}
+                </Text>
+                <Text size='xs' color='dimmed'>
+                  {item.deviceId}
+                </Text>
+              </Stack>
+            </List.Item>
           );
         })}
-      </Stack>
+      </List>
     </Input.Wrapper>
   );
 }

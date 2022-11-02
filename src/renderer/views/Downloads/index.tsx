@@ -61,15 +61,18 @@ const Downloads: FC = () => {
         onChange={(event) => handleFilterChange(event.target.value)}
         placeholder='Type some keywords here (use blank space separate) ...'
       />
-      <Stack style={{ height: 'calc(100vh - 140px)', overflow: 'overlay' }}>
-        <List
-          items={filteredList}
-          getKey={(item) => item.id}
-          onRenderCell={(item) => {
-            return <Cell key={item?.id} item={item!} />;
-          }}
-        />
-      </Stack>
+      <List
+        listStyleType='none'
+        spacing='md'
+        style={{
+          height: 'calc(100vh - 142px)',
+          overflow: 'overlay',
+        }}
+      >
+        {filteredList.map((item) => {
+          return <Cell key={item.id} item={item!} />;
+        })}
+      </List>
     </Stack>
   );
 };

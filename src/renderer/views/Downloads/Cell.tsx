@@ -7,15 +7,15 @@ import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
   ActionIcon,
-  Divider,
   Group,
   IconCopy,
   IconFolders,
   IconPlayerPlay,
   IconRefresh,
   IconTrash,
-  ProgressIndicator,
-  Stack,
+  List,
+  Loader,
+  Space,
   Text,
   Tooltip,
 } from 'renderer/components';
@@ -106,6 +106,14 @@ export function Cell({ item }: CellProps) {
     );
   });
 
+  const renderDate = useFn(() => {
+    return (
+      <Text size='xs' color='dimmed'>
+        {new Date(item.date).toLocaleString()}
+      </Text>
+    );
+  });
+
   useAsync(async () => {
     const updater = async () => {
       const exists = await fs.pathExists(item.path);
@@ -122,32 +130,31 @@ export function Cell({ item }: CellProps) {
   }, [item.path, item.status]);
 
   return (
-    <Stack>
-      <Divider />
-      <Text size='lg'>{item.text.slice(0, 20)}</Text>
-      <Text>
+    <List.Item>
+      <Text>{item.text.slice(0, 20)}</Text>
+      <Text size='sm' color='dimmed'>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
       </Text>
+      <Space h='sm' />
       {useMemo(() => {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
             return (
               <Group position='apart' align='center' spacing={20}>
-                <ProgressIndicator
-                  label='Downloading'
-                  description={size}
-                  styles={{ root: { flex: 1 } }}
-                />
+                <Group spacing='xs'>
+                  <Loader />
+                  <Text>{size}</Text>
+                </Group>
                 {renderDelete()}
               </Group>
             );
           case DownloadsCache.Status.error:
             return (
               <Group position='right' align='center' spacing={10}>
-                <Text size='sm' color='red'>
+                <Text size='xs' color='red'>
                   Download failed
                 </Text>
-                <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
+                {renderDate()}
                 <Tooltip label='Retry'>
                   <ActionIcon onClick={handleRetryClick}>
                     <IconRefresh />
@@ -159,7 +166,7 @@ export function Cell({ item }: CellProps) {
           case DownloadsCache.Status.finished:
             return (
               <Group position='right' align='center' spacing={10}>
-                <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
+                {renderDate()}
                 {renderActions()}
               </Group>
             );
@@ -168,12 +175,12 @@ export function Cell({ item }: CellProps) {
         }
       }, [
         handleRetryClick,
-        item.date,
         item.status,
         renderActions,
+        renderDate,
         renderDelete,
         size,
       ])}
-    </Stack>
+    </List.Item>
   );
 }

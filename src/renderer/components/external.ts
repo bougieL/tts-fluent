@@ -1,9 +1,4 @@
 /* eslint-disable simple-import-sort/exports */
-export { ActivityItem } from '@fluentui/react/lib/ActivityItem';
-export { Icon } from '@fluentui/react/lib/Icon';
-export { List } from '@fluentui/react/lib/List';
-export { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
-
 export {
   Button,
   Grid,
@@ -25,7 +20,8 @@ export {
   Anchor,
   ActionIcon,
   Alert,
-  // List,
+  List,
+  Progress,
 } from '@mantine/core';
 // export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
 
@@ -47,4 +43,5 @@ export {
   IconFolders,
   IconRefresh,
   IconCircleCheck,
+  IconDevices2,
 } from '@tabler/icons';

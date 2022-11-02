@@ -48,7 +48,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
     <Stack spacing='md'>
       <Alert color='green' icon={<IconCircleCheck />}>
         Start transfer server in {serverName} success, scan the qrcode to
-        transfer files.
+        transfer files.&nbsp;
         <Anchor
           onClick={() => {
             shell.openExternal(serverUrl);
@@ -62,7 +62,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
               shell.openExternal(debugUrl);
             }}
           >
-            Open debug transfer page
+            &nbsp;Open debug transfer page
           </Anchor>
         )}
       </Alert>

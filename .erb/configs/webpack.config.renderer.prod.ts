@@ -81,6 +81,7 @@ const configuration: webpack.Configuration = {
   },
 
   optimization: {
+    usedExports: true,
     minimize: true,
     minimizer: [
       new TerserPlugin({
@@ -102,8 +103,8 @@ const configuration: webpack.Configuration = {
           chunks: 'all',
         },
         fluent: {
-          test: /\/node_modules\/@fluent/,
-          filename: 'fluent.[contenthash].js',
+          test: /\/node_modules\/@mantine/,
+          filename: 'mantine.[contenthash].js',
           chunks: 'all',
         },
         vendors: {
