@@ -9,6 +9,7 @@ import {
   IconCircleCheck,
   Input,
   Stack,
+  Text,
 } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
@@ -46,25 +47,27 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
 
   return (
     <Stack spacing='md'>
-      <Alert color='green' icon={<IconCircleCheck />}>
-        Start transfer server in {serverName} success, scan the qrcode to
-        transfer files.&nbsp;
-        <Anchor
-          onClick={() => {
-            shell.openExternal(serverUrl);
-          }}
-        >
-          Open transfer page
-        </Anchor>
-        {process.env.NODE_ENV === 'development' && (
+      <Alert color='green' icon={<IconCircleCheck size={16} />}>
+        <Text size='xs'>
+          Start transfer server in {serverName} success, scan the qrcode to
+          transfer files.&nbsp;
           <Anchor
             onClick={() => {
-              shell.openExternal(debugUrl);
+              shell.openExternal(serverUrl);
             }}
           >
-            &nbsp;Open debug transfer page
+            Open transfer page
           </Anchor>
-        )}
+          {process.env.NODE_ENV === 'development' && (
+            <Anchor
+              onClick={() => {
+                shell.openExternal(debugUrl);
+              }}
+            >
+              &nbsp;Open debug transfer page
+            </Anchor>
+          )}
+        </Text>
       </Alert>
       <Group align='flex-start' noWrap>
         <Stack spacing='sm'>

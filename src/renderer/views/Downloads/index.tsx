@@ -68,6 +68,7 @@ const Downloads: FC = () => {
           height: 'calc(100vh - 142px)',
           overflow: 'overlay',
         }}
+        styles={{ itemWrapper: { width: '100%' } }}
       >
         {filteredList.map((item) => {
           return <Cell key={item.id} item={item!} />;

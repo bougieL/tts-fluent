@@ -165,7 +165,7 @@ export function Cell({ item }: CellProps) {
             );
           case DownloadsCache.Status.finished:
             return (
-              <Group position='right' align='center' spacing={10}>
+              <Group position='right' align='center' spacing='sm'>
                 {renderDate()}
                 {renderActions()}
               </Group>

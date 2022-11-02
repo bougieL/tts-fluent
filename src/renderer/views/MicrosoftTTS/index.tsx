@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
-import { Stack } from 'renderer/components';
+import { Space, Stack } from 'renderer/components';
 import { useAudio, useFn } from 'renderer/hooks';
 import { createStorage } from 'renderer/lib';
 
@@ -96,7 +96,7 @@ const MicrosoftTTS: FC = () => {
   });
 
   return (
-    <Stack spacing='md'>
+    <Stack spacing='lg'>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {
