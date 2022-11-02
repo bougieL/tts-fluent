@@ -1,13 +1,13 @@
 import list from '@bougiel/tts-node/lib/ssml/list';
 
-import { Dropdown, FStack } from 'renderer/components';
+import { Grid, NativeSelect } from 'renderer/components';
 
 const voices = list
   .filter((item) => item.Locale === 'zh-CN')
   .map((item) => {
     return {
-      key: item.ShortName,
-      text: `${item.LocalName} - ${item.DisplayName}`,
+      value: item.ShortName,
+      label: `${item.LocalName} - ${item.DisplayName}`,
     };
   });
 
@@ -18,29 +18,31 @@ interface Props {
 
 export function AiChatEditor({ value, onChange }: Props) {
   return (
-    <FStack horizontal tokens={{ childrenGap: 24 }}>
-      <Dropdown
-        options={voices}
-        label='Voice'
-        placeholder='Select voice A'
-        styles={{ root: { width: '33%' }, callout: { height: 400 } }}
-        selectedKey={value[0]}
-        disabled={voices.length === 0}
-        onChange={(_, item) => {
-          onChange([item?.key as string, value[1]]);
-        }}
-      />
-      <Dropdown
-        options={voices}
-        label='Voice'
-        placeholder='Select voice B'
-        styles={{ root: { width: '33%' }, callout: { height: 400 } }}
-        selectedKey={value[1]}
-        disabled={voices.length === 0}
-        onChange={(_, item) => {
-          onChange([value[0], item?.key as string]);
-        }}
-      />
-    </FStack>
+    <Grid>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={voices}
+          label='Voice A'
+          placeholder='Select voice A'
+          value={value[0]}
+          disabled={voices.length === 0}
+          onChange={(event) => {
+            onChange([event.target.value, value[1]]);
+          }}
+        />
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <NativeSelect
+          data={voices}
+          label='Voice B'
+          placeholder='Select voice B'
+          value={value[1]}
+          disabled={voices.length === 0}
+          onChange={(event) => {
+            onChange([value[0], event.target.value]);
+          }}
+        />
+      </Grid.Col>
+    </Grid>
   );
 }

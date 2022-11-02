@@ -6,10 +6,10 @@ import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import {
   Button,
-  FStack,
+  Group,
   IconClearAll,
   IconSend,
-  Label,
+  Input,
 } from 'renderer/components';
 
 import { Dropzone, File } from './Dropzone';
@@ -39,33 +39,30 @@ export function SendFiles() {
     });
   };
   return (
-    <FStack horizontal>
-      <FStack horizontalAlign='end' tokens={{ childrenGap: 12 }}>
-        <FStack>
-          <Label>Transfer files</Label>
-          <Dropzone value={files} onChange={setFiles} />
-        </FStack>
-        <FStack horizontal tokens={{ childrenGap: 12 }}>
-          <Button
-            variant='default'
-            size='xs'
-            leftIcon={<IconClearAll size={14} />}
-            disabled={files.length === 0}
-            onClick={() => setFiles([])}
-          >
-            Clear Files
-          </Button>
-          <Button
-            variant='default'
-            size='xs'
-            leftIcon={<IconSend size={14} />}
-            disabled={files.length === 0}
-            onClick={sendFiles}
-          >
-            Send Files
-          </Button>
-        </FStack>
-      </FStack>
-    </FStack>
+    <Group position='right' spacing='sm'>
+      <Input.Wrapper label='Transfer files'>
+        <Dropzone value={files} onChange={setFiles} />
+      </Input.Wrapper>
+      <Group spacing={12}>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconClearAll size={14} />}
+          disabled={files.length === 0}
+          onClick={() => setFiles([])}
+        >
+          Clear Files
+        </Button>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconSend size={14} />}
+          disabled={files.length === 0}
+          onClick={sendFiles}
+        >
+          Send Files
+        </Button>
+      </Group>
+    </Group>
   );
 }

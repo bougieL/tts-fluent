@@ -3,11 +3,12 @@ import { clipboard, shell } from 'electron';
 import qrcode from 'qrcode';
 
 import {
-  FStack,
-  Label,
+  Group,
+  Input,
   Link,
   MessageBar,
   MessageBarType,
+  Stack,
 } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
@@ -41,7 +42,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
     return null;
   }
   return (
-    <FStack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
+    <Stack spacing={12}>
       <MessageBar messageBarType={MessageBarType.success}>
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
@@ -66,24 +67,26 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
           </Link>
         )}
       </MessageBar>
-      <FStack horizontal tokens={{ childrenGap: 12 }}>
-        <FStack tokens={{ childrenGap: 12 }}>
-          <FStack>
-            <Label>Qrcode</Label>
-            <canvas
-              ref={canvasRef}
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                clipboard.writeText(serverUrl);
-                new Notification('Server url copied to clipboard 😁').onclick =
-                  () => {};
-              }}
-            />
-          </FStack>
+      <Group align='flex-start' noWrap>
+        <Stack spacing='sm'>
+          <Input.Wrapper label='Qrcode'>
+            <Group>
+              <canvas
+                ref={canvasRef}
+                style={{ cursor: 'pointer', width: 250, height: 250 }}
+                onClick={() => {
+                  clipboard.writeText(serverUrl);
+                  new Notification(
+                    'Server url copied to clipboard 😁'
+                  ).onclick = () => {};
+                }}
+              />
+            </Group>
+          </Input.Wrapper>
           {bottomSlot}
-        </FStack>
+        </Stack>
         {rightSlot}
-      </FStack>
-    </FStack>
+      </Group>
+    </Stack>
   );
 }

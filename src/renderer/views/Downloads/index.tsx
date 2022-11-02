@@ -6,8 +6,8 @@ import { DownloadsCache } from 'caches';
 import {
   FocusZone,
   FocusZoneDirection,
-  FStack,
   List,
+  Stack,
   TextField,
 } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
@@ -60,7 +60,7 @@ const Downloads: FC = () => {
         onChange={(_, value) => handleFilterChange(value!)}
         placeholder='Type some keywords here (use blank space separate) ...'
       />
-      <FStack
+      <Stack
         styles={{
           // @ts-ignore
           root: { height: 'calc(100vh - 144px)', overflow: 'overlay' },
@@ -73,7 +73,7 @@ const Downloads: FC = () => {
             return <Cell key={item?.id} item={item!} />;
           }}
         />
-      </FStack>
+      </Stack>
     </FocusZone>
   );
 };

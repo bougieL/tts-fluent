@@ -1,10 +1,9 @@
 import {
   Button,
-  Grid,
+  Group,
   IconDownload,
   IconPlayerPlay,
   Loader,
-  Space,
 } from 'renderer/components';
 
 interface Props {
@@ -21,7 +20,7 @@ export function Buttons({
   onDownloadClick,
 }: Props) {
   return (
-    <Grid justify='flex-end' style={{ width: '100%' }}>
+    <Group position='right' spacing='sm'>
       {loading && <Loader size='sm' />}
       <Button
         variant='default'
@@ -32,7 +31,6 @@ export function Buttons({
       >
         Play
       </Button>
-      <Space w='sm' />
       <Button
         variant='default'
         leftIcon={<IconDownload size={14} />}
@@ -42,6 +40,6 @@ export function Buttons({
       >
         Download
       </Button>
-    </Grid>
+    </Group>
   );
 }

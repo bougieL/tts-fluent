@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-import { Button, FStack } from 'renderer/components';
+import { Button, Group, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 import { createStorage, openSubWindow } from 'renderer/lib';
 
@@ -67,14 +67,9 @@ const TTSCat: FC = () => {
   };
 
   return (
-    <FStack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
+    <Stack spacing='md'>
       <Display textConfig={textConfig} aiChatConfig={aiConfig} />
-      <FStack
-        horizontal
-        horizontalAlign='end'
-        styles={{ root: { paddingTop: 36 } }}
-        tokens={{ childrenGap: 12 }}
-      >
+      <Group position='right' spacing='sm'>
         <Button variant='default' size='xs' onClick={handleEditInterceptor}>
           Edit interceptor
         </Button>
@@ -84,8 +79,8 @@ const TTSCat: FC = () => {
         <Button variant='default' size='xs' onClick={handleEdit}>
           Edit
         </Button>
-      </FStack>
-    </FStack>
+      </Group>
+    </Stack>
   );
 };
 

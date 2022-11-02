@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { FStack } from 'renderer/components';
+import { Stack } from 'renderer/components';
 
 import { Clipboard } from './Clipboard';
 import { ConnectedDevices } from './ConnectedDevices';
@@ -9,17 +9,15 @@ import { SendFiles } from './SendFiles';
 
 const Transfer: FC = () => {
   return (
-    <FStack horizontal tokens={{ childrenGap: 12 }}>
-      <HostServer
-        bottomSlot={<ConnectedDevices />}
-        rightSlot={
-          <FStack tokens={{ childrenGap: 12 }}>
-            <SendFiles />
-            <Clipboard />
-          </FStack>
-        }
-      />
-    </FStack>
+    <HostServer
+      bottomSlot={<ConnectedDevices />}
+      rightSlot={
+        <Stack spacing='sm'>
+          <SendFiles />
+          <Clipboard />
+        </Stack>
+      }
+    />
   );
 };
 

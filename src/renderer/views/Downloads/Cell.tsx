@@ -6,10 +6,11 @@ import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
-  FStack,
+  Grid,
   IconButton,
   ProgressIndicator,
   Separator,
+  Stack,
   Text,
   TooltipHost,
 } from 'renderer/components';
@@ -117,7 +118,7 @@ export function Cell({ item }: CellProps) {
     return () => {};
   }, [item.path, item.status]);
   return (
-    <FStack>
+    <Stack>
       <Separator />
       <Text size='lg'>{item.text.slice(0, 20)}</Text>
       <Text>
@@ -127,28 +128,18 @@ export function Cell({ item }: CellProps) {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
             return (
-              <FStack
-                horizontal
-                horizontalAlign='space-between'
-                verticalAlign='center'
-                tokens={{ childrenGap: 20 }}
-              >
+              <Grid justify='space-between' align='center' gutter={20}>
                 <ProgressIndicator
                   label='Downloading'
                   description={size}
                   styles={{ root: { flex: 1 } }}
                 />
                 {renderDelete()}
-              </FStack>
+              </Grid>
             );
           case DownloadsCache.Status.error:
             return (
-              <FStack
-                horizontal
-                verticalAlign='center'
-                horizontalAlign='end'
-                tokens={{ childrenGap: 10 }}
-              >
+              <Grid justify='flex-end' align='center' gutter={10}>
                 <Text size='sm' color='red'>
                   Download failed
                 </Text>
@@ -161,20 +152,19 @@ export function Cell({ item }: CellProps) {
                   />
                 </TooltipHost>
                 {renderActions()}
-              </FStack>
+              </Grid>
             );
           case DownloadsCache.Status.finished:
             return (
-              <FStack
-                horizontal
-                horizontalAlign='end'
-                verticalAlign='center'
+              <Grid
+                justify='flex-end'
+                align='center'
+                gutter={10}
                 styles={{ root: { paddingTop: 12 } }}
-                tokens={{ childrenGap: 10 }}
               >
                 <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
                 {renderActions()}
-              </FStack>
+              </Grid>
             );
           default:
             return null;
@@ -187,6 +177,6 @@ export function Cell({ item }: CellProps) {
         renderDelete,
         size,
       ])}
-    </FStack>
+    </Stack>
   );
 }

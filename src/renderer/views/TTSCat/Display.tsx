@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { shell } from 'electron';
 
-import { FStack, Link, Separator, Text } from 'renderer/components';
+import { Input, Link, Separator, Stack } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
@@ -71,84 +71,62 @@ export function Display({ textConfig, aiChatConfig }: Props) {
       }
     };
 
-  const renderContent = () => {
-    if (!serverPort) {
-      return null;
-    }
-    return (
-      <FStack style={{ paddingTop: 12 }} tokens={{ childrenGap: 6 }}>
-        <FStack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
-            Danmuji
-          </Text>
-          <FStack tokens={{ childrenGap: 6 }}>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(danmuUrls.url1)}
-            >
-              {danmuUrls.url1}
-            </Link>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(danmuUrls.url2)}
-            >
-              {danmuUrls.url2}
-            </Link>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(danmuUrls.url3, true)}
-            >
-              {danmuUrls.url3}
-            </Link>
-          </FStack>
-        </FStack>
-        <Separator />
-        <FStack>
-          <Text style={{ fontWeight: 'bold', fontSize: 12, marginBottom: 8 }}>
-            Danmuji with AI chat
-          </Text>
-          <FStack tokens={{ childrenGap: 6 }}>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(aiChatUrls.url1)}
-            >
-              {aiChatUrls.url1}
-            </Link>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(aiChatUrls.url2)}
-            >
-              {aiChatUrls.url2}
-            </Link>
-            <Link
-              href='##'
-              style={{ fontSize: 12 }}
-              onClick={createClick(aiChatUrls.url3, true)}
-            >
-              {aiChatUrls.url3}
-            </Link>
-          </FStack>
-        </FStack>
-      </FStack>
-    );
-  };
-
+  if (!serverPort) {
+    return null;
+  }
   return (
-    <FStack
-      tokens={{ childrenGap: 18 }}
-      styles={{
-        root: {
-          width: '100%',
-          height: 'calc(100vh - 294px)',
-        },
-      }}
-    >
-      {renderContent()}
-    </FStack>
+    <Stack style={{ paddingTop: 12 }} spacing='sm'>
+      <Input.Wrapper label='Danmuji'>
+        <Stack spacing='sm'>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(danmuUrls.url1)}
+          >
+            {danmuUrls.url1}
+          </Link>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(danmuUrls.url2)}
+          >
+            {danmuUrls.url2}
+          </Link>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(danmuUrls.url3, true)}
+          >
+            {danmuUrls.url3}
+          </Link>
+        </Stack>
+      </Input.Wrapper>
+      <Separator />
+      <Input.Wrapper label='Danmuji with AI chat'>
+        <Stack spacing='sm'>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(aiChatUrls.url1)}
+          >
+            {aiChatUrls.url1}
+          </Link>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(aiChatUrls.url2)}
+          >
+            {aiChatUrls.url2}
+          </Link>
+          <Link
+            href='##'
+            style={{ fontSize: 12 }}
+            onClick={createClick(aiChatUrls.url3, true)}
+          >
+            {aiChatUrls.url3}
+          </Link>
+        </Stack>
+      </Input.Wrapper>
+    </Stack>
   );
 }

@@ -5,10 +5,11 @@ import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 import {
   Button,
-  FStack,
+  Group,
   IconDownload,
   IconSend,
-  Label,
+  Input,
+  Space,
   TextField,
 } from 'renderer/components';
 
@@ -30,32 +31,30 @@ export function Clipboard() {
     });
   };
   return (
-    <FStack>
-      <Label>Text</Label>
-      <FStack tokens={{ childrenGap: 12 }}>
-        <TextField
-          value={value}
-          onChange={(_, newValue = '') => setValue(newValue)}
-        />
-        <FStack horizontal tokens={{ childrenGap: 12 }} horizontalAlign='end'>
-          <Button
-            leftIcon={<IconDownload size={14} />}
-            variant='default'
-            size='xs'
-            onClick={handleGetClick}
-          >
-            Get text
-          </Button>
-          <Button
-            leftIcon={<IconSend size={14} />}
-            variant='default'
-            size='xs'
-            onClick={handleSendClick}
-          >
-            Send {value.length > 0 ? 'text' : 'clipboard'}
-          </Button>
-        </FStack>
-      </FStack>
-    </FStack>
+    <Input.Wrapper label='Text'>
+      <TextField
+        value={value}
+        onChange={(_, newValue = '') => setValue(newValue)}
+      />
+      <Space h='sm' />
+      <Group spacing='sm' position='right'>
+        <Button
+          leftIcon={<IconDownload size={14} />}
+          variant='default'
+          size='xs'
+          onClick={handleGetClick}
+        >
+          Get text
+        </Button>
+        <Button
+          leftIcon={<IconSend size={14} />}
+          variant='default'
+          size='xs'
+          onClick={handleSendClick}
+        >
+          Send {value.length > 0 ? 'text' : 'clipboard'}
+        </Button>
+      </Group>
+    </Input.Wrapper>
   );
 }

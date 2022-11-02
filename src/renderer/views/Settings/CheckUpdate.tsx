@@ -1,7 +1,7 @@
 import { shell } from 'electron';
 
 import { isProd } from 'lib/env';
-import { CompoundButton, FStack, Label } from 'renderer/components';
+import { CompoundButton, Group, Input } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
 import { openSubWindow } from 'renderer/lib';
 
@@ -12,14 +12,10 @@ const CheckUpdate = () => {
     return null;
   }
   return (
-    <>
-      <Label>New version! {isProd ? '' : `hasUpdate = ${hasUpdate}`}</Label>
-      <FStack
-        horizontal
-        horizontalAlign='start'
-        tokens={{ childrenGap: 12 }}
-        styles={{ root: { marginTop: '0 !important' } }}
-      >
+    <Input.Wrapper
+      label={`New version! ${isProd ? '' : `hasUpdate = ${hasUpdate}`}`}
+    >
+      <Group spacing='sm'>
         <CompoundButton
           primary
           secondaryText={`Click here update to ${remoteVersion}`}
@@ -44,8 +40,8 @@ const CheckUpdate = () => {
         >
           Change log
         </CompoundButton>
-      </FStack>
-    </>
+      </Group>
+    </Input.Wrapper>
   );
 };
 

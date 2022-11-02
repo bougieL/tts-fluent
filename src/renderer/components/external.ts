@@ -6,7 +6,6 @@ export {
   IconButton,
   PrimaryButton,
 } from '@fluentui/react/lib/Button';
-export { Dropdown } from '@fluentui/react/lib/Dropdown';
 export { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
 export { Icon } from '@fluentui/react/lib/Icon';
 export { Label } from '@fluentui/react/lib/Label';
@@ -17,7 +16,6 @@ export { Pivot, PivotItem } from '@fluentui/react/lib/Pivot';
 export { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
 export { Separator } from '@fluentui/react/lib/Separator';
 export { Slider as FSlider } from '@fluentui/react/lib/Slider';
-export { Stack as FStack } from '@fluentui/react/lib/Stack';
 export { TextField } from '@fluentui/react/lib/TextField';
 export { Toggle } from '@fluentui/react/lib/Toggle';
 export { TooltipHost } from '@fluentui/react/lib/Tooltip';

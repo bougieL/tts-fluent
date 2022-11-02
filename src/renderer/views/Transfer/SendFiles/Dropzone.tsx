@@ -43,7 +43,7 @@ export function Dropzone({ value = [], onChange }: Props) {
     <div
       {...getRootProps()}
       style={{
-        width: 'calc(100vw - 286px)',
+        width: 'calc(100vw - 290px)',
         height: 'calc(100vh - 326px)',
         border: '1px solid #ccc',
         display: 'flex',

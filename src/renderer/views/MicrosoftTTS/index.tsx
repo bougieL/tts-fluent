@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
-import { FStack } from 'renderer/components';
+import { Stack } from 'renderer/components';
 import { useAudio, useFn } from 'renderer/hooks';
 import { createStorage } from 'renderer/lib';
 
@@ -96,7 +96,7 @@ const MicrosoftTTS: FC = () => {
   });
 
   return (
-    <FStack tokens={{ childrenGap: 24 }} styles={{ root: { height: '100%' } }}>
+    <Stack spacing='md'>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {
@@ -113,7 +113,7 @@ const MicrosoftTTS: FC = () => {
         disabled={empty || loading}
         loading={loading}
       />
-    </FStack>
+    </Stack>
   );
 };
 
