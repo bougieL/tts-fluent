@@ -4,9 +4,9 @@ import fs from 'fs-extra';
 import { TransferCache } from 'caches/transfer';
 import {
   ActivityItem,
+  Divider,
   Icon,
   Input,
-  Separator,
   Stack,
   Text,
 } from 'renderer/components';
@@ -51,7 +51,7 @@ export function ConnectedDevices() {
                   },
                 }}
               />
-              <Separator />
+              <Divider />
             </Fragment>
           );
         })}

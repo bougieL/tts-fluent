@@ -1,12 +1,11 @@
 import { shell } from 'electron';
 
-import { Button, Grid, Label, Space } from 'renderer/components';
+import { Button, Group, Input } from 'renderer/components';
 
 const Feedback = () => {
   return (
-    <>
-      <Label>Feedback</Label>
-      <Grid>
+    <Input.Wrapper label='Feedback'>
+      <Group spacing='sm'>
         <Button
           size='xs'
           variant='default'
@@ -18,7 +17,6 @@ const Feedback = () => {
         >
           Report a bug 🐛
         </Button>
-        <Space w='sm' />
         <Button
           size='xs'
           variant='default'
@@ -30,8 +28,8 @@ const Feedback = () => {
         >
           Give a suggesstion 💻
         </Button>
-      </Grid>
-    </>
+      </Group>
+    </Input.Wrapper>
   );
 };
 

@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 
 import { PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
-import { Button, Grid, Label, Space } from 'renderer/components';
+import { Button, Group, Input } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {
@@ -37,18 +37,16 @@ const ManagePlayCache = () => {
     return watcher.close;
   }, []);
   return (
-    <>
-      <Label>Manage play cache</Label>
-      <Grid>
+    <Input.Wrapper label='Manage play cache'>
+      <Group spacing='xs'>
         <Button variant='default' size='xs' onClick={handleClearCache}>
           Clear cache ({size})
         </Button>
-        <Space w='xs' />
         <Button variant='default' size='xs' onClick={handleOpenCache}>
           Open cache directory
         </Button>
-      </Grid>
-    </>
+      </Group>
+    </Input.Wrapper>
   );
 };
 

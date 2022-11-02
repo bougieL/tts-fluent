@@ -6,12 +6,13 @@ import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
+  Divider,
   Grid,
   IconButton,
   ProgressIndicator,
-  Separator,
   Stack,
   Text,
+  Tooltip,
   TooltipHost,
 } from 'renderer/components';
 import { useAsync, useAudio, useFn } from 'renderer/hooks';
@@ -48,27 +49,27 @@ export function Cell({ item }: CellProps) {
   const fileTip = useFn((text: string) => (exists ? text : 'File removed'));
   const renderDelete = useFn(() => {
     return (
-      <TooltipHost content='Delete' setAriaDescribedBy={false}>
+      <Tooltip label='Delete'>
         <IconButton
           iconProps={{ iconName: 'Delete' }}
           aria-label='Delete'
           onClick={handleRemove}
         />
-      </TooltipHost>
+      </Tooltip>
     );
   });
   const renderActions = useFn(() => {
     return (
       <>
-        <TooltipHost content={fileTip('Play')} setAriaDescribedBy={false}>
+        <Tooltip label={fileTip('Play')}>
           <IconButton
             iconProps={{ iconName: 'Play' }}
             aria-label='Play'
             disabled={!exists}
             onClick={handlePlayClick}
           />
-        </TooltipHost>
-        <TooltipHost content='Copy SSML' setAriaDescribedBy={false}>
+        </Tooltip>
+        <Tooltip label='Copy SSML'>
           <IconButton
             iconProps={{ iconName: 'Copy' }}
             aria-label='Copy'
@@ -76,8 +77,8 @@ export function Cell({ item }: CellProps) {
               clipboard.writeText(item.content);
             }}
           />
-        </TooltipHost>
-        <TooltipHost content='Copy pure text' setAriaDescribedBy={false}>
+        </Tooltip>
+        <Tooltip label='Copy pure text'>
           <IconButton
             iconProps={{ iconName: 'PasteAsText' }}
             aria-label='Copy'
@@ -85,11 +86,8 @@ export function Cell({ item }: CellProps) {
               clipboard.writeText(item.text);
             }}
           />
-        </TooltipHost>
-        <TooltipHost
-          content={fileTip('Open mp3 file in explorer')}
-          setAriaDescribedBy={false}
-        >
+        </Tooltip>
+        <Tooltip label={fileTip('Open mp3 file in explorer')}>
           <IconButton
             iconProps={{ iconName: 'MusicInCollection' }}
             aria-label='MusicInCollection'
@@ -98,7 +96,7 @@ export function Cell({ item }: CellProps) {
               shell.showItemInFolder(item.path);
             }}
           />
-        </TooltipHost>
+        </Tooltip>
         {renderDelete()}
       </>
     );
@@ -119,7 +117,7 @@ export function Cell({ item }: CellProps) {
   }, [item.path, item.status]);
   return (
     <Stack>
-      <Separator />
+      <Divider />
       <Text size='lg'>{item.text.slice(0, 20)}</Text>
       <Text>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
@@ -144,13 +142,13 @@ export function Cell({ item }: CellProps) {
                   Download failed
                 </Text>
                 <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
-                <TooltipHost content='Retry' setAriaDescribedBy={false}>
+                <Tooltip label='Retry'>
                   <IconButton
                     iconProps={{ iconName: 'Refresh' }}
                     aria-label='Retry'
                     onClick={handleRetryClick}
                   />
-                </TooltipHost>
+                </Tooltip>
                 {renderActions()}
               </Grid>
             );

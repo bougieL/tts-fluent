@@ -1,24 +1,13 @@
 /* eslint-disable simple-import-sort/exports */
 export { ActivityItem } from '@fluentui/react/lib/ActivityItem';
-export {
-  CompoundButton,
-  DefaultButton,
-  IconButton,
-  PrimaryButton,
-} from '@fluentui/react/lib/Button';
+export { CompoundButton, IconButton } from '@fluentui/react/lib/Button';
 export { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
 export { Icon } from '@fluentui/react/lib/Icon';
-export { Label } from '@fluentui/react/lib/Label';
 export { Link } from '@fluentui/react/lib/Link';
 export { List } from '@fluentui/react/lib/List';
 export { MessageBar, MessageBarType } from '@fluentui/react/lib/MessageBar';
-export { Pivot, PivotItem } from '@fluentui/react/lib/Pivot';
 export { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
-export { Separator } from '@fluentui/react/lib/Separator';
-export { Slider as FSlider } from '@fluentui/react/lib/Slider';
 export { TextField } from '@fluentui/react/lib/TextField';
-export { Toggle } from '@fluentui/react/lib/Toggle';
-export { TooltipHost } from '@fluentui/react/lib/Tooltip';
 
 export {
   Button,
@@ -36,6 +25,8 @@ export {
   TextInput,
   Textarea,
   Loader,
+  Divider,
+  Tooltip,
 } from '@mantine/core';
 // export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
 

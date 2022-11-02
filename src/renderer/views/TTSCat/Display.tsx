@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { shell } from 'electron';
 
-import { Input, Link, Separator, Stack } from 'renderer/components';
+import { Divider, Input, Link, Stack } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
@@ -101,7 +101,7 @@ export function Display({ textConfig, aiChatConfig }: Props) {
           </Link>
         </Stack>
       </Input.Wrapper>
-      <Separator />
+      <Divider />
       <Input.Wrapper label='Danmuji with AI chat'>
         <Stack spacing='sm'>
           <Link
