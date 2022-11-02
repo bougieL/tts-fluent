@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
-import { TextField } from 'renderer/components';
+import { TextInput } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const TTSDownloadsDirectory = () => {
@@ -28,7 +28,7 @@ const TTSDownloadsDirectory = () => {
     setPath(downloadsDir);
   }, []);
   return (
-    <TextField
+    <TextInput
       label='TTS Downloads directory'
       type='button'
       value={path}

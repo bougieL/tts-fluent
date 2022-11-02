@@ -3,11 +3,11 @@ import { clipboard, shell } from 'electron';
 import qrcode from 'qrcode';
 
 import {
+  Alert,
+  Anchor,
   Group,
+  IconCircleCheck,
   Input,
-  Link,
-  MessageBar,
-  MessageBarType,
   Stack,
 } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
@@ -22,6 +22,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const serverUrl = `${serverOrigin}/transfer`;
   const debugUrl = `http://${serverIp}:1213/transfer`;
+
   useEffect(() => {
     if (!serverName) return;
     qrcode.toCanvas(
@@ -38,35 +39,33 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
       }
     );
   }, [serverName, serverUrl]);
+
   if (!serverName) {
     return null;
   }
+
   return (
-    <Stack spacing={12}>
-      <MessageBar messageBarType={MessageBarType.success}>
+    <Stack spacing='md'>
+      <Alert color='green' icon={<IconCircleCheck />}>
         Start transfer server in {serverName} success, scan the qrcode to
         transfer files.
-        <Link
-          href='##'
-          onClick={(event) => {
-            event.preventDefault();
+        <Anchor
+          onClick={() => {
             shell.openExternal(serverUrl);
           }}
         >
           Open transfer page
-        </Link>
+        </Anchor>
         {process.env.NODE_ENV === 'development' && (
-          <Link
-            href='##'
-            onClick={(event) => {
-              event.preventDefault();
+          <Anchor
+            onClick={() => {
               shell.openExternal(debugUrl);
             }}
           >
             Open debug transfer page
-          </Link>
+          </Anchor>
         )}
-      </MessageBar>
+      </Alert>
       <Group align='flex-start' noWrap>
         <Stack spacing='sm'>
           <Input.Wrapper label='Qrcode'>

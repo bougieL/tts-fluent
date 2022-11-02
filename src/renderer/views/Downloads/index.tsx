@@ -3,13 +3,7 @@ import { ssmlToText } from '@bougiel/tts-node/lib/ssml/index';
 import fs from 'fs-extra';
 
 import { DownloadsCache } from 'caches';
-import {
-  FocusZone,
-  FocusZoneDirection,
-  List,
-  Stack,
-  TextField,
-} from 'renderer/components';
+import { List, Stack, TextInput } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 import { Cell, Item } from './Cell';
@@ -20,10 +14,13 @@ const globalState = {
 
 const Downloads: FC = () => {
   const [list, setList] = useState<Item[]>([]);
+
   const [filterReg, setFilterReg] = useState<RegExp>(
     new RegExp(globalState.filter.split(/\s+/).join('.*'))
   );
+
   const [filter, setFilter] = useState(globalState.filter);
+
   useAsync(async () => {
     const p = await DownloadsCache.getCachePath();
     const updater = async () => {
@@ -37,7 +34,9 @@ const Downloads: FC = () => {
     updater();
     return watcher.close;
   }, []);
+
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+
   const handleFilterChange = (value: string) => {
     setFilter(value);
     globalState.filter = value;
@@ -47,25 +46,22 @@ const Downloads: FC = () => {
       setFilterReg(new RegExp(v.split(/\s+/).join('.*')));
     }, 500);
   };
+
   const filteredList = useMemo(() => {
     return filterReg
       ? list.filter((item) => filterReg.test(item.content))
       : list;
   }, [filterReg, list]);
+
   return (
-    <FocusZone direction={FocusZoneDirection.vertical}>
-      <TextField
+    <Stack>
+      <TextInput
         label='Search content'
         value={filter}
-        onChange={(_, value) => handleFilterChange(value!)}
+        onChange={(event) => handleFilterChange(event.target.value)}
         placeholder='Type some keywords here (use blank space separate) ...'
       />
-      <Stack
-        styles={{
-          // @ts-ignore
-          root: { height: 'calc(100vh - 144px)', overflow: 'overlay' },
-        }}
-      >
+      <Stack style={{ height: 'calc(100vh - 140px)', overflow: 'overlay' }}>
         <List
           items={filteredList}
           getKey={(item) => item.id}
@@ -74,7 +70,7 @@ const Downloads: FC = () => {
           }}
         />
       </Stack>
-    </FocusZone>
+    </Stack>
   );
 };
 

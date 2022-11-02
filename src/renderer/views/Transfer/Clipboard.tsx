@@ -10,7 +10,7 @@ import {
   IconSend,
   Input,
   Space,
-  TextField,
+  TextInput,
 } from 'renderer/components';
 
 export function Clipboard() {
@@ -32,9 +32,9 @@ export function Clipboard() {
   };
   return (
     <Input.Wrapper label='Text'>
-      <TextField
+      <TextInput
         value={value}
-        onChange={(_, newValue = '') => setValue(newValue)}
+        onChange={(event) => setValue(event.target.value)}
       />
       <Space h='sm' />
       <Group spacing='sm' position='right'>

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { shell } from 'electron';
 
-import { Divider, Input, Link, Stack } from 'renderer/components';
+import { Anchor, Divider, Input, Stack } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
@@ -62,8 +62,7 @@ export function Display({ textConfig, aiChatConfig }: Props) {
 
   const createClick =
     (url: string, open = false) =>
-    (event: React.MouseEvent) => {
-      event.preventDefault();
+    () => {
       navigator.clipboard.writeText(url);
       new Notification('Url copied to clipboard 😄').onclick = () => {};
       if (open) {
@@ -78,53 +77,47 @@ export function Display({ textConfig, aiChatConfig }: Props) {
     <Stack style={{ paddingTop: 12 }} spacing='sm'>
       <Input.Wrapper label='Danmuji'>
         <Stack spacing='sm'>
-          <Link
-            href='##'
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(danmuUrls.url1)}
           >
             {danmuUrls.url1}
-          </Link>
-          <Link
-            href='##'
+          </Anchor>
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(danmuUrls.url2)}
           >
             {danmuUrls.url2}
-          </Link>
-          <Link
-            href='##'
+          </Anchor>
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(danmuUrls.url3, true)}
           >
             {danmuUrls.url3}
-          </Link>
+          </Anchor>
         </Stack>
       </Input.Wrapper>
       <Divider />
       <Input.Wrapper label='Danmuji with AI chat'>
         <Stack spacing='sm'>
-          <Link
-            href='##'
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(aiChatUrls.url1)}
           >
             {aiChatUrls.url1}
-          </Link>
-          <Link
-            href='##'
+          </Anchor>
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(aiChatUrls.url2)}
           >
             {aiChatUrls.url2}
-          </Link>
-          <Link
-            href='##'
+          </Anchor>
+          <Anchor
             style={{ fontSize: 12 }}
             onClick={createClick(aiChatUrls.url3, true)}
           >
             {aiChatUrls.url3}
-          </Link>
+          </Anchor>
         </Stack>
       </Input.Wrapper>
     </Stack>

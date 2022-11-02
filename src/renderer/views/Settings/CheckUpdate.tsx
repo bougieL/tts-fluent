@@ -1,7 +1,7 @@
 import { shell } from 'electron';
 
 import { isProd } from 'lib/env';
-import { CompoundButton, Group, Input } from 'renderer/components';
+import { Button, Group, Input } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
 import { openSubWindow } from 'renderer/lib';
 
@@ -16,30 +16,28 @@ const CheckUpdate = () => {
       label={`New version! ${isProd ? '' : `hasUpdate = ${hasUpdate}`}`}
     >
       <Group spacing='sm'>
-        <CompoundButton
-          primary
-          secondaryText={`Click here update to ${remoteVersion}`}
+        <Button
+          size='xs'
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/releases'
             );
           }}
-          styles={{ label: { fontSize: 18 } }}
         >
-          🤡 Download 🤡
-        </CompoundButton>
-        <CompoundButton
-          secondaryText='Click here to view change log'
+          🤡 Download {remoteVersion} 🤡
+        </Button>
+        <Button
+          size='xs'
+          variant='default'
           onClick={() => {
             openSubWindow('/window/markdown', {
               title: 'Change log',
               content: changeLog,
             });
           }}
-          styles={{ label: { fontSize: 18 } }}
         >
-          Change log
-        </CompoundButton>
+          View change log
+        </Button>
       </Group>
     </Input.Wrapper>
   );

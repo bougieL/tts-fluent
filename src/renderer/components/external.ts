@@ -1,13 +1,8 @@
 /* eslint-disable simple-import-sort/exports */
 export { ActivityItem } from '@fluentui/react/lib/ActivityItem';
-export { CompoundButton, IconButton } from '@fluentui/react/lib/Button';
-export { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
 export { Icon } from '@fluentui/react/lib/Icon';
-export { Link } from '@fluentui/react/lib/Link';
 export { List } from '@fluentui/react/lib/List';
-export { MessageBar, MessageBarType } from '@fluentui/react/lib/MessageBar';
 export { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
-export { TextField } from '@fluentui/react/lib/TextField';
 
 export {
   Button,
@@ -27,12 +22,17 @@ export {
   Loader,
   Divider,
   Tooltip,
+  Anchor,
+  ActionIcon,
+  Alert,
+  // List,
 } from '@mantine/core';
 // export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
 
 export {
   IconMenu2,
   IconPlayerPlay,
+  IconPlayerStop,
   IconDownload,
   IconSend,
   IconClearAll,
@@ -42,4 +42,9 @@ export {
   IconSettings,
   IconMicrophone,
   IconPokeball,
+  IconTrash,
+  IconCopy,
+  IconFolders,
+  IconRefresh,
+  IconCircleCheck,
 } from '@tabler/icons';

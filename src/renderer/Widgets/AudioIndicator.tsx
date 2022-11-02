@@ -1,6 +1,11 @@
 import { useLayoutEffect, useState } from 'react';
 
-import { IconButton, Tooltip } from 'renderer/components';
+import {
+  ActionIcon,
+  IconPlayerPlay,
+  IconPlayerStop,
+  Tooltip,
+} from 'renderer/components';
 import { useAudio } from 'renderer/hooks';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
@@ -38,14 +43,13 @@ export function AudioIndicator() {
 
   return (
     <Tooltip label={status === AudioStatus.stopped ? 'Play' : 'Stop'}>
-      <IconButton
-        onClick={handleClick}
-        iconProps={{
-          iconName: status === AudioStatus.stopped ? 'Play' : 'Stop',
-          styles: { root: { fontSize: 24 } },
-        }}
-        size={24}
-      />
+      <ActionIcon onClick={handleClick}>
+        {status === AudioStatus.stopped ? (
+          <IconPlayerPlay />
+        ) : (
+          <IconPlayerStop />
+        )}
+      </ActionIcon>
     </Tooltip>
   );
 }

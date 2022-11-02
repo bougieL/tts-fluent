@@ -6,14 +6,18 @@ import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import {
+  ActionIcon,
   Divider,
-  Grid,
-  IconButton,
+  Group,
+  IconCopy,
+  IconFolders,
+  IconPlayerPlay,
+  IconRefresh,
+  IconTrash,
   ProgressIndicator,
   Stack,
   Text,
   Tooltip,
-  TooltipHost,
 } from 'renderer/components';
 import { useAsync, useAudio, useFn } from 'renderer/hooks';
 
@@ -29,78 +33,79 @@ export function Cell({ item }: CellProps) {
   const [exists, setExists] = useState(true);
   const [size, setSize] = useState('0 B');
   const { audio, setIsStreamAudio } = useAudio();
+
   const handlePlayClick = useFn(async () => {
     setIsStreamAudio(false);
     audio.setSource(item.path);
     audio.play();
   });
+
   const handleRemove = useFn(async () => {
     const sure = confirm('Are you sure to delete this record?');
     if (sure) {
       ipcRenderer.invoke(IpcEvents.ttsMidrosoftDownloadRemove, item.id);
     }
   });
+
   const handleRetryClick = useFn(async () => {
     await ipcRenderer.invoke(IpcEvents.ttsMicrosoftDownload, {
       ssml: item.content,
       id: item.id,
     });
   });
+
   const fileTip = useFn((text: string) => (exists ? text : 'File removed'));
+
   const renderDelete = useFn(() => {
     return (
       <Tooltip label='Delete'>
-        <IconButton
-          iconProps={{ iconName: 'Delete' }}
-          aria-label='Delete'
-          onClick={handleRemove}
-        />
+        <ActionIcon onClick={handleRemove}>
+          <IconTrash size={16} />
+        </ActionIcon>
       </Tooltip>
     );
   });
+
   const renderActions = useFn(() => {
     return (
       <>
         <Tooltip label={fileTip('Play')}>
-          <IconButton
-            iconProps={{ iconName: 'Play' }}
-            aria-label='Play'
-            disabled={!exists}
-            onClick={handlePlayClick}
-          />
+          <ActionIcon onClick={handlePlayClick}>
+            <IconPlayerPlay size={16} />
+          </ActionIcon>
         </Tooltip>
         <Tooltip label='Copy SSML'>
-          <IconButton
-            iconProps={{ iconName: 'Copy' }}
-            aria-label='Copy'
+          <ActionIcon
             onClick={() => {
               clipboard.writeText(item.content);
             }}
-          />
+          >
+            <IconCopy size={16} />
+          </ActionIcon>
         </Tooltip>
         <Tooltip label='Copy pure text'>
-          <IconButton
-            iconProps={{ iconName: 'PasteAsText' }}
-            aria-label='Copy'
+          <ActionIcon
             onClick={() => {
               clipboard.writeText(item.text);
             }}
-          />
+          >
+            <IconCopy size={16} />
+          </ActionIcon>
         </Tooltip>
         <Tooltip label={fileTip('Open mp3 file in explorer')}>
-          <IconButton
-            iconProps={{ iconName: 'MusicInCollection' }}
-            aria-label='MusicInCollection'
-            disabled={!exists}
+          <ActionIcon
             onClick={() => {
               shell.showItemInFolder(item.path);
             }}
-          />
+          >
+            <IconFolders size={16} />
+          </ActionIcon>
         </Tooltip>
         {renderDelete()}
       </>
     );
   });
+
   useAsync(async () => {
     const updater = async () => {
       const exists = await fs.pathExists(item.path);
@@ -115,6 +120,7 @@ export function Cell({ item }: CellProps) {
     }
     return () => {};
   }, [item.path, item.status]);
+
   return (
     <Stack>
       <Divider />
@@ -126,43 +132,36 @@ export function Cell({ item }: CellProps) {
         switch (item.status) {
           case DownloadsCache.Status.downloading:
             return (
-              <Grid justify='space-between' align='center' gutter={20}>
+              <Group position='apart' align='center' spacing={20}>
                 <ProgressIndicator
                   label='Downloading'
                   description={size}
                   styles={{ root: { flex: 1 } }}
                 />
                 {renderDelete()}
-              </Grid>
+              </Group>
             );
           case DownloadsCache.Status.error:
             return (
-              <Grid justify='flex-end' align='center' gutter={10}>
+              <Group position='right' align='center' spacing={10}>
                 <Text size='sm' color='red'>
                   Download failed
                 </Text>
                 <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
                 <Tooltip label='Retry'>
-                  <IconButton
-                    iconProps={{ iconName: 'Refresh' }}
-                    aria-label='Retry'
-                    onClick={handleRetryClick}
-                  />
+                  <ActionIcon onClick={handleRetryClick}>
+                    <IconRefresh />
+                  </ActionIcon>
                 </Tooltip>
                 {renderActions()}
-              </Grid>
+              </Group>
             );
           case DownloadsCache.Status.finished:
             return (
-              <Grid
-                justify='flex-end'
-                align='center'
-                gutter={10}
-                styles={{ root: { paddingTop: 12 } }}
-              >
+              <Group position='right' align='center' spacing={10}>
                 <Text size='sm'>{new Date(item.date).toLocaleString()}</Text>
                 {renderActions()}
-              </Grid>
+              </Group>
             );
           default:
             return null;
