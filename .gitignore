@@ -30,3 +30,4 @@ npm-debug.log.*
 
 release/cert
 assets/transfer
+.erb-js

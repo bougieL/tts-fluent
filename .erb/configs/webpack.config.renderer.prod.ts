@@ -110,7 +110,11 @@ const configuration: webpack.Configuration = {
         vendors: {
           test: /\/node_modules\//,
           filename: 'vendors.[contenthash].js',
-          chunks: 'all',
+          chunks: 'initial',
+        },
+        async: {
+          chunks: 'async',
+          filename: '[name].[contenthash].js',
         },
       },
     },

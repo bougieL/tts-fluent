@@ -1,26 +1,23 @@
 /* eslint-disable no-console */
-const { execSync: nativeExecSync } = require('child_process');
 const chalk = require('chalk');
+const { exec } = require('./_utils');
 
 const arg = process.argv[2];
 
-function exec(command) {
-  return nativeExecSync(command, {
-    stdio: 'inherit',
-    env: {
-      ...process.env,
-      NODE_ENV: 'production',
-      CSC_IDENTITY_AUTO_DISCOVERY: false,
-      TS_NODE_TRANSPILE_ONLY: true,
-    },
-  });
-}
-
 async function main(arg) {
+  function compileErb() {
+    console.log(chalk.blueBright('Start compile build config'));
+    exec('rm -r .erb-js || true');
+    exec(
+      'pnpm tsc ./.erb/**/*.{js,ts} --outDir ./.erb-js/ --skipLibCheck --allowJS --moduleResolution Node16 --esModuleInterop --allowSyntheticDefaultImports --resolveJsonModule false --downlevelIteration || true'
+    );
+    console.log(chalk.blueBright('Finish compile build config'));
+  }
+
   function buildTransfer() {
     console.log(chalk.blueBright('Start build transfer'));
     exec(
-      'pnpm webpack --config ./.erb/configs/webpack.config.transfer.prod.ts'
+      'pnpm webpack --config ./.erb/configs/webpack.config.transfer.prod.js'
     );
     exec('rm -r assets/transfer || true');
     exec('cp -r release/app/dist/transfer assets');
@@ -44,9 +41,11 @@ async function main(arg) {
     console.log(chalk.blueBright(`Finish build ${platform} platform`));
   }
 
+  compileErb();
+
   if (arg === 'transfer') {
     buildTransfer();
-  } else {
+  } else if (arg) {
     buildPlatform(arg);
   }
 }
