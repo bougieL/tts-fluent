@@ -20,6 +20,7 @@ const locales = list
 function getVoicesByLocale(locale: string) {
   return list
     .filter((item) => item.LocaleName === locale)
+    .sort((a, b) => (a.ShortName > b.ShortName ? 1 : -1))
     .map((item) => {
       return {
         value: item.ShortName,

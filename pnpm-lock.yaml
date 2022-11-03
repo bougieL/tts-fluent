@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@bougiel/tts-node': ^1.5.0
+  '@bougiel/tts-node': ^1.6.0
   '@codemirror/commands': ^6.1.2
   '@codemirror/lang-javascript': ^6.1.1
   '@codemirror/state': ^6.1.2
@@ -110,7 +110,7 @@ specifiers:
   webpack-merge: ^5.8.0
 
 dependencies:
-  '@bougiel/tts-node': 1.5.0
+  '@bougiel/tts-node': 1.6.0
   '@codemirror/commands': 6.1.2
   '@codemirror/lang-javascript': 6.1.1
   '@codemirror/state': 6.1.2
@@ -575,8 +575,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bougiel/tts-node/1.5.0:
-    resolution: {integrity: sha512-0InLnvkDcHES5C7/1sErNvY/LaW43oC+5Kv3sC1ejPNxOaq8b1ct3JpHZGna3Pqntf24dFlmyMFo2Xcg8W2zIA==}
+  /@bougiel/tts-node/1.6.0:
+    resolution: {integrity: sha512-PEKU8eATGar/Iqp67c1PQARfsrcjgLyw6kCFaMyuaGGlA4CJ9oBC11/081cOFzgeoptqI11x7yWUX/TnaZ9Wqw==}
     dependencies:
       axios: 0.27.2
       uuid: 8.3.2

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Divider, Stack, Text, withWindow } from 'renderer/components';
+import { Divider, Input, Stack, Text, withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
@@ -29,14 +29,16 @@ function TTSCatEditor({ initialData: { textConfig, aiConfig } }: Props) {
 
   return (
     <Stack spacing='md'>
-      <Text style={{ fontWeight: 'bold' }}>Danmuji</Text>
-      <SsmlDistributor
-        value={privTextConfig}
-        onChange={handleTextConfigChange}
-      />
+      <Input.Wrapper label='Danmuji'>
+        <SsmlDistributor
+          value={privTextConfig}
+          onChange={handleTextConfigChange}
+        />
+      </Input.Wrapper>
       <Divider />
-      <Text style={{ fontWeight: 'bold' }}>Danmuji with AI chat</Text>
-      <AiChatEditor value={privAiConfig} onChange={handleAiConfigChange} />
+      <Input.Wrapper label='Danmuji with AI chat'>
+        <AiChatEditor value={privAiConfig} onChange={handleAiConfigChange} />
+      </Input.Wrapper>
     </Stack>
   );
 }

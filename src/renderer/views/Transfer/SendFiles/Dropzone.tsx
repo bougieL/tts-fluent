@@ -43,9 +43,8 @@ export function Dropzone({ value = [], onChange }: Props) {
     <div
       {...getRootProps()}
       style={{
-        // flex: 1,
         width: 'calc(100vw - 290px)',
-        height: 'calc(100vh - 328px)',
+        height: 'calc(100vh - 340px)',
         border: '1px solid #ccc',
         display: 'flex',
         flexDirection: 'column',

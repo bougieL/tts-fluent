@@ -46,9 +46,17 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
   }
 
   return (
-    <Stack spacing='md'>
-      <Alert color='green' icon={<IconCircleCheck size={16} />}>
-        <Text size='xs'>
+    <Stack spacing='xs'>
+      <Alert
+        color='green'
+        icon={<IconCircleCheck size={16} />}
+        styles={{
+          root: {
+            padding: '6px 12px',
+          },
+        }}
+      >
+        <Text size='sm'>
           Start transfer server in {serverName} success, scan the qrcode to
           transfer files.&nbsp;
           <Anchor

@@ -33,13 +33,13 @@ body {
     margin-left: 12;
   }
 
-  [data-platform='win'] & {
+  [data-platform='windows'] & {
     padding-left: 0;
   }
 }
 
 .main {
-  padding: 12px;
+  padding: 0 12px 0;
   overflow: overlay;
   flex: 1;
 }

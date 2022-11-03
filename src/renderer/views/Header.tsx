@@ -8,7 +8,7 @@ import { AudioIndicator } from 'renderer/Widgets/AudioIndicator';
 
 import { mainRoutes } from './routes';
 
-const pathStorage = createStorage('__path__', '/');
+export const pathStorage = createStorage('__path__', '/');
 
 export const Header = () => {
   const location = useLocation();
@@ -38,7 +38,7 @@ export const Header = () => {
 
   return (
     <Group align='center' spacing='sm' className='header'>
-      <Text size='sm'>TTS Fluent</Text>
+      {/* <Text size='sm'>TTS Fluent</Text>
       <Menu trigger='hover'>
         <Menu.Target>
           <Button
@@ -66,7 +66,7 @@ export const Header = () => {
             );
           })}
         </Menu.Dropdown>
-      </Menu>
+      </Menu> */}
       <AudioIndicator />
     </Group>
   );

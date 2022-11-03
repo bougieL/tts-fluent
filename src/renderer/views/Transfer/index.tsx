@@ -12,7 +12,7 @@ const Transfer: FC = () => {
     <HostServer
       bottomSlot={<ConnectedDevices />}
       rightSlot={
-        <Stack spacing='sm'>
+        <Stack spacing='sm' style={{ flex: 1, height: '100%' }}>
           <SendFiles />
           <Clipboard />
         </Stack>

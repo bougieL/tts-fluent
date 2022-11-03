@@ -43,7 +43,7 @@ export function SendFiles() {
       <Input.Wrapper label='Transfer files'>
         <Dropzone value={files} onChange={setFiles} />
       </Input.Wrapper>
-      <Group spacing={12}>
+      <Group spacing='xs'>
         <Button
           variant='default'
           size='xs'

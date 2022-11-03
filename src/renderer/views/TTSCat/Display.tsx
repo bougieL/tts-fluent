@@ -74,7 +74,7 @@ export function Display({ textConfig, aiChatConfig }: Props) {
     return null;
   }
   return (
-    <Stack style={{ paddingTop: 12 }} spacing='sm'>
+    <Stack spacing='sm'>
       <Input.Wrapper label='Danmuji'>
         <Stack spacing='sm'>
           <Anchor

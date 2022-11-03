@@ -32,9 +32,9 @@ export function ConnectedDevices() {
       >
         {devices.filter(Boolean).map((item) => {
           return (
-            <List.Item icon={<IconDevices2 />}>
+            <List.Item icon={<IconDevices2 size={16} />}>
               <Stack spacing={0}>
-                <Text>{item.deviceName}</Text>
+                <Text size='sm'>{item.deviceName}</Text>
                 <Text size='xs' color='dimmed'>
                   {item.deviceHost}
                 </Text>

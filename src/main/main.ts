@@ -12,7 +12,6 @@ import { app, BrowserWindow } from 'electron';
 
 import MenuBuilder from './menu';
 import { setupSever } from './server';
-import { getAssetPath, resolveHtmlPath } from './util';
 import { createMainWindow } from './windows';
 
 import './ipcEvents';

@@ -65,7 +65,7 @@ const Downloads: FC = () => {
         listStyleType='none'
         spacing='md'
         style={{
-          height: 'calc(100vh - 142px)',
+          height: 'calc(100vh - 174px)',
           overflow: 'overlay',
         }}
         styles={{ itemWrapper: { width: '100%' } }}
