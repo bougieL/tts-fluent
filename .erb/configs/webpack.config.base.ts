@@ -2,6 +2,8 @@
  * Base webpack config used across other specific configs
  */
 
+import path from 'path';
+
 import address from 'address';
 import webpack from 'webpack';
 
@@ -24,6 +26,7 @@ const configuration: webpack.Configuration = {
           options: {
             // Remove this line to enable type checking in webpack builds
             transpileOnly: true,
+            configFile: path.resolve(__dirname, '../../tsconfig.prod.json'),
           },
         },
       },
