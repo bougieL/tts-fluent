@@ -142,8 +142,10 @@ export function Cell({ item }: CellProps) {
             return (
               <Group position='apart' align='center' spacing={20}>
                 <Group spacing='xs'>
-                  <Loader />
-                  <Text>{size}</Text>
+                  <Loader size='xs' />
+                  <Text size='xs' color='dimmed'>
+                    {size}
+                  </Text>
                 </Group>
                 {renderDelete()}
               </Group>

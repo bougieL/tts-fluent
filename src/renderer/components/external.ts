@@ -22,6 +22,7 @@ export {
   Alert,
   List,
   Progress,
+  Badge,
 } from '@mantine/core';
 // export { InputWrapper } from '@mantine/core/cjs/Input/InputWrapper/InputWrapper';
 

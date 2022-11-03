@@ -6,17 +6,37 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import { Stack, Tabs } from 'renderer/components';
+import { Badge, Stack, Tabs } from 'renderer/components';
 
 import { Header, pathStorage } from './Views/Header';
 import { mainRoutes, windowRoutes } from './Views/routes';
-import { AudioProvider, Version } from './hooks';
+import { AudioProvider, useDownloadsNum, useVersion, Version } from './hooks';
 
 import './App.scss';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const downloadsNum = useDownloadsNum();
+  const { hasUpdate } = useVersion();
+
+  const renderBadge = (index: number) => {
+    if (index === mainRoutes.length - 2 && downloadsNum > 0) {
+      return (
+        <Badge sx={{ width: 16, height: 16 }} variant='filled' size='xs' p={0}>
+          {downloadsNum}
+        </Badge>
+      );
+    }
+    if (index === mainRoutes.length - 1 && hasUpdate) {
+      return (
+        <Badge variant='filled' size='xs'>
+          New
+        </Badge>
+      );
+    }
+    return null;
+  };
 
   return (
     <>
@@ -30,9 +50,14 @@ const App = () => {
           }}
         >
           <Tabs.List>
-            {mainRoutes.map(({ path, Component, Icon }) => {
+            {mainRoutes.map(({ path, Component, Icon }, index) => {
               return (
-                <Tabs.Tab value={path} key={path} icon={<Icon size={16} />}>
+                <Tabs.Tab
+                  value={path}
+                  key={path}
+                  icon={<Icon size={16} />}
+                  rightSection={renderBadge(index)}
+                >
                   {Component.displayName}
                 </Tabs.Tab>
               );
