@@ -1,9 +1,11 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import axios from 'axios';
 
-import { version } from '../../../release/app/package.json';
+import pkg from '../../../release/app/package.json';
 
 import { useAsync } from './external';
+
+const { version } = pkg;
 
 function formatVersion(version: string) {
   return Number(

@@ -1,6 +1,8 @@
 import { TextInput } from 'renderer/components';
 
-import { version } from '../../../../release/app/package.json';
+import pkg from '../../../../release/app/package.json';
+
+const { version } = pkg;
 
 const AppVersion = () => {
   return (
