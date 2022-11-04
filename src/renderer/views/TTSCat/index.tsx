@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
+import { Button, Group, Stack } from '@mantine/core';
 
-import { Button, Group, Stack } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 import { createStorage, openSubWindow } from 'renderer/lib';
 

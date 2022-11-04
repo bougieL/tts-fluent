@@ -1,6 +1,5 @@
 import list from '@bougiel/tts-node/lib/ssml/list';
-
-import { Grid, NativeSelect } from 'renderer/components';
+import { Grid, NativeSelect } from '@mantine/core';
 
 const voices = list
   .filter((item) => item.Locale === 'zh-CN')

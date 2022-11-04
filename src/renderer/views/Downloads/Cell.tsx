@@ -1,24 +1,26 @@
 import { useMemo, useState } from 'react';
 import { clipboard, ipcRenderer, shell } from 'electron';
-import fs from 'fs-extra';
-
-import { DownloadsCache } from 'caches';
-import { IpcEvents } from 'const';
-import { getSize } from 'lib/getSize';
 import {
   ActionIcon,
   Group,
-  IconCopy,
-  IconFolders,
-  IconPlayerPlay,
-  IconRefresh,
-  IconTrash,
   List,
   Loader,
   Space,
   Text,
   Tooltip,
-} from 'renderer/components';
+} from '@mantine/core';
+import {
+  IconCopy,
+  IconFolders,
+  IconPlayerPlay,
+  IconRefresh,
+  IconTrash,
+} from '@tabler/icons';
+import fs from 'fs-extra';
+
+import { DownloadsCache } from 'caches';
+import { IpcEvents } from 'const';
+import { getSize } from 'lib/getSize';
 import { useAsync, useAudio, useFn } from 'renderer/hooks';
 
 export interface Item extends DownloadsCache.Item {

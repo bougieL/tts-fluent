@@ -5,8 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-
-import { Stack, Tabs } from 'renderer/components';
+import { Stack, Tabs } from '@mantine/core';
 
 import { Header, pathStorage, useRenderBadge } from './Views/Header';
 import { mainRoutes, windowRoutes } from './Views/routes';

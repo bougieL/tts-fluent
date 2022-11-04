@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import { shell } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
 import fs from 'fs-extra';
 
 import { PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
-import { Button, Group, Input } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {

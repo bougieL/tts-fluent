@@ -1,12 +1,11 @@
 import React from 'react';
-
 import {
   IconDownload,
   IconMicrophone,
   IconPokeball,
   IconSend,
   IconSettings,
-} from 'renderer/components';
+} from '@tabler/icons';
 
 import CodeEditor from './CodeEditor';
 import Downloads from './Downloads';

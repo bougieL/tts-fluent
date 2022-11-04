@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 
 import { IpcEvents } from 'const';
 
-import { Space, Stack } from './external';
+import { Space, Stack } from './external.bak';
 
 export function withWindow<P extends { initialData: any }>(
   Component: ComponentType<P>

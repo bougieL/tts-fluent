@@ -1,8 +1,8 @@
 import { useDropzone } from 'react-dropzone';
 import { ipcRenderer } from 'electron';
+import { Text } from '@mantine/core';
 
 import { IpcEvents } from 'const';
-import { Text } from 'renderer/components';
 
 export interface File {
   name: string;
@@ -52,6 +52,7 @@ export function Dropzone({ value = [], onChange }: Props) {
         alignItems: 'center',
         padding: 12,
         textAlign: 'left',
+        borderRadius: 4,
       }}
       onClick={handleClick}
     >

@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ssmlToText, textToSsml } from '@bougiel/tts-node/lib/ssml';
+import { Tabs, Textarea } from '@mantine/core';
+import { IconBlockquote, IconCode, IconFile } from '@tabler/icons';
 
-import {
-  IconBlockquote,
-  IconCode,
-  IconFile,
-  Tabs,
-  Textarea,
-} from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { Dropzone } from './Dropzone';
@@ -122,10 +117,10 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
         {renderTextArea(text, setRText)}
       </Tabs.Panel>
       <Tabs.Panel value={InputType.file} pt='xs'>
-        {renderTextArea(ssml, setRSsml)}
+        <Dropzone value={file} onChange={handleFileChange} />
       </Tabs.Panel>
       <Tabs.Panel value={InputType.ssml} pt='xs'>
-        <Dropzone value={file} onChange={handleFileChange} />
+        {renderTextArea(ssml, setRSsml)}
       </Tabs.Panel>
     </Tabs>
   );

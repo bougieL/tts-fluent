@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ipcRenderer } from 'electron';
+import { TextInput } from '@mantine/core';
 
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
-import { TextInput } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 const TTSDownloadsDirectory = () => {

@@ -1,7 +1,7 @@
 import { shell } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
 
 import { isProd } from 'lib/env';
-import { Button, Group, Input } from 'renderer/components';
 import { useVersion } from 'renderer/hooks';
 import { openSubWindow } from 'renderer/lib';
 

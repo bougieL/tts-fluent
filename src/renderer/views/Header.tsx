@@ -1,14 +1,7 @@
 import { useMemo } from 'react';
 import { Link, matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { Badge, Button, Group, Menu, Text } from '@mantine/core';
 
-import {
-  Badge,
-  Button,
-  Group,
-  IconMenu2,
-  Menu,
-  Text,
-} from 'renderer/components';
 import { useAsync, useDownloadsNum, useVersion } from 'renderer/hooks';
 import { createStorage } from 'renderer/lib';
 import { AudioIndicator } from 'renderer/Widgets/AudioIndicator';

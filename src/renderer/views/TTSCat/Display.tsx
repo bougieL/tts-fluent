@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { shell } from 'electron';
+import { Anchor, Divider, Input, Stack } from '@mantine/core';
 
-import { Anchor, Divider, Input, Stack } from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';

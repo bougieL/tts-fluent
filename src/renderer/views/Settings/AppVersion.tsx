@@ -1,4 +1,4 @@
-import { TextInput } from 'renderer/components';
+import { TextInput } from '@mantine/core';
 
 import pkg from '../../../../release/app/package.json';
 

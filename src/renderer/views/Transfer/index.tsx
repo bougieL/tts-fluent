@@ -1,6 +1,5 @@
 import { FC } from 'react';
-
-import { Stack } from 'renderer/components';
+import { Stack } from '@mantine/core';
 
 import { Clipboard } from './Clipboard';
 import { ConnectedDevices } from './ConnectedDevices';

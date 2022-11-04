@@ -1,6 +1,5 @@
 import { shell } from 'electron';
-
-import { Button, Group, Input } from 'renderer/components';
+import { Button, Group, Input } from '@mantine/core';
 
 const Feedback = () => {
   return (

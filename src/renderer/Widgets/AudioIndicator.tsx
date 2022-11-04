@@ -1,11 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
+import { ActionIcon, Tooltip } from '@mantine/core';
+import { IconPlayerPlay, IconPlayerStop } from '@tabler/icons';
 
-import {
-  ActionIcon,
-  IconPlayerPlay,
-  IconPlayerStop,
-  Tooltip,
-} from 'renderer/components';
 import { useAudio } from 'renderer/hooks';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 

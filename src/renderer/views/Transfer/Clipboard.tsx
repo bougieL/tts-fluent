@@ -1,17 +1,10 @@
 import { useState } from 'react';
 import { clipboard, ipcRenderer } from 'electron';
+import { Button, Group, Input, Space, TextInput } from '@mantine/core';
+import { IconDownload, IconSend } from '@tabler/icons';
 
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import {
-  Button,
-  Group,
-  IconDownload,
-  IconSend,
-  Input,
-  Space,
-  TextInput,
-} from 'renderer/components';
 
 export function Clipboard() {
   const [value, setValue] = useState('');

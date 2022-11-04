@@ -1,9 +1,9 @@
 import { FC, useMemo, useRef, useState } from 'react';
 import { ssmlToText } from '@bougiel/tts-node/lib/ssml/index';
+import { List, Stack, TextInput } from '@mantine/core';
 import fs from 'fs-extra';
 
 import { DownloadsCache } from 'caches';
-import { List, Stack, TextInput } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 import { Cell, Item } from './Cell';

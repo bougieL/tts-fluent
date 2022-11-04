@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Divider, Input, Stack, Text } from '@mantine/core';
 
-import { Divider, Input, Stack, Text, withWindow } from 'renderer/components';
+import { withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';

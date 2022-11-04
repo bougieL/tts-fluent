@@ -1,16 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { clipboard, shell } from 'electron';
+import { Alert, Anchor, Group, Input, Stack, Text } from '@mantine/core';
+import { IconCircleCheck } from '@tabler/icons';
 import qrcode from 'qrcode';
 
-import {
-  Alert,
-  Anchor,
-  Group,
-  IconCircleCheck,
-  Input,
-  Stack,
-  Text,
-} from 'renderer/components';
 import { useServerConfig } from 'renderer/hooks';
 
 interface HostServerProps {

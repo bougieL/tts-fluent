@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import { ipcRenderer } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
+import { IconClearAll, IconSend } from '@tabler/icons';
 import fs from 'fs-extra';
 
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import {
-  Button,
-  Group,
-  IconClearAll,
-  IconSend,
-  Input,
-} from 'renderer/components';
 
 import { Dropzone, File } from './Dropzone';
 
@@ -40,7 +35,8 @@ export function SendFiles() {
   };
   return (
     <Group position='right' spacing='sm'>
-      <Input.Wrapper label='Transfer files'>
+      <Input.Wrapper label='Transfer files' style={{ width: '100%' }}>
+        {/* <MDropzone value={files} onChange={setFiles} /> */}
         <Dropzone value={files} onChange={setFiles} />
       </Input.Wrapper>
       <Group spacing='xs'>

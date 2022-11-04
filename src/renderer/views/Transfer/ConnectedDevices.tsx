@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Input, List, Stack, Text } from '@mantine/core';
+import { IconDevices2 } from '@tabler/icons';
 import fs from 'fs-extra';
 
 import { TransferCache } from 'caches/transfer';
-import { IconDevices2, Input, List, Stack, Text } from 'renderer/components';
 import { useAsync } from 'renderer/hooks';
 
 export function ConnectedDevices() {

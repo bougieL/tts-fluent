@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
+import { Space, Stack } from '@mantine/core';
 import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
-import { Space, Stack } from 'renderer/components';
 import { useAudio, useFn } from 'renderer/hooks';
 import { createStorage } from 'renderer/lib';
 

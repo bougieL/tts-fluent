@@ -1,10 +1,5 @@
-import {
-  Button,
-  Group,
-  IconDownload,
-  IconPlayerPlay,
-  Loader,
-} from 'renderer/components';
+import { Button, Group, Loader } from '@mantine/core';
+import { IconDownload, IconPlayerPlay } from '@tabler/icons';
 
 interface Props {
   onPlayClick: () => void;
