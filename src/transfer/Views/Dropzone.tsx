@@ -24,6 +24,7 @@ export function Dropzone({ value = [], onChange }: Props) {
         justifyContent: 'center',
         alignItems: 'center',
         padding: 12,
+        borderRadius: 4,
       }}
     >
       <input {...getInputProps()} multiple />

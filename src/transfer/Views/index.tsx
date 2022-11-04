@@ -28,11 +28,10 @@ export function Send({ disabled = false }: SendProps) {
       form.append('files', file);
     });
     const id = toast.loading(
-      <>
+      <Stack spacing='xs'>
         <Text>Upload files to {server?.serverName}</Text>
-        <br />
         <Text size='sm'>Do not close this page before success</Text>
-      </>,
+      </Stack>,
       { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
     );
     try {
@@ -69,16 +68,18 @@ export function Send({ disabled = false }: SendProps) {
           <Input.Wrapper label='Files'>
             <Dropzone value={files} onChange={setFiles} />
           </Input.Wrapper>
-          <Group spacing='md'>
+          <Group spacing='sm' position='right'>
             <Button
+              size='xs'
               disabled={files.length === 0}
-              leftIcon={<IconTrash />}
+              leftIcon={<IconTrash size={16} />}
               onClick={() => setFiles([])}
             >
               Clear
             </Button>
             <Button
-              leftIcon={<IconSend />}
+              size='xs'
+              leftIcon={<IconSend size={16} />}
               disabled={files.length === 0 || disabled}
               onClick={handleSend}
             >

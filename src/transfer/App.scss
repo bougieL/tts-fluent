@@ -23,3 +23,9 @@ body {
 :hover::-webkit-scrollbar-thumb {
   background: #e5e5e5;
 }
+
+#root {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 8px;
+}

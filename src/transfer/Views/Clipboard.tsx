@@ -34,10 +34,11 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
           setText(event.target.value);
         }}
       />
-      <Group styles={{ root: { paddingTop: 12 } }} spacing={12}>
+      <Group spacing='sm' position='right'>
         <Button
+          size='xs'
           variant='default'
-          leftIcon={<IconDownload />}
+          leftIcon={<IconDownload size={16} />}
           disabled={disabled}
           onClick={async () => {
             const { data } = await getClipboard().catch();
@@ -53,7 +54,8 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
           Get clipboard
         </Button>
         <Button
-          leftIcon={<IconSend />}
+          size='xs'
+          leftIcon={<IconSend size={16} />}
           disabled={!text || disabled}
           onClick={() => {
             sendClipboard(text);

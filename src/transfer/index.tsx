@@ -1,13 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import { HashRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { initializeIcons } from '@fluentui/font-icons-mdl2';
 
 import { App } from './App';
 
 import 'react-toastify/dist/ReactToastify.css';
-
-initializeIcons();
 
 if (process.env.NODE_ENV === 'development') {
   import('vconsole')

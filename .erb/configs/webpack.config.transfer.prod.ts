@@ -97,15 +97,19 @@ const configuration: webpack.Configuration = {
           filename: 'react.[contenthash].js',
           chunks: 'all',
         },
-        fluent: {
-          test: /\/node_modules\/@fluent/,
-          filename: 'fluent.[contenthash].js',
+        mantine: {
+          test: /\/node_modules\/@mantine/,
+          filename: 'mantine.[contenthash].js',
           chunks: 'all',
         },
         vendors: {
           test: /\/node_modules\//,
           filename: 'vendors.[contenthash].js',
-          chunks: 'all',
+          chunks: 'initial',
+        },
+        async: {
+          chunks: 'async',
+          filename: '[name].[contenthash].js',
         },
       },
     },

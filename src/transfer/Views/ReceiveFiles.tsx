@@ -24,16 +24,15 @@ export function ReceiveFiles() {
   useReceiveFiles({
     onReceiveManualFiles(files) {
       toast.info(
-        <>
+        <Stack spacing='xs'>
           <Text>Receive files from {server?.serverName}</Text>
-          <br />
           <Text size='sm'>
             {files.length === 1
               ? 'Your browser doesn‘t support auto download'
               : 'Doesn‘t support auto download multi files'}
             , please download manually
           </Text>
-        </>,
+        </Stack>,
         {
           autoClose: false,
         }
@@ -47,9 +46,9 @@ export function ReceiveFiles() {
   }
 
   return (
-    <Stack>
+    <Stack spacing='xs'>
       <Group position='apart'>
-        <Text>Receive files</Text>
+        <Text size='sm'>Receive files</Text>
         <Anchor
           style={{ fontSize: 14 }}
           onClick={() => {
@@ -59,23 +58,30 @@ export function ReceiveFiles() {
           Clear
         </Anchor>
       </Group>
-      <List>
+      <List
+        spacing='xs'
+        listStyleType='none'
+        styles={{
+          itemWrapper: {
+            width: '100%',
+          },
+        }}
+      >
         {files.map((item) => {
           return (
-            <Fragment key={item.download}>
+            <List.Item key={item.download}>
               <Anchor download={item!.name} href={item!.download}>
-                <Group position='apart' spacing='sm'>
+                <Group position='apart'>
                   <Text size='sm'>{item!.name}</Text>
                   <Group position='right' spacing='sm'>
                     <Text size='sm' style={{ whiteSpace: 'nowrap' }}>
                       {humanFileSize(item!.size)}
                     </Text>
-                    <IconDownload />
+                    <IconDownload size={14} />
                   </Group>
                 </Group>
               </Anchor>
-              <Divider />
-            </Fragment>
+            </List.Item>
           );
         })}
       </List>

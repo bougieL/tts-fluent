@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Alert, Stack } from '@mantine/core';
+import { Alert, Stack, Text } from '@mantine/core';
+import { IconAlertCircle, IconCircleCheck } from '@tabler/icons';
 
 import { serverContext, useAsync, useInterval } from './hooks';
 import { deviceAlivePolling } from './requests';
@@ -26,12 +27,14 @@ export function App() {
     <serverContext.Provider value={server}>
       <Stack spacing='md'>
         {server ? (
-          <Alert color='green'>
-            Connect to transfer server {server.serverName} success, can transfer
-            files now.
+          <Alert color='green' icon={<IconCircleCheck />} p='6px 12px'>
+            <Text size='xs'>
+              Connect to transfer server {server.serverName} success, can
+              transfer files now.
+            </Text>
           </Alert>
         ) : (
-          <Alert color='red'>
+          <Alert color='red' icon={<IconAlertCircle />}>
             Can not get response from server, please wait or scan the qrcode
             again.
           </Alert>

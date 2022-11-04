@@ -1,5 +1,5 @@
 import { Id, toast } from 'react-toastify';
-import { Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 
 import { TransferType } from 'const/Transfer';
 import { detectMobile } from 'transfer/lib/detectMobile';
@@ -31,11 +31,10 @@ export function useReceiveFiles(options?: Options) {
 
   const downloadFileByAxios = async (file: { path: string }) => {
     const id = toast.loading(
-      <>
+      <Stack spacing='xs'>
         <Text>Receiving files from {server?.serverName}</Text>
-        <br />
         <Text size='sm'>Do not close this page before success</Text>
-      </>,
+      </Stack>,
       { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
     );
 
