@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useAsync } from 'react-use';
+import type { EditorView } from 'codemirror';
 
 import { withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';
@@ -17,36 +18,33 @@ function CodeEditor({ initialData: { content } }: Props) {
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  // const editorRef = useRef<EditorView>();
+  const editorRef = useRef<EditorView>();
 
   const handleChange = useFn((value: string) => {
     setPrivContent(value);
   });
 
   useAsync(async () => {
-    const [
-      { defaultKeymap },
-      { javascript },
-      { EditorState },
-      { EditorView, keymap },
-    ] = await Promise.all([
-      import('@codemirror/commands'),
-      import('@codemirror/lang-javascript'),
-      import('@codemirror/state'),
-      import('@codemirror/view'),
-    ]);
+    const [{ EditorView, basicSetup }, { EditorState }, { javascript }] =
+      await Promise.all([
+        import('codemirror'),
+        import('@codemirror/state'),
+        import('@codemirror/lang-javascript'),
+      ]);
     const startState = EditorState.create({
-      doc: 'console.log("Hello World")',
-      extensions: [keymap.of(defaultKeymap), javascript()],
+      doc: `function foo() {
+  console.log("hello world")
+}`,
+      extensions: [basicSetup, javascript()],
     });
 
-    const editorView = new EditorView({
+    editorRef.current = new EditorView({
       state: startState,
       parent: divRef.current!,
     });
   }, []);
 
-  return <div ref={divRef} />;
+  return <div ref={divRef} style={{ flex: 1, outline: 'none' }} />;
 }
 
 export default withWindow(CodeEditor);

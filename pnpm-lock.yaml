@@ -2,10 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@bougiel/tts-node': ^1.6.0
-  '@codemirror/commands': ^6.1.2
   '@codemirror/lang-javascript': ^6.1.1
   '@codemirror/state': ^6.1.2
-  '@codemirror/view': ^6.4.0
   '@emotion/react': ^11.10.5
   '@mantine/core': ^5.6.3
   '@mantine/hooks': ^5.6.3
@@ -34,6 +32,7 @@ specifiers:
   axios: ^0.27.2
   browserslist-config-erb: ^0.0.3
   chalk: ^4.1.2
+  codemirror: ^6.0.1
   cookie-parser: ^1.4.6
   copy-to-clipboard: ^3.3.2
   cross-env: ^7.0.3
@@ -109,16 +108,15 @@ specifiers:
 
 dependencies:
   '@bougiel/tts-node': 1.6.0
-  '@codemirror/commands': 6.1.2
   '@codemirror/lang-javascript': 6.1.1
   '@codemirror/state': 6.1.2
-  '@codemirror/view': 6.4.0
   '@emotion/react': 11.10.5_a1bdd43be9504ec770a838d8189f6868
   '@mantine/core': 5.6.3_2887709deb37f666f85fa30b999b3851
   '@mantine/hooks': 5.6.3_react@18.2.0
   '@tabler/icons': 1.109.0_react-dom@18.2.0+react@18.2.0
   address: 1.2.0
   axios: 0.27.2
+  codemirror: 6.0.1
   cookie-parser: 1.4.6
   copy-to-clipboard: 3.3.2
   electron-debug: 3.2.0
@@ -627,6 +625,14 @@ packages:
 
   /@codemirror/lint/6.0.0:
     resolution: {integrity: sha512-nUUXcJW1Xp54kNs+a1ToPLK8MadO0rMTnJB8Zk4Z8gBdrN0kqV7uvUraU/T2yqg+grDNR38Vmy/MrhQN/RgwiA==}
+    dependencies:
+      '@codemirror/state': 6.1.2
+      '@codemirror/view': 6.4.0
+      crelt: 1.0.5
+    dev: false
+
+  /@codemirror/search/6.2.2:
+    resolution: {integrity: sha512-2pWY599zXk+lSoJ2iv9EuTO4gB7lhgBPLPwFb/zTbimFH4NmZSaKzJSV51okjABZ7/Rj0DYy5klWbIgaJh2LoQ==}
     dependencies:
       '@codemirror/state': 6.1.2
       '@codemirror/view': 6.4.0
@@ -3438,6 +3444,18 @@ packages:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
     dev: true
+
+  /codemirror/6.0.1:
+    resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
+    dependencies:
+      '@codemirror/autocomplete': 6.3.0
+      '@codemirror/commands': 6.1.2
+      '@codemirror/language': 6.3.0
+      '@codemirror/lint': 6.0.0
+      '@codemirror/search': 6.2.2
+      '@codemirror/state': 6.1.2
+      '@codemirror/view': 6.4.0
+    dev: false
 
   /collect-v8-coverage/1.0.1:
     resolution: {integrity: sha512-iBPtljfCNcTKNAto0KEtDfZ3qzjJvqE3aTGZsbhjSBlorqpXJlaWWtPO35D+ZImoC3KWejX64o+yPGxhWSTzfg==}
