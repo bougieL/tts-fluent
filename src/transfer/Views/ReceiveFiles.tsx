@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { toast } from 'react-toastify';
-
-import { humanFileSize } from 'lib/humanFileSize';
 import {
-  Icon,
-  Label,
-  Link,
+  Anchor,
+  Divider,
+  Group,
+  Input,
   List,
-  Separator,
   Stack,
   Text,
-} from 'transfer/components';
+} from '@mantine/core';
+import { IconDownload } from '@tabler/icons';
+
+import { humanFileSize } from 'lib/humanFileSize';
 import { useReceiveFiles, useServer } from 'transfer/hooks';
 
 export function ReceiveFiles() {
@@ -26,7 +27,7 @@ export function ReceiveFiles() {
         <>
           <Text>Receive files from {server?.serverName}</Text>
           <br />
-          <Text variant='small'>
+          <Text size='sm'>
             {files.length === 1
               ? 'Your browser doesn‘t support auto download'
               : 'Doesn‘t support auto download multi files'}
@@ -47,53 +48,37 @@ export function ReceiveFiles() {
 
   return (
     <Stack>
-      <Stack horizontal horizontalAlign='space-between' verticalAlign='center'>
-        <Label>Receive files</Label>
-        <Link
-          href='##'
+      <Group position='apart'>
+        <Text>Receive files</Text>
+        <Anchor
           style={{ fontSize: 14 }}
-          onClick={(event) => {
-            event.preventDefault();
+          onClick={() => {
             setFiles([]);
           }}
         >
           Clear
-        </Link>
-      </Stack>
-      <List
-        items={files}
-        getKey={(item) => item.download}
-        style={{ marginTop: 12 }}
-        onRenderCell={(item) => {
+        </Anchor>
+      </Group>
+      <List>
+        {files.map((item) => {
           return (
-            <>
-              <Link download={item!.name} href={item!.download}>
-                <Stack
-                  horizontal
-                  horizontalAlign='space-between'
-                  verticalAlign='center'
-                  // styles={{ root: { paddingTop: 4, paddingBottom: 4 } }}
-                  tokens={{ childrenGap: 12 }}
-                >
-                  <Text variant='smallPlus'>{item!.name}</Text>
-                  <Stack
-                    horizontal
-                    horizontalAlign='end'
-                    verticalAlign='center'
-                    tokens={{ childrenGap: 12 }}
-                  >
-                    <Text variant='smallPlus' style={{ whiteSpace: 'nowrap' }}>
+            <Fragment key={item.download}>
+              <Anchor download={item!.name} href={item!.download}>
+                <Group position='apart' spacing='sm'>
+                  <Text size='sm'>{item!.name}</Text>
+                  <Group position='right' spacing='sm'>
+                    <Text size='sm' style={{ whiteSpace: 'nowrap' }}>
                       {humanFileSize(item!.size)}
                     </Text>
-                    <Icon iconName='download' />
-                  </Stack>
-                </Stack>
-              </Link>
-              <Separator />
-            </>
+                    <IconDownload />
+                  </Group>
+                </Group>
+              </Anchor>
+              <Divider />
+            </Fragment>
           );
-        }}
-      />
+        })}
+      </List>
     </Stack>
   );
 }

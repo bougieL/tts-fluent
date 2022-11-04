@@ -1,7 +1,7 @@
 import { Id, toast } from 'react-toastify';
+import { Text } from '@mantine/core';
 
 import { TransferType } from 'const/Transfer';
-import { Text } from 'transfer/components';
 import { detectMobile } from 'transfer/lib/detectMobile';
 import { saveByObjectUrl } from 'transfer/lib/saveFile';
 import { getFile, getFileDownloadUrl } from 'transfer/requests';
@@ -34,7 +34,7 @@ export function useReceiveFiles(options?: Options) {
       <>
         <Text>Receiving files from {server?.serverName}</Text>
         <br />
-        <Text variant='small'>Do not close this page before success</Text>
+        <Text size='sm'>Do not close this page before success</Text>
       </>,
       { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
     );

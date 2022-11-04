@@ -1,9 +1,8 @@
 import { ComponentType, FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
+import { Space, Stack } from '@mantine/core';
 
 import { IpcEvents } from 'const';
-
-import { Space, Stack } from './external.bak';
 
 export function withWindow<P extends { initialData: any }>(
   Component: ComponentType<P>

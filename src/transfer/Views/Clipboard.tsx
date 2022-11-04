@@ -1,16 +1,10 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import { IconDownload, IconSend } from '@tabler/icons';
 import copy from 'copy-to-clipboard';
 
 import { TransferType } from 'const/Transfer';
-import {
-  DefaultButton,
-  Label,
-  PrimaryButton,
-  Stack,
-  Text,
-  TextField,
-} from 'transfer/components';
 import { useServer, useServerAliveSse } from 'transfer/hooks';
 import { getClipboard, sendClipboard } from 'transfer/requests';
 
@@ -33,21 +27,17 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
   });
   return (
     <Stack>
-      <Label>Text</Label>
-      <TextField
+      <TextInput
+        label='Text'
         value={text}
-        onChange={(_, newValue = '') => {
-          setText(newValue);
+        onChange={(event) => {
+          setText(event.target.value);
         }}
       />
-      <Stack
-        horizontalAlign='end'
-        horizontal
-        styles={{ root: { paddingTop: 12 } }}
-        tokens={{ childrenGap: 12 }}
-      >
-        <DefaultButton
-          iconProps={{ iconName: 'Download' }}
+      <Group styles={{ root: { paddingTop: 12 } }} spacing={12}>
+        <Button
+          variant='default'
+          leftIcon={<IconDownload />}
           disabled={disabled}
           onClick={async () => {
             const { data } = await getClipboard().catch();
@@ -61,17 +51,17 @@ export function Clipboard({ disabled = false }: ClipboardProps) {
           }}
         >
           Get clipboard
-        </DefaultButton>
-        <PrimaryButton
-          iconProps={{ iconName: 'Send' }}
+        </Button>
+        <Button
+          leftIcon={<IconSend />}
           disabled={!text || disabled}
           onClick={() => {
             sendClipboard(text);
           }}
         >
           Send text
-        </PrimaryButton>
-      </Stack>
+        </Button>
+      </Group>
     </Stack>
   );
 }

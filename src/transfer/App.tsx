@@ -1,6 +1,5 @@
 import { useState } from 'react';
-
-import { MessageBar, MessageBarType, Stack } from 'transfer/components';
+import { Alert, Stack } from '@mantine/core';
 
 import { serverContext, useAsync, useInterval } from './hooks';
 import { deviceAlivePolling } from './requests';
@@ -25,32 +24,19 @@ export function App() {
   useInterval(polling, 5000);
   return (
     <serverContext.Provider value={server}>
-      <Stack horizontalAlign='center' styles={{ root: { padding: 12 } }}>
-        <Stack
-          tokens={{ childrenGap: 12 }}
-          styles={{
-            root: {
-              width: 500,
-              '@media (max-width: 500px)': {
-                width: '100%',
-              },
-            },
-          }}
-        >
-          {server ? (
-            <MessageBar messageBarType={MessageBarType.success}>
-              Connect to transfer server {server.serverName} success, can
-              transfer files now.
-            </MessageBar>
-          ) : (
-            <MessageBar messageBarType={MessageBarType.error}>
-              Can not get response from server, please wait or scan the qrcode
-              again.
-            </MessageBar>
-          )}
-          {/* <Receive /> */}
-          <Send disabled={!server} />
-        </Stack>
+      <Stack spacing='md'>
+        {server ? (
+          <Alert color='green'>
+            Connect to transfer server {server.serverName} success, can transfer
+            files now.
+          </Alert>
+        ) : (
+          <Alert color='red'>
+            Can not get response from server, please wait or scan the qrcode
+            again.
+          </Alert>
+        )}
+        <Send disabled={!server} />
       </Stack>
     </serverContext.Provider>
   );

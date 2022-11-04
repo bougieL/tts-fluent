@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import { Id, toast } from 'react-toastify';
+import { Button, Group, Input, Stack, Text } from '@mantine/core';
+import { IconSend, IconTrash } from '@tabler/icons';
 
-import {
-  DefaultButton,
-  Label,
-  PrimaryButton,
-  Stack,
-  Text,
-} from 'transfer/components';
 import { useServer } from 'transfer/hooks';
 import { sendFiles } from 'transfer/requests';
 
@@ -36,7 +31,7 @@ export function Send({ disabled = false }: SendProps) {
       <>
         <Text>Upload files to {server?.serverName}</Text>
         <br />
-        <Text variant='small'>Do not close this page before success</Text>
+        <Text size='sm'>Do not close this page before success</Text>
       </>,
       { progress: 0, closeButton: false, closeOnClick: false, autoClose: false }
     );
@@ -69,31 +64,27 @@ export function Send({ disabled = false }: SendProps) {
   return (
     <>
       <ReceiveFiles />
-      <Stack tokens={{ childrenGap: 24 }}>
+      <Stack spacing='lg'>
         <Stack>
-          <Label>Files</Label>
-          <Dropzone value={files} onChange={setFiles} />
-          <Stack
-            horizontalAlign='end'
-            horizontal
-            styles={{ root: { paddingTop: 12 } }}
-            tokens={{ childrenGap: 12 }}
-          >
-            <DefaultButton
+          <Input.Wrapper label='Files'>
+            <Dropzone value={files} onChange={setFiles} />
+          </Input.Wrapper>
+          <Group spacing='md'>
+            <Button
               disabled={files.length === 0}
-              iconProps={{ iconName: 'Delete' }}
+              leftIcon={<IconTrash />}
               onClick={() => setFiles([])}
             >
               Clear
-            </DefaultButton>
-            <PrimaryButton
-              iconProps={{ iconName: 'Send' }}
+            </Button>
+            <Button
+              leftIcon={<IconSend />}
               disabled={files.length === 0 || disabled}
               onClick={handleSend}
             >
               Send files
-            </PrimaryButton>
-          </Stack>
+            </Button>
+          </Group>
         </Stack>
         <Clipboard />
       </Stack>

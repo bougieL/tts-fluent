@@ -1,6 +1,5 @@
 import { useDropzone } from 'react-dropzone';
-
-import { Text } from 'transfer/components';
+import { Text } from '@mantine/core';
 
 interface Props {
   value?: File[];
