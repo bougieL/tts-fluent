@@ -1,10 +1,19 @@
 import { useMemo } from 'react';
 import { Link, matchPath, useLocation, useNavigate } from 'react-router-dom';
 
-import { Button, Group, IconMenu2, Menu, Text } from 'renderer/components';
+import {
+  Badge,
+  Button,
+  Group,
+  IconMenu2,
+  Menu,
+  Text,
+} from 'renderer/components';
 import { useAsync, useDownloadsNum, useVersion } from 'renderer/hooks';
 import { createStorage } from 'renderer/lib';
 import { AudioIndicator } from 'renderer/Widgets/AudioIndicator';
+
+import { mainRoutes } from './routes';
 
 // import { mainRoutes } from './routes';
 
@@ -67,7 +76,32 @@ export const Header = () => {
           })}
         </Menu.Dropdown>
       </Menu> */}
-      <AudioIndicator />
+      {/* <AudioIndicator /> */}
     </Group>
   );
 };
+
+export function useRenderBadge() {
+  const downloadsNum = useDownloadsNum();
+  const { hasUpdate } = useVersion();
+
+  const renderBadge = (index: number) => {
+    if (index === mainRoutes.length - 2 && downloadsNum > 0) {
+      return (
+        <Badge sx={{ width: 16, height: 16 }} variant='filled' size='xs' p={0}>
+          {downloadsNum}
+        </Badge>
+      );
+    }
+    if (index === mainRoutes.length - 1 && hasUpdate) {
+      return (
+        <Badge variant='filled' size='xs'>
+          New
+        </Badge>
+      );
+    }
+    return null;
+  };
+
+  return renderBadge;
+}

@@ -4,6 +4,7 @@ import { Grid, NativeSelect } from 'renderer/components';
 
 const voices = list
   .filter((item) => item.Locale === 'zh-CN')
+  .sort((a, b) => (a.ShortName > b.ShortName ? 1 : -1))
   .map((item) => {
     return {
       value: item.ShortName,

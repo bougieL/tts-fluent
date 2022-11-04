@@ -26,16 +26,17 @@ body {
 .header {
   height: 36px;
   margin: 0;
-  padding-left: 80px;
+  width: 100%;
+  // padding-left: 80px;
   -webkit-app-region: drag;
 
-  &:not(:first-child) {
-    margin-left: 12;
-  }
+  // &:not(:first-child) {
+  //   margin-left: 12;
+  // }
 
-  [data-platform='windows'] & {
-    padding-left: 0;
-  }
+  // [data-platform='windows'] & {
+  //   padding-left: 0;
+  // }
 }
 
 .main {

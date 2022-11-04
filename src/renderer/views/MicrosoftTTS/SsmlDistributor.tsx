@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import list from '@bougiel/tts-node/lib/ssml/list';
 import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
 
@@ -61,9 +61,11 @@ interface Props {
   onChange: (value: SsmlConfig) => void;
 }
 
-function C({ value, onChange }: Props) {
-  const rate2n = (v: string) => Number.parseInt(v, 10) / 100 || 0 + 1;
-  const pitch2n = (v: string) => Number.parseInt(v, 10) / 50 || 0 + 1;
+export function SsmlDistributor({ value, onChange }: Props) {
+  const rate2n = (v: string) =>
+    Math.round(Number.parseFloat(v) / 10 || 0) / 10 + 1;
+  const pitch2n = (v: string) =>
+    Math.round(Number.parseFloat(v) / 5 || 0) / 10 + 1;
 
   const { locale, voice, style, rate, pitch, outputFormat } = value;
 
@@ -71,28 +73,40 @@ function C({ value, onChange }: Props) {
   const styles = useMemo(() => getStyles(voice), [voice]);
 
   const handleChange = useFn((newValue: SsmlConfig) => {
-    if (!isEqual(newValue, value)) {
-      onChange(newValue);
-    }
+    onChange(newValue);
   });
 
-  useEffect(() => {
+  const handleLocaleChange = useFn((v: string) => {
+    const voices = getVoicesByLocale(v);
+    let newVoice = voice;
     if (voices.length > 0 && !voices.find((item) => item.value === voice)) {
-      handleChange({
-        ...value,
-        voice: voices[0].value,
-      });
+      newVoice = voices[0].value;
     }
-  }, [handleChange, value, voice, voices]);
-
-  useEffect(() => {
+    const styles = getStyles(newVoice);
+    let newStyle = style;
     if (styles.length > 0 && !styles.find((item) => item.value === style)) {
-      handleChange({
-        ...value,
-        style: styles[0].value,
-      });
+      newStyle = styles[0].value;
     }
-  }, [handleChange, style, styles, value]);
+    handleChange({
+      ...value,
+      locale: v,
+      voice: newVoice,
+      style: newStyle,
+    });
+  });
+
+  const handleVoiceChange = useFn((v: string) => {
+    const styles = getStyles(v);
+    let newStyle = style;
+    if (styles.length > 0 && !styles.find((item) => item.value === style)) {
+      newStyle = styles[0].value;
+    }
+    handleChange({
+      ...value,
+      voice: v,
+      style: newStyle,
+    });
+  });
 
   return (
     <Grid>
@@ -103,10 +117,7 @@ function C({ value, onChange }: Props) {
           placeholder='Select a language'
           value={locale}
           onChange={(event) => {
-            handleChange({
-              ...value,
-              locale: event.target.value,
-            });
+            handleLocaleChange(event.target.value);
           }}
         />
       </Grid.Col>
@@ -118,10 +129,7 @@ function C({ value, onChange }: Props) {
           value={voice}
           disabled={voices.length === 0}
           onChange={(event) => {
-            handleChange({
-              ...value,
-              voice: event.target.value,
-            });
+            handleVoiceChange(event.target.value);
           }}
         />
       </Grid.Col>
@@ -138,32 +146,33 @@ function C({ value, onChange }: Props) {
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label='Speed'>
+        <Input.Wrapper label={`Speed ${rate}`}>
           <Slider
-            label='Speed'
+            label={rate}
+            min={0}
             max={3}
             value={rate2n(rate)}
             step={0.1}
             onChange={(rate) => {
               handleChange({
                 ...value,
-                rate: `${(rate - 1) * 100}%`,
+                rate: `${Math.round((rate - 1) * 10) * 10}%`,
               });
             }}
           />
         </Input.Wrapper>
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label='Pitch'>
+        <Input.Wrapper label={`Pitch ${pitch}`}>
           <Slider
-            label='Pitch'
+            label={pitch}
             max={2}
             value={pitch2n(pitch)}
             step={0.1}
             onChange={(pitch) => {
               handleChange({
                 ...value,
-                pitch: `${(pitch - 1) * 50}%`,
+                pitch: `${Math.round((pitch - 1) * 10) * 5}%`,
               });
             }}
           />
@@ -186,14 +195,3 @@ function C({ value, onChange }: Props) {
     </Grid>
   );
 }
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-function isEqual<T extends {}>(a: T, b: T) {
-  return Object.keys(a).every((key) => {
-    return a[key as keyof T] === b[key as keyof T];
-  });
-}
-
-export const SsmlDistributor = memo(C, (prevProps, nextProps) => {
-  return isEqual(prevProps.value, nextProps.value);
-});
