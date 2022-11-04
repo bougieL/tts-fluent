@@ -8,6 +8,7 @@ export namespace ConfigCache {
   export enum ConfigKey {
     downloadsDir = 'downloadsDir',
     transferDir = 'transferDir',
+    theme = 'theme',
   }
 
   const getConfigPath = async () => {
@@ -59,5 +60,11 @@ export namespace ConfigCache {
     } catch (error) {
       return downloadsDir;
     }
+  }
+
+  export async function getTheme(): Promise<string> {
+    const theme = await getConfig(ConfigKey.theme);
+
+    return theme || 'system';
   }
 }

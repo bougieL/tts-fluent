@@ -39,7 +39,7 @@ export function AudioIndicator() {
 
   return (
     <Tooltip label={status === AudioStatus.stopped ? 'Play' : 'Stop'}>
-      <ActionIcon onClick={handleClick}>
+      <ActionIcon onClick={handleClick} color='indigo'>
         {status === AudioStatus.stopped ? (
           <IconPlayerPlay />
         ) : (

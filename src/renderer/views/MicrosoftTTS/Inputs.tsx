@@ -97,11 +97,21 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
   return (
     <Tabs
       value={type}
+      inverted
       onTabChange={(type: InputType) => {
         setType(type);
         globalState.type = type;
       }}
     >
+      <Tabs.Panel value={InputType.text} pb='xs'>
+        {renderTextArea(text, setRText)}
+      </Tabs.Panel>
+      <Tabs.Panel value={InputType.file} pb='xs'>
+        <Dropzone value={file} onChange={handleFileChange} />
+      </Tabs.Panel>
+      <Tabs.Panel value={InputType.ssml} pb='xs'>
+        {renderTextArea(ssml, setRSsml)}
+      </Tabs.Panel>
       <Tabs.List>
         <Tabs.Tab value={InputType.text} icon={<IconBlockquote size={14} />}>
           Text
@@ -113,15 +123,6 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
           SSML
         </Tabs.Tab>
       </Tabs.List>
-      <Tabs.Panel value={InputType.text} pt='xs'>
-        {renderTextArea(text, setRText)}
-      </Tabs.Panel>
-      <Tabs.Panel value={InputType.file} pt='xs'>
-        <Dropzone value={file} onChange={handleFileChange} />
-      </Tabs.Panel>
-      <Tabs.Panel value={InputType.ssml} pt='xs'>
-        {renderTextArea(ssml, setRSsml)}
-      </Tabs.Panel>
     </Tabs>
   );
 }

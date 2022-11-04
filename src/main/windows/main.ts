@@ -1,5 +1,6 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, NativeTheme, nativeTheme } from 'electron';
 
+import { ConfigCache } from 'caches';
 import { resolveHtmlPath } from 'main/util';
 
 import { commonOptions } from './common';
@@ -17,6 +18,13 @@ export function createMainWindow() {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+
+  ConfigCache.getTheme()
+    .then((theme) => {
+      nativeTheme.themeSource = theme as NativeTheme['themeSource'];
+      return null;
+    })
+    .catch();
 
   return mainWindow;
 }

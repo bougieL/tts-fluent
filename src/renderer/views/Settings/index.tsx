@@ -4,6 +4,7 @@ import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
 import Feedback from './FeedBack';
 import ManagePlayCache from './ManagePlayCache';
+import ThemePrefer from './ThemePrefer';
 import TransferDirectory from './TransferDirectory';
 import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 
@@ -12,6 +13,7 @@ const Settings: FC = () => {
     <>
       <TTSDownloadsDirectory />
       <TransferDirectory />
+      <ThemePrefer />
       <ManagePlayCache />
       <AppVersion />
       <Feedback />

@@ -13,6 +13,7 @@ import {
 import {
   IconCopy,
   IconFolders,
+  IconForms,
   IconPlayerPlay,
   IconRefresh,
   IconTrash,
@@ -62,7 +63,7 @@ export function Cell({ item }: CellProps) {
   const renderDelete = useFn(() => {
     return (
       <Tooltip label='Delete'>
-        <ActionIcon onClick={handleRemove}>
+        <ActionIcon color='indigo' onClick={handleRemove}>
           <IconTrash size={16} />
         </ActionIcon>
       </Tooltip>
@@ -73,7 +74,7 @@ export function Cell({ item }: CellProps) {
     return (
       <>
         <Tooltip label={fileTip('Play')}>
-          <ActionIcon onClick={handlePlayClick}>
+          <ActionIcon onClick={handlePlayClick} color='indigo'>
             <IconPlayerPlay size={16} />
           </ActionIcon>
         </Tooltip>
@@ -82,21 +83,24 @@ export function Cell({ item }: CellProps) {
             onClick={() => {
               clipboard.writeText(item.content);
             }}
+            color='indigo'
           >
             <IconCopy size={16} />
           </ActionIcon>
         </Tooltip>
         <Tooltip label='Copy pure text'>
           <ActionIcon
+            color='indigo'
             onClick={() => {
               clipboard.writeText(item.text);
             }}
           >
-            <IconCopy size={16} />
+            <IconForms size={16} />
           </ActionIcon>
         </Tooltip>
         <Tooltip label={fileTip('Open mp3 file in explorer')}>
           <ActionIcon
+            color='indigo'
             onClick={() => {
               shell.showItemInFolder(item.path);
             }}
@@ -135,6 +139,7 @@ export function Cell({ item }: CellProps) {
   return (
     <List.Item>
       <Text>{item.text.slice(0, 20)}</Text>
+      <Space h={4} />
       <Text size='sm' color='dimmed'>
         {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
       </Text>
@@ -161,7 +166,7 @@ export function Cell({ item }: CellProps) {
                 </Text>
                 {renderDate()}
                 <Tooltip label='Retry'>
-                  <ActionIcon onClick={handleRetryClick}>
+                  <ActionIcon onClick={handleRetryClick} color='blue'>
                     <IconRefresh />
                   </ActionIcon>
                 </Tooltip>

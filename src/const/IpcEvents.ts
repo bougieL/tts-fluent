@@ -16,4 +16,6 @@ export enum IpcEvents {
 
   subWindowOpen = 'subWindow.open',
   subWindowInitialData = 'subWindow.initial.data',
+
+  themeChange = 'theme.change',
 }
