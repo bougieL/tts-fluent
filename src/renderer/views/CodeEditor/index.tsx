@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
+import { useAsync } from 'react-use';
 
 import { withWindow } from 'renderer/components';
-import { useAsync, useFn } from 'renderer/hooks';
+import { useFn } from 'renderer/hooks';
 
 import './index.scss';
 

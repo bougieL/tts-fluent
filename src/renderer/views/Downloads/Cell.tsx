@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useAsync } from 'react-use';
 import { clipboard, ipcRenderer, shell } from 'electron';
 import {
   ActionIcon,
@@ -21,7 +22,7 @@ import fs from 'fs-extra';
 import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
-import { useAsync, useAudio, useFn } from 'renderer/hooks';
+import { useAudio, useFn } from 'renderer/hooks';
 
 export interface Item extends DownloadsCache.Item {
   text: string;

@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { useAsync } from 'react-use';
 import { ipcRenderer } from 'electron';
 import { TextInput } from '@mantine/core';
 
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
-import { useAsync } from 'renderer/hooks';
 
 const TransferDirectory = () => {
   const [path, setPath] = useState('');

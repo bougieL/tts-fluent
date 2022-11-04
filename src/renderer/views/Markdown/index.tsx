@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useAsync } from 'react-use';
 
 import { withWindow } from 'renderer/components';
-import { useAsync } from 'renderer/hooks';
 
 import './style.scss';
 

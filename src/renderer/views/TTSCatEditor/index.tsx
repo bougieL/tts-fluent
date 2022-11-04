@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Divider, Input, Stack, Text } from '@mantine/core';
+import { Divider, Input, Stack } from '@mantine/core';
 
 import { withWindow } from 'renderer/components';
 import { useFn } from 'renderer/hooks';

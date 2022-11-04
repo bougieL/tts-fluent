@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
+import { useAsync } from 'react-use';
 import { shell } from 'electron';
 import { Button, Group, Input } from '@mantine/core';
 import fs from 'fs-extra';
 
 import { PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
-import { useAsync } from 'renderer/hooks';
 
 const ManagePlayCache = () => {
   const cachePathRef = useRef('');

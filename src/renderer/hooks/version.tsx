@@ -1,9 +1,8 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { useAsync } from 'react-use';
 import axios from 'axios';
 
 import pkg from '../../../release/app/package.json';
-
-import { useAsync } from './external';
 
 const { version } = pkg;
 
