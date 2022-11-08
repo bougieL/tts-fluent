@@ -13,7 +13,7 @@ ipcMain.handle(IpcEvents.subWindowOpen, (_, arg) => {
 });
 
 ipcMain.on(IpcEvents.themeChange, (_, arg) => {
-  ConfigCache.writeConfig(ConfigCache.ConfigKey.theme, arg);
+  ConfigCache.setTheme(arg);
   nativeTheme.themeSource = arg;
 });
 

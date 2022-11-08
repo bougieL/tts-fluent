@@ -65,9 +65,20 @@ export namespace ConfigCache {
     }
   }
 
-  export async function getTheme(): Promise<NativeTheme['themeSource']> {
-    const theme = await getConfig(ConfigKey.theme);
+  let privTheme: ThemeVariant;
 
-    return theme || ThemeVariant.system;
+  export function setTheme(theme: ThemeVariant) {
+    privTheme = theme;
+    writeConfig(ConfigKey.theme, theme);
+  }
+
+  export async function getTheme(): Promise<NativeTheme['themeSource']> {
+    if (privTheme) {
+      return privTheme;
+    }
+    const theme = (await getConfig(ConfigKey.theme)) || ThemeVariant.system;
+    privTheme = theme;
+
+    return theme;
   }
 }
