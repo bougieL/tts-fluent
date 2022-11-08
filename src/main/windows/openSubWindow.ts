@@ -4,12 +4,12 @@ import { SubWindowBaseOptions } from 'types';
 import { IpcEvents } from 'const';
 import { resolveHtmlPath } from 'main/util';
 
-import { commonOptions } from './common';
+import { getCommonOptions } from './common';
 import { getSubWindowPosition } from './main';
 
 const openedWindows = new Map<string, BrowserWindow>();
 
-export function openSubWindow<T extends SubWindowBaseOptions>(
+export async function openSubWindow<T extends SubWindowBaseOptions>(
   path: string,
   options?: T
 ) {
@@ -23,6 +23,8 @@ export function openSubWindow<T extends SubWindowBaseOptions>(
     subWindow.focus();
     return subWindow;
   }
+
+  const commonOptions = await getCommonOptions();
 
   const subWindow = new BrowserWindow({
     show: false,

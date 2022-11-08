@@ -1,6 +1,9 @@
 import path from 'path';
 
+import { NativeTheme } from 'electron';
 import fs from 'fs-extra';
+
+import { ThemeVariant } from 'const';
 
 import { getCachesDir, getDownloadsDir } from './_utils';
 
@@ -62,9 +65,9 @@ export namespace ConfigCache {
     }
   }
 
-  export async function getTheme(): Promise<string> {
+  export async function getTheme(): Promise<NativeTheme['themeSource']> {
     const theme = await getConfig(ConfigKey.theme);
 
-    return theme || 'system';
+    return theme || ThemeVariant.system;
   }
 }

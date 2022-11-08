@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import { Space, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
-import { useAudio, useFn } from 'renderer/hooks';
-import { createStorage } from 'renderer/lib';
+import { useAudio } from 'renderer/hooks';
 
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
@@ -20,40 +20,19 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-const configStorage = createStorage('microsoft_tts', defaultConfig);
-
 const MicrosoftTTS: FC = () => {
   const [empty, setEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
-  const [config, setConfig] = useState(configStorage.get());
-  const { audio, streamAudio, setIsStreamAudio } = useAudio();
-  const handlePlayStream = async () => {
-    setLoading(true);
-    const id = uuid.v4();
-    const src = await ipcRenderer
-      .invoke(IpcEvents.ttsMicrosoftPlayStream, {
-        ssml,
-        sessionId: id,
-      })
-      .catch((error) => {
-        setLoading(false);
-        new Notification('Play failed 😭', {
-          body: `Click to show error message`,
-        }).onclick = () => {
-          alert(String(error));
-        };
-      });
-    if (src) {
-      setLoading(false);
-      setIsStreamAudio(false);
-      audio.setSource(src);
-      audio.play();
-      return;
-    }
+  const [config, setConfig] = useLocalStorage({
+    key: 'microsoft_tts',
+    defaultValue: defaultConfig,
+  });
+  const { audio, streamAudio, setIsStreamAudio, resetAudio } = useAudio();
+
+  const handlePlayStream = async (sessionId: string) => {
     setIsStreamAudio(true);
-    streamAudio.reset();
-    const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
+    const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     const streamHandler = (
       _: any,
       { chunk, isEnd, isError, errorMessage }: any
@@ -75,8 +54,36 @@ const MicrosoftTTS: FC = () => {
     };
     ipcRenderer.on(channel, streamHandler);
     streamAudio.play();
+  };
+
+  const handlePlayClick = async () => {
+    resetAudio();
+    setLoading(true);
+    const sessionId = uuid.v4();
+    const src = await ipcRenderer
+      .invoke(IpcEvents.ttsMicrosoftPlayStream, {
+        ssml,
+        sessionId,
+      })
+      .catch((error) => {
+        setLoading(false);
+        new Notification('Play failed 😭', {
+          body: `Click to show error message`,
+        }).onclick = () => {
+          alert(String(error));
+        };
+      });
+    if (src) {
+      setLoading(false);
+      setIsStreamAudio(false);
+      audio.setSource(src);
+      audio.play();
+      return;
+    }
+    await handlePlayStream(sessionId);
     setLoading(false);
   };
+
   const handleDownloadClick = async () => {
     setLoading(true);
     await ipcRenderer
@@ -90,10 +97,6 @@ const MicrosoftTTS: FC = () => {
       });
     setLoading(false);
   };
-  const handleConfigChange = useFn((config: SsmlConfig) => {
-    setConfig(config);
-    configStorage.set(config);
-  });
 
   return (
     <Stack spacing='lg'>
@@ -106,9 +109,9 @@ const MicrosoftTTS: FC = () => {
           }
         }}
       />
-      <SsmlDistributor value={config} onChange={handleConfigChange} />
+      <SsmlDistributor value={config} onChange={setConfig} />
       <Buttons
-        onPlayClick={handlePlayStream}
+        onPlayClick={handlePlayClick}
         onDownloadClick={handleDownloadClick}
         disabled={empty || loading}
         loading={loading}

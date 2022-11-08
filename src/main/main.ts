@@ -48,7 +48,7 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  mainWindow = createMainWindow();
+  mainWindow = await createMainWindow();
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

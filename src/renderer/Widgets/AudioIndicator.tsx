@@ -9,6 +9,7 @@ export function AudioIndicator() {
   const { audio, streamAudio, isStreamAudio } = useAudio();
   const [status, setStatus] = useState(AudioStatus.empty);
   const currentAudio = isStreamAudio ? streamAudio : audio;
+
   useLayoutEffect(() => {
     if (isStreamAudio) {
       audio.stop();

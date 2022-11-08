@@ -33,11 +33,16 @@ export function useAudio() {
   const [isStreamAudio, setIsStreamAudio] = useContext(isStreamAudioContext);
   const audio = useContext(audioContext);
   const streamAudio = useContext(streamAudioContext);
+  const resetAudio = () => {
+    audio.stop();
+    streamAudio.reset();
+  };
 
   return {
     isStreamAudio,
     setIsStreamAudio,
     audio,
     streamAudio,
+    resetAudio,
   };
 }

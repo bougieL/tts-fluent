@@ -1,7 +1,8 @@
 import { Box, Center, Group, Input, SegmentedControl } from '@mantine/core';
 import { IconBrightnessHalf, IconMoon, IconSun } from '@tabler/icons';
 
-import { ThemeVariant, useThemeVariant } from 'renderer/components';
+import { ThemeVariant } from 'const';
+import { useThemeVariant } from 'renderer/components';
 
 const ThemePrefer = () => {
   const [themeVariant, setThemeVariant] = useThemeVariant();

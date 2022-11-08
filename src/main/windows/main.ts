@@ -1,13 +1,14 @@
-import { BrowserWindow, NativeTheme, nativeTheme } from 'electron';
+import { BrowserWindow } from 'electron';
 
-import { ConfigCache } from 'caches';
 import { resolveHtmlPath } from 'main/util';
 
-import { commonOptions } from './common';
+import { getCommonOptions } from './common';
 
 let mainWindow: BrowserWindow | null;
 
-export function createMainWindow() {
+export async function createMainWindow() {
+  const commonOptions = await getCommonOptions();
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 800,
@@ -18,13 +19,6 @@ export function createMainWindow() {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
-
-  ConfigCache.getTheme()
-    .then((theme) => {
-      nativeTheme.themeSource = theme as NativeTheme['themeSource'];
-      return null;
-    })
-    .catch();
 
   return mainWindow;
 }
