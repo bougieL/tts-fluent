@@ -4,6 +4,7 @@ import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
 
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
+import { darkColor, lightColor } from 'main/windows/common';
 import { openSubWindow } from 'main/windows/openSubWindow';
 
 ipcMain.handle(IpcEvents.subWindowOpen, (_, arg) => {
@@ -28,8 +29,8 @@ function updateThemeColor() {
     dark = false;
   }
   const windows = BrowserWindow.getAllWindows();
-  const color = dark ? '#1a1b1e' : '#ffffff';
-  const symbolColor = dark ? '#ffffff' : '#1a1b1e';
+  const color = dark ? darkColor.backgroundColor : lightColor.backgroundColor;
+  const symbolColor = dark ? darkColor.symbolColor : lightColor.symbolColor;
   windows.forEach((win) => {
     win.setBackgroundColor(color);
     if (os.platform() === 'win32') {

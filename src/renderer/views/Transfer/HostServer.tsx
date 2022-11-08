@@ -1,6 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { clipboard, shell } from 'electron';
-import { Alert, Anchor, Group, Input, Stack, Text } from '@mantine/core';
+import {
+  Alert,
+  Anchor,
+  Group,
+  Input,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconCircleCheck } from '@tabler/icons';
 import qrcode from 'qrcode';
 
@@ -17,6 +25,8 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
   const serverUrl = `${serverOrigin}/transfer`;
   const debugUrl = `http://${serverIp}:1213/transfer`;
 
+  const { colorScheme } = useMantineTheme();
+
   useEffect(() => {
     if (!serverName) return;
     qrcode.toCanvas(
@@ -26,13 +36,23 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
         width: 250,
         scale: 0,
         margin: 0,
+        color:
+          colorScheme === 'dark'
+            ? {
+                dark: '#ffffff',
+                light: '#1a1b1e',
+              }
+            : {
+                light: '#ffffff',
+                dark: '#1a1b1e',
+              },
       },
       (error) => {
         if (error) console.error(error);
         console.log('success!');
       }
     );
-  }, [serverName, serverUrl]);
+  }, [colorScheme, serverName, serverUrl]);
 
   if (!serverName) {
     return null;

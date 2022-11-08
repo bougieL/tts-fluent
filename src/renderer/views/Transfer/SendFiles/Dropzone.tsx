@@ -1,6 +1,6 @@
 import { useDropzone } from 'react-dropzone';
 import { ipcRenderer } from 'electron';
-import { Text } from '@mantine/core';
+import { Box, Text, useMantineTheme } from '@mantine/core';
 
 import { IpcEvents } from 'const';
 
@@ -38,14 +38,18 @@ export function Dropzone({ value = [], onChange }: Props) {
       onChange?.(files);
     } catch (error) {}
   };
+  const { colors, colorScheme } = useMantineTheme();
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
+    <Box
       {...getRootProps()}
       style={{
         width: 'calc(100vw - 290px)',
         height: 'calc(100vh - 340px)',
         border: '1px solid #ccc',
+        borderColor: colorScheme === 'light' ? colors.gray[4] : colors.gray[8],
+        backgroundColor: colorScheme === 'light' ? undefined : colors.dark[6],
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -96,6 +100,6 @@ export function Dropzone({ value = [], onChange }: Props) {
           })()}
         </>
       )}
-    </div>
+    </Box>
   );
 }

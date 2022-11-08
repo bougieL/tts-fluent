@@ -1,5 +1,5 @@
 import { useDropzone } from 'react-dropzone';
-import { Text } from '@mantine/core';
+import { Text, useMantineTheme } from '@mantine/core';
 
 interface Props {
   value?: File;
@@ -12,6 +12,7 @@ export function Dropzone({ value, onChange }: Props) {
     onChange?.(file);
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { colorScheme, colors } = useMantineTheme();
 
   return (
     <div
@@ -19,6 +20,8 @@ export function Dropzone({ value, onChange }: Props) {
       style={{
         height: 'calc(100vh - 352px)',
         border: '1px solid #ccc',
+        borderColor: colorScheme === 'light' ? colors.gray[4] : colors.gray[8],
+        backgroundColor: colorScheme === 'light' ? undefined : colors.dark[6],
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
