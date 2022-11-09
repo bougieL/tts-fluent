@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { Group, Stack, Tabs } from '@mantine/core';
 
-import { Header, pathStorage, useRenderBadge } from './Views/Header';
+import { Header, useRenderBadge } from './Views/Header';
 import { mainRoutes, windowRoutes } from './Views/routes';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import { ThemeProvider } from './components';
@@ -29,7 +29,6 @@ const App = () => {
           value={location.pathname}
           onTabChange={(value: string) => {
             navigate(value);
-            pathStorage.set(value);
           }}
         >
           <Group position='apart' align='center'>

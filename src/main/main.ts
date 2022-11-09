@@ -12,6 +12,7 @@ import { app, BrowserWindow } from 'electron';
 
 import MenuBuilder from './menu';
 import { setupSever } from './server';
+import { setupTray } from './tray';
 import { createMainWindow } from './windows';
 
 import './ipcEvents';
@@ -67,6 +68,8 @@ const createWindow = async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+
+  return mainWindow;
 };
 
 /**
@@ -76,16 +79,32 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  // }
 });
+
+export async function getMainWindow(
+  createIfNonExists: false
+): Promise<BrowserWindow | null>;
+export async function getMainWindow(
+  createIfNonExists?: true
+): Promise<BrowserWindow>;
+export async function getMainWindow(createIfNonExists = true) {
+  if (createIfNonExists && mainWindow === null) {
+    return createMainWindow();
+  }
+  return mainWindow;
+}
 
 app
   .whenReady()
   .then(() => {
     createWindow();
     setupSever();
+    setupTray({
+      getMainWindow: () => getMainWindow(),
+    });
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

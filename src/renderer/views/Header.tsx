@@ -11,11 +11,11 @@ import { mainRoutes } from './routes';
 
 // import { mainRoutes } from './routes';
 
-export const pathStorage = createStorage('__path__', '/');
+// export const pathStorage = createStorage('__path__', '/');
 
 export const Header = () => {
   // const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const downloadsNum = useDownloadsNum();
   // const { hasUpdate } = useVersion();
 
@@ -35,9 +35,9 @@ export const Header = () => {
   //   };
   // }, [location.pathname]);
 
-  useAsync(async () => {
-    navigate(pathStorage.get());
-  }, []);
+  // useAsync(async () => {
+  //   navigate(pathStorage.get());
+  // }, []);
 
   return (
     <Group align='center' spacing='sm' className='header'>

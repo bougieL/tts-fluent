@@ -1,5 +1,3 @@
-import os from 'os';
-
 import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
 
 import { ConfigCache } from 'caches';
@@ -33,12 +31,10 @@ function updateThemeColor() {
   const symbolColor = dark ? darkColor.symbolColor : lightColor.symbolColor;
   windows.forEach((win) => {
     win.setBackgroundColor(color);
-    if (os.platform() === 'win32') {
-      win.setTitleBarOverlay({
-        color,
-        symbolColor,
-      });
-    }
+    win.setTitleBarOverlay?.({
+      color,
+      symbolColor,
+    });
   });
 }
 
