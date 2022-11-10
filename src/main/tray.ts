@@ -1,11 +1,12 @@
 import os from 'os';
 
-import { app, BrowserWindow, Menu, Tray } from 'electron';
+import { app, Menu, Tray } from 'electron';
 
 import { getAssetPath, resolveHtmlPath } from 'main/util';
 
-export function setupTray(params: { getMainWindow(): Promise<BrowserWindow> }) {
-  const { getMainWindow } = params;
+import { getMainWindow } from './windows/main';
+
+export function setupTray() {
   let icon = '';
   if (os.platform() === 'darwin') {
     icon = 'icons/tray.png';

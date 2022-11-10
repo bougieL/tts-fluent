@@ -10,10 +10,10 @@
  */
 import { app, BrowserWindow } from 'electron';
 
+import { createMainWindow } from './windows/main';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
 import { setupTray } from './tray';
-import { createMainWindow } from './windows';
 
 import './ipcEvents';
 
@@ -84,27 +84,12 @@ app.on('window-all-closed', () => {
   // }
 });
 
-export async function getMainWindow(
-  createIfNonExists: false
-): Promise<BrowserWindow | null>;
-export async function getMainWindow(
-  createIfNonExists?: true
-): Promise<BrowserWindow>;
-export async function getMainWindow(createIfNonExists = true) {
-  if (createIfNonExists && mainWindow === null) {
-    return createMainWindow();
-  }
-  return mainWindow;
-}
-
 app
   .whenReady()
   .then(() => {
     createWindow();
     setupSever();
-    setupTray({
-      getMainWindow: () => getMainWindow(),
-    });
+    setupTray();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

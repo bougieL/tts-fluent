@@ -37,3 +37,16 @@ export function getSubWindowPosition() {
     y: currentWindowY + 36,
   };
 }
+
+export async function getMainWindow(
+  createIfNonExists: false
+): Promise<BrowserWindow | null>;
+export async function getMainWindow(
+  createIfNonExists?: true
+): Promise<BrowserWindow>;
+export async function getMainWindow(createIfNonExists = true) {
+  if (createIfNonExists && mainWindow === null) {
+    return createMainWindow();
+  }
+  return mainWindow;
+}
