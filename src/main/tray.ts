@@ -16,7 +16,7 @@ export function setupTray(params: { getMainWindow(): Promise<BrowserWindow> }) {
 
   async function openMainWindow(path: string) {
     const mainWindow = await getMainWindow();
-    mainWindow.loadURL(`${resolveHtmlPath('index.html')}/#${path}`);
+    mainWindow.loadURL(`${resolveHtmlPath('index.html')}#${path}`);
     if (mainWindow.isMinimized()) {
       mainWindow.restore();
     }

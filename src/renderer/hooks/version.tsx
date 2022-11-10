@@ -9,6 +9,7 @@ const { version } = pkg;
 function formatVersion(version: string) {
   return Number(
     version
+      .replace(/-.*/, '')
       .replace(/[A-Za-z]/g, '')
       .split('.')
       .map((item) => item.padStart(2, '0'))
