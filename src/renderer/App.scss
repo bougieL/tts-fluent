@@ -43,6 +43,13 @@ body {
   // [data-platform='windows'] & {
   //   padding-left: 0;
   // }
+  .title {
+    display: none;
+
+    [data-platform='windows'] & {
+      display: block;
+    }
+  }
 }
 
 .main {

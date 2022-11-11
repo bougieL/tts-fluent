@@ -198,6 +198,12 @@ const configuration: webpack.Configuration = {
         .on('error', (spawnError) => console.error(spawnError));
       return middlewares;
     },
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true,
+      },
+    },
   },
 };
 

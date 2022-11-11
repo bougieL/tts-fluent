@@ -14,7 +14,7 @@ import webpackPaths from './webpack.paths';
 const configuration: webpack.Configuration = {
   externals: [...Object.keys(externals || {})],
 
-  // stats: 'errors-only',
+  stats: 'errors-only',
 
   module: {
     rules: [

@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom';
 import { Group, Stack, Tabs } from '@mantine/core';
 
-import { Header, useRenderBadge } from './Views/Header';
+import { Header } from './components/Header';
+import { useRenderBadge } from './hooks/useRenderBadge';
 import { mainRoutes, windowRoutes } from './Views/routes';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import { ThemeProvider } from './components';

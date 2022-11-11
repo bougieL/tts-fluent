@@ -168,6 +168,12 @@ const configuration: webpack.Configuration = {
     //   type: 'https',
     // },
     open: `http://${address.ip()}:${port}/transfer`,
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true,
+      },
+    },
     // setupMiddlewares(middlewares) {
     //   console.log('Starting preload.js builder...');
     //   const preloadProcess = spawn('npm', ['run', 'start:preload'], {

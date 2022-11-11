@@ -1,8 +1,10 @@
 import { ComponentType, FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
-import { Space, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { IpcEvents } from 'const';
+
+import { Header } from './Header';
 
 export function withWindow<P extends { initialData: any }>(
   Component: ComponentType<P>
@@ -18,7 +20,7 @@ export function withWindow<P extends { initialData: any }>(
     }
     return (
       <>
-        <Space className='header' />
+        <Header />
         <Stack className='main'>
           {/* @ts-ignore */}
           <Component {...props} initialData={initialData} />

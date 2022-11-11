@@ -1,7 +1,7 @@
-import { voices as allVoices } from '@bougiel/tts-node';
+import { voices } from '@bougiel/tts-node';
 import { Grid, NativeSelect } from '@mantine/core';
 
-const voices = allVoices
+const cnVoices = voices
   .filter((item) => item.Locale === 'zh-CN')
   .sort((a, b) => (a.ShortName > b.ShortName ? 1 : -1))
   .map((item) => {
@@ -21,11 +21,11 @@ export function AiChatEditor({ value, onChange }: Props) {
     <Grid>
       <Grid.Col span={4}>
         <NativeSelect
-          data={voices}
+          data={cnVoices}
           label='Voice A'
           placeholder='Select voice A'
           value={value[0]}
-          disabled={voices.length === 0}
+          disabled={cnVoices.length === 0}
           onChange={(event) => {
             onChange([event.target.value, value[1]]);
           }}
@@ -33,11 +33,11 @@ export function AiChatEditor({ value, onChange }: Props) {
       </Grid.Col>
       <Grid.Col span={4}>
         <NativeSelect
-          data={voices}
+          data={cnVoices}
           label='Voice B'
           placeholder='Select voice B'
           value={value[1]}
-          disabled={voices.length === 0}
+          disabled={cnVoices.length === 0}
           onChange={(event) => {
             onChange([value[0], event.target.value]);
           }}
