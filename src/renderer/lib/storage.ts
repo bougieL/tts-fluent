@@ -23,3 +23,10 @@ export function createStorage<T>(key: string, defaultValue: T) {
     },
   };
 }
+
+export const STORAGE_KEYS = {
+  micorsoftTts: 'microsoft_tts',
+  ttsCat: 'tts_cat',
+  ttsCatAiChat: 'tts_cat_ai_chat',
+  themeVariant: 'theme_variant',
+};

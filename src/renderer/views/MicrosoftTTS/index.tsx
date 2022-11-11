@@ -6,6 +6,7 @@ import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
 import { useAudio } from 'renderer/hooks';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
@@ -25,8 +26,9 @@ const MicrosoftTTS: FC = () => {
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
   const [config, setConfig] = useLocalStorage({
-    key: 'microsoft_tts',
+    key: STORAGE_KEYS.micorsoftTts,
     defaultValue: defaultConfig,
+    getInitialValueInEffect: false,
   });
   const { audio, streamAudio, setIsStreamAudio, resetAudio } = useAudio();
 

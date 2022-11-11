@@ -1,8 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { Button, Group, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
-import { useFn } from 'renderer/hooks';
 import { createStorage, openSubWindow } from 'renderer/lib';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 import { SsmlConfig } from '../MicrosoftTTS/SsmlDistributor';
 
@@ -17,29 +18,38 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-export const textConfigStorage = createStorage('tts_cat', defaultConfig);
+const textConfigStorage = createStorage(STORAGE_KEYS.ttsCat, defaultConfig);
 
 const defaultAiConfig = ['zh-CN-YunxiNeural', 'zh-CN-XiaoyouNeural'];
 
-export const aiConfigStorage = createStorage(
-  'tts_cat_ai_chat',
+const aiConfigStorage = createStorage(
+  STORAGE_KEYS.ttsCatAiChat,
   defaultAiConfig
 );
 
 const TTSCat: FC = () => {
-  const [textConfig, setTextConfig] = useState(textConfigStorage.get());
-  const [aiConfig, setAiConfig] = useState(aiConfigStorage.get());
-  const handleConfigChange = useFn(() => {
-    setTextConfig(textConfigStorage.get());
-    setAiConfig(aiConfigStorage.get());
+  const [textConfig, setTextConfig] = useLocalStorage({
+    key: STORAGE_KEYS.ttsCat,
+    defaultValue: defaultConfig,
+    getInitialValueInEffect: false,
   });
+  const [aiConfig, setAiConfig] = useLocalStorage({
+    key: STORAGE_KEYS.ttsCatAiChat,
+    defaultValue: defaultAiConfig,
+    getInitialValueInEffect: false,
+  });
+
   useEffect(() => {
+    const handleConfigChange = () => {
+      setTextConfig(textConfigStorage.get());
+      setAiConfig(aiConfigStorage.get());
+    };
     window.addEventListener('storage', handleConfigChange);
 
     return () => {
       window.removeEventListener('storage', handleConfigChange);
     };
-  }, [handleConfigChange]);
+  }, [setAiConfig, setTextConfig]);
 
   const handleEdit = () => {
     openSubWindow('/window/ttsCatEditor', {
@@ -59,8 +69,6 @@ const TTSCat: FC = () => {
 
   const handleReset = () => {
     if (confirm('Reset to default value ?')) {
-      textConfigStorage.reset();
-      aiConfigStorage.reset();
       setTextConfig(defaultConfig);
       setAiConfig(defaultAiConfig);
     }

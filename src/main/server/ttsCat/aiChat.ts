@@ -12,8 +12,8 @@ export function setupAiChatRouter(router: Router) {
   router.get('/aiChat', async (req, res) => {
     const {
       text,
-      voiceA = 'zh-CN-YunxiNeural',
-      voiceB = 'zh-CN-XiaoyouNeural',
+      voiceA = 'zh-CN-XiaoshuangNeural',
+      voiceB = 'zh-CN-XiaoxiaoNeural',
       outputFormat,
     } = req.query as Record<string, string>;
     if (!text) {

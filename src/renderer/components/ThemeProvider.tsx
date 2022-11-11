@@ -12,6 +12,7 @@ import { useColorScheme, useLocalStorage } from '@mantine/hooks';
 
 import { IpcEvents, ThemeVariant } from 'const';
 import { useFn } from 'renderer/hooks';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 const themeVariantContext = createContext(ThemeVariant.system);
 const themeVariantSetterContext = createContext<(v: ThemeVariant) => void>(
@@ -34,8 +35,8 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
     getInitialValueInEffect: false,
   });
 
-  const [themeVariant, setLThemeVariant] = useLocalStorage<ThemeVariant>({
-    key: 'theme-variant',
+  const [themeVariant, setLThemeVariant] = useLocalStorage({
+    key: STORAGE_KEYS.themeVariant,
     getInitialValueInEffect: false,
     defaultValue: ThemeVariant.system,
   });

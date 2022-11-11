@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { Divider, Input, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { withWindow } from 'renderer/components';
-import { useFn } from 'renderer/hooks';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 import { SsmlConfig, SsmlDistributor } from '../MicrosoftTTS/SsmlDistributor';
-import { aiConfigStorage, textConfigStorage } from '../TTSCat';
 
 import { AiChatEditor } from './AiChatEditor';
 
@@ -17,28 +16,25 @@ interface Props {
 }
 
 function TTSCatEditor({ initialData: { textConfig, aiConfig } }: Props) {
-  const [privTextConfig, setPrivTextConfig] = useState(textConfig);
-  const [privAiConfig, setPrivAiConfig] = useState(aiConfig);
-  const handleTextConfigChange = useFn((config: SsmlConfig) => {
-    setPrivTextConfig(config);
-    textConfigStorage.set(config);
+  const [privTextConfig, setPrivTextConfig] = useLocalStorage({
+    key: STORAGE_KEYS.ttsCat,
+    defaultValue: textConfig,
+    getInitialValueInEffect: false,
   });
-  const handleAiConfigChange = useFn((config: string[]) => {
-    setPrivAiConfig(config);
-    aiConfigStorage.set(config);
+  const [privAiConfig, setPrivAiConfig] = useLocalStorage({
+    key: STORAGE_KEYS.ttsCatAiChat,
+    defaultValue: aiConfig,
+    getInitialValueInEffect: false,
   });
 
   return (
     <Stack spacing='md'>
       <Input.Wrapper label='Danmuji'>
-        <SsmlDistributor
-          value={privTextConfig}
-          onChange={handleTextConfigChange}
-        />
+        <SsmlDistributor value={privTextConfig} onChange={setPrivTextConfig} />
       </Input.Wrapper>
       <Divider />
       <Input.Wrapper label='Danmuji with AI chat'>
-        <AiChatEditor value={privAiConfig} onChange={handleAiConfigChange} />
+        <AiChatEditor value={privAiConfig} onChange={setPrivAiConfig} />
       </Input.Wrapper>
     </Stack>
   );
