@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@bougiel/tts-node': ^1.6.0
+  '@bougiel/tts-node': ^1.6.1
   '@codemirror/lang-javascript': ^6.1.1
   '@codemirror/state': ^6.1.2
   '@emotion/react': ^11.10.5
@@ -107,7 +107,7 @@ specifiers:
   webpack-merge: ^5.8.0
 
 dependencies:
-  '@bougiel/tts-node': 1.6.0
+  '@bougiel/tts-node': 1.6.1
   '@codemirror/lang-javascript': 6.1.1
   '@codemirror/state': 6.1.2
   '@emotion/react': 11.10.5_281bd807203c2775b3a3c90b05c2fd40
@@ -579,12 +579,12 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bougiel/tts-node/1.6.0:
-    resolution: {integrity: sha512-PEKU8eATGar/Iqp67c1PQARfsrcjgLyw6kCFaMyuaGGlA4CJ9oBC11/081cOFzgeoptqI11x7yWUX/TnaZ9Wqw==}
+  /@bougiel/tts-node/1.6.1:
+    resolution: {integrity: sha512-bRyYY/qyKSZUOXEIp5HeCRdoEpIz5j/0XWWaDi5Qii4kZhW5nS7VhOKRbJIbeXudFvJ8qDvijHW3lVD6JeoXTg==}
     dependencies:
       axios: 0.27.2
       uuid: 8.3.2
-      ws: 8.8.1
+      ws: 8.11.0
       xss: 1.0.14
     transitivePeerDependencies:
       - bufferutil
@@ -10965,7 +10965,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /ws/8.8.1:
     resolution: {integrity: sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==}
@@ -10978,6 +10977,7 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: true
 
   /xml-name-validator/4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}

@@ -1,6 +1,6 @@
 import { FC, useMemo, useRef, useState } from 'react';
 import { useAsync } from 'react-use';
-import { ssmlToText } from '@bougiel/tts-node/lib/ssml/index';
+import { ssmlToText } from '@bougiel/tts-node';
 import { List, Stack, TextInput } from '@mantine/core';
 import fs from 'fs-extra';
 

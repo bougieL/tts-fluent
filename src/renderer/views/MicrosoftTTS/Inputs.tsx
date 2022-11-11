@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ssmlToText, textToSsml } from '@bougiel/tts-node/lib/ssml';
+import { ssmlToText, textToSsml } from '@bougiel/tts-node';
 import { Tabs, Textarea } from '@mantine/core';
 import { IconBlockquote, IconCode, IconFile } from '@tabler/icons';
 

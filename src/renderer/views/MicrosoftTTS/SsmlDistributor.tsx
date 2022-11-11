@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
-import list from '@bougiel/tts-node/lib/ssml/list';
-import outputFormats from '@bougiel/tts-node/lib/ssml/outputFormats';
+import { outputFormats, voices } from '@bougiel/tts-node';
 import { Grid, Input, NativeSelect, Slider } from '@mantine/core';
 
 import { useFn } from 'renderer/hooks';
 
-const locales = list
+const locales = voices
   .map((item) => {
     return {
       value: item.LocaleName,
@@ -18,7 +17,7 @@ const locales = list
   .sort((a, b) => (a.label > b.label ? 1 : -1));
 
 function getVoicesByLocale(locale: string) {
-  return list
+  return voices
     .filter((item) => item.LocaleName === locale)
     .sort((a, b) => (a.ShortName > b.ShortName ? 1 : -1))
     .map((item) => {
@@ -31,7 +30,7 @@ function getVoicesByLocale(locale: string) {
 
 function getStyles(name: string) {
   return [{ value: 'genreal', label: 'General' }].concat(
-    (list.find((item) => item.ShortName === name)?.StyleList || []).map(
+    (voices.find((item) => item.ShortName === name)?.StyleList || []).map(
       (item) => {
         return {
           value: item,

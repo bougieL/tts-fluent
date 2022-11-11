@@ -1,7 +1,7 @@
-import list from '@bougiel/tts-node/lib/ssml/list';
+import { voices as allVoices } from '@bougiel/tts-node';
 import { Grid, NativeSelect } from '@mantine/core';
 
-const voices = list
+const voices = allVoices
   .filter((item) => item.Locale === 'zh-CN')
   .sort((a, b) => (a.ShortName > b.ShortName ? 1 : -1))
   .map((item) => {
