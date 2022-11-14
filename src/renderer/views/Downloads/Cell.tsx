@@ -24,6 +24,7 @@ import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
 import { useAudio, useFn } from 'renderer/hooks';
+import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
 
 export interface Item extends DownloadsCache.Item {
   text: string;
@@ -36,12 +37,16 @@ interface CellProps {
 export function Cell({ item }: CellProps) {
   const [exists, setExists] = useState(true);
   const [size, setSize] = useState('0 B');
-  const { audio, setIsStreamAudio } = useAudio();
+  // const { audio, setIsStreamAudio } = useAudio();
 
   const handlePlayClick = useFn(async () => {
-    setIsStreamAudio(false);
-    audio.setSource(item.path);
-    audio.play();
+    const readStream = fs.createReadStream(item.path);
+    const streamAudio = new StreamAudio();
+    readStream.pipe(streamAudio);
+    streamAudio.play();
+    // setIsStreamAudio(false);
+    // audio.setSource(item.path);
+    // audio.play();
   });
 
   const handleRemove = useFn(async () => {

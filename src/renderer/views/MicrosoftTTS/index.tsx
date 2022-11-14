@@ -32,19 +32,16 @@ const MicrosoftTTS: FC = () => {
     defaultValue: defaultConfig,
     getInitialValueInEffect: false,
   });
-  const { audio, streamAudio, setIsStreamAudio, resetAudio } = useAudio();
 
   const handlePlayStream = async (sessionId: string) => {
-    // setIsStreamAudio(true);
     const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     const eventStream = new EventStream(channel);
     const streamAudio = new StreamAudio();
     eventStream.pipe(streamAudio);
-    streamAudio.audio.play();
+    streamAudio.play();
   };
 
   const handlePlayClick = async () => {
-    resetAudio();
     setLoading(true);
     const sessionId = uuid.v4();
     const src = await ipcRenderer
@@ -62,9 +59,8 @@ const MicrosoftTTS: FC = () => {
       });
     if (src) {
       setLoading(false);
-      setIsStreamAudio(false);
-      audio.setSource(src);
-      audio.play();
+      // audio.setSource(src);
+      // audio.play();
       return;
     }
     await handlePlayStream(sessionId);
