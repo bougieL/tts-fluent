@@ -1,6 +1,4 @@
-import { BrowserWindow } from 'electron';
-
-import { resolveHtmlPath } from 'main/util';
+import { app, BrowserWindow } from 'electron';
 
 import { getCommonOptions } from './common';
 
@@ -10,7 +8,7 @@ export async function createMainWindow() {
   const commonOptions = await getCommonOptions();
 
   mainWindow = new BrowserWindow({
-    show: false,
+    show: true,
     width: 800,
     height: 600,
     minWidth: 800,
@@ -18,9 +16,28 @@ export async function createMainWindow() {
     ...commonOptions,
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 
   return mainWindow;
+}
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  // Create myWindow, load the rest of the app, etc...
+  app.on('ready', () => {});
 }
 
 export function getSubWindowPosition() {
