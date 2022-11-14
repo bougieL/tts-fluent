@@ -14,10 +14,9 @@ import { createMainWindow } from './windows/main';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
 import { setupTray } from './tray';
+import { resolveHtmlPath } from './util';
 
 import './ipcEvents';
-
-let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -44,12 +43,14 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async () => {
+const createWindow = async (firstLaunch = true) => {
   if (isDebug) {
     await installExtensions();
   }
 
-  mainWindow = await createMainWindow();
+  let mainWindow: BrowserWindow | null = await createMainWindow();
+
+  mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -69,20 +70,25 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  return mainWindow;
+  if (firstLaunch) {
+    /**
+     * Add event listeners...
+     */
+    app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (mainWindow === null) createWindow(false);
+    });
+
+    app.on('window-all-closed', () => {
+      // Respect the OSX convention of having the application in memory even
+      // after all windows have been closed
+      // if (process.platform !== 'darwin') {
+      //   app.quit();
+      // }
+    });
+  }
 };
-
-/**
- * Add event listeners...
- */
-
-app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  // if (process.platform !== 'darwin') {
-  //   app.quit();
-  // }
-});
 
 app
   .whenReady()
@@ -90,10 +96,5 @@ app
     createWindow();
     setupSever();
     setupTray();
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
   })
   .catch(console.log);

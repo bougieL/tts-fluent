@@ -72,13 +72,8 @@ export function setupTray() {
   ]);
   tray.setToolTip('TTS Fluent');
   tray.setIgnoreDoubleClickEvents(true);
-  tray.on('click', async () => {
-    const mainWindow = await getMainWindow();
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
-    }
-    mainWindow.show();
-    mainWindow.focus();
+  tray.on('click', () => {
+    openMainWindow('/');
   });
   tray.on('right-click', () => {
     tray.popUpContextMenu(contextMenu);
