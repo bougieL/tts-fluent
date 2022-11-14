@@ -6,6 +6,8 @@ import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
 import { useAudio } from 'renderer/hooks';
+import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
+import { EventStream } from 'renderer/lib/EventStream';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 import { Buttons } from './Buttons';
@@ -33,29 +35,12 @@ const MicrosoftTTS: FC = () => {
   const { audio, streamAudio, setIsStreamAudio, resetAudio } = useAudio();
 
   const handlePlayStream = async (sessionId: string) => {
-    setIsStreamAudio(true);
+    // setIsStreamAudio(true);
     const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
-    const streamHandler = (
-      _: any,
-      { chunk, isEnd, isError, errorMessage }: any
-    ) => {
-      if (chunk) {
-        streamAudio.appendBuffer(chunk);
-      }
-      if (isEnd || isError) {
-        streamAudio.setStreamEnd();
-        ipcRenderer.off(channel, streamHandler);
-      }
-      if (isError && errorMessage) {
-        new Notification('Play failed 😭', {
-          body: `Click to show error message`,
-        }).onclick = () => {
-          alert(errorMessage);
-        };
-      }
-    };
-    ipcRenderer.on(channel, streamHandler);
-    streamAudio.play();
+    const eventStream = new EventStream(channel);
+    const streamAudio = new StreamAudio();
+    eventStream.pipe(streamAudio);
+    streamAudio.audio.play();
   };
 
   const handlePlayClick = async () => {

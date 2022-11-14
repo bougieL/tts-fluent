@@ -6,8 +6,8 @@ import {
   useState,
 } from 'react';
 
+import { BufferAudio } from 'renderer/lib/Audio/BufferAudio';
 import { LocalAudio } from 'renderer/lib/Audio/LocalAudio';
-import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
 
 const isStreamAudioContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>]
@@ -15,11 +15,11 @@ const isStreamAudioContext = createContext<
 
 const audioContext = createContext(new LocalAudio());
 
-const streamAudioContext = createContext(new StreamAudio());
+const streamAudioContext = createContext(new BufferAudio());
 
 export function AudioProvider(props: PropsWithChildren<any>) {
   const audioRef = useRef(new LocalAudio());
-  const streamAudioRef = useRef(new StreamAudio());
+  const streamAudioRef = useRef(new BufferAudio());
   return (
     <isStreamAudioContext.Provider value={useState<boolean>(false)}>
       <streamAudioContext.Provider value={streamAudioRef.current}>

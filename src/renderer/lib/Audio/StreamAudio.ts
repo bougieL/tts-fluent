@@ -1,126 +1,33 @@
-import { AudioStatus, StatusChangeCallback } from './types';
+/* eslint-disable no-underscore-dangle */
+import stream from 'stream';
 
-export class StreamAudio {
-  private privAudio = new Audio();
+import { BufferAudio } from './BufferAudio';
 
-  private privStatus = AudioStatus.empty;
-
-  private privBuffers: ArrayBuffer[] = [];
-
-  private privStatusChangeCallbacks = new Set<StatusChangeCallback>();
-
-  private privMediaSource?: MediaSource;
-
-  private privSourceBuffer?: SourceBuffer;
-
-  private privStreamEnd = false;
+export class StreamAudio extends stream.Writable {
+  audio: BufferAudio;
 
   constructor() {
-    this.reset();
-    this.setupAudioListener();
+    super();
+    this.audio = new BufferAudio();
   }
 
-  appendBuffer(buffer: ArrayBuffer) {
-    this.privBuffers.push(buffer);
-    this.updateSourceBuffer();
+  _write(
+    chunk: any,
+    encoding: BufferEncoding,
+    callback: (error?: Error | null | undefined) => void
+  ): void {
+    this.audio.appendBuffer(chunk);
   }
 
-  private setupAudioListener() {
-    const handleEnd = () => {
-      this.status = AudioStatus.stopped;
-    };
-    this.privAudio.addEventListener('ended', handleEnd);
+  _final(callback: (error?: Error | null | undefined) => void): void {
+    this.audio.setStreamEnd();
   }
 
-  private set status(value: AudioStatus) {
-    this.privStatus = value;
-    this.privStatusChangeCallbacks.forEach((item) => item(value));
-  }
-
-  get status() {
-    return this.privStatus;
-  }
-
-  async play() {
-    this.status = AudioStatus.playing;
-    await this.privAudio.play();
-  }
-
-  private updateSourceBuffer() {
-    if (
-      this.privMediaSource?.readyState === 'open' &&
-      !this.privSourceBuffer?.updating
-    ) {
-      const buffer = this.privBuffers.shift();
-      if (buffer) {
-        try {
-          this.privSourceBuffer?.appendBuffer(buffer);
-        } catch (error) {
-          this.privBuffers.unshift(buffer);
-        }
-        this.endStream();
-      }
-    }
-  }
-
-  private endStream() {
-    if (
-      !this.privSourceBuffer?.updating &&
-      this.privBuffers.length === 0 &&
-      this.privStreamEnd
-    ) {
-      try {
-        this.privMediaSource?.endOfStream();
-      } catch (error) {}
-    }
-  }
-
-  reset() {
-    this.stop();
-    this.privBuffers = [];
-    this.privStreamEnd = false;
-    this.privMediaSource = new MediaSource();
-    this.privMediaSource.onsourceopen = () => {
-      if (this.privMediaSource) {
-        this.privSourceBuffer =
-          this.privMediaSource.addSourceBuffer('audio/mpeg');
-        this.privSourceBuffer.onupdate = () => {
-          this.updateSourceBuffer();
-          this.endStream();
-        };
-        this.privSourceBuffer.onupdateend = () => {
-          this.updateSourceBuffer();
-          this.endStream();
-        };
-      }
-    };
-    this.privMediaSource.onsourceclose = () => {};
-    this.privAudio.src = URL.createObjectURL(this.privMediaSource);
-  }
-
-  setStreamEnd() {
-    this.privStreamEnd = true;
-    this.endStream();
-  }
-
-  stop() {
-    this.status = AudioStatus.stopped;
-    this.privAudio.pause();
-    this.privAudio.currentTime = 0;
-  }
-
-  pause() {
-    this.status = AudioStatus.paused;
-    this.privAudio.pause();
-  }
-
-  addStatusChangeListener(callback: StatusChangeCallback) {
-    this.privStatusChangeCallbacks.add(callback);
-    callback(this.privStatus);
-    return {
-      remove: () => {
-        this.privStatusChangeCallbacks.delete(callback);
-      },
-    };
+  _destroy(
+    error: Error | null,
+    callback: (error?: Error | null | undefined) => void
+  ): void {
+    this.audio.setStreamEnd();
+    callback(error);
   }
 }
