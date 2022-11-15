@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { outputFormats, voices } from '@bougiel/tts-node';
 import { Grid, Input, NativeSelect, Slider } from '@mantine/core';
 
@@ -62,17 +62,22 @@ interface Props {
 
 export function SsmlDistributor({ value, onChange }: Props) {
   const rate2n = (v: string) =>
-    Math.round(Number.parseFloat(v) / 10 || 0) / 10 + 1;
+    Number((Number.parseInt(v, 10) / 100 + 1).toFixed(1));
   const pitch2n = (v: string) =>
-    Math.round(Number.parseFloat(v) / 5 || 0) / 10 + 1;
+    Number((Number.parseInt(v, 10) / 50 + 1).toFixed(1));
+  const n2rate = (n: number) => `${Math.round((n - 1) * 10) * 10}%`;
+  const n2pitch = (n: number) => `${Math.round((n - 1) * 10) * 5}%`;
 
   const { locale, voice, style, rate, pitch, outputFormat } = value;
 
   const voices = useMemo(() => getVoicesByLocale(locale), [locale]);
   const styles = useMemo(() => getStyles(voice), [voice]);
 
-  const handleChange = useFn((newValue: SsmlConfig) => {
-    onChange(newValue);
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
+  const handleChange = useFn((newValue: Partial<SsmlConfig>) => {
+    onChange({ ...valueRef.current, ...newValue });
   });
 
   const handleLocaleChange = useFn((v: string) => {
@@ -87,7 +92,6 @@ export function SsmlDistributor({ value, onChange }: Props) {
       newStyle = styles[0].value;
     }
     handleChange({
-      ...value,
       locale: v,
       voice: newVoice,
       style: newStyle,
@@ -101,7 +105,6 @@ export function SsmlDistributor({ value, onChange }: Props) {
       newStyle = styles[0].value;
     }
     handleChange({
-      ...value,
       voice: v,
       style: newStyle,
     });
@@ -140,12 +143,12 @@ export function SsmlDistributor({ value, onChange }: Props) {
           disabled={styles.length === 0}
           value={style}
           onChange={(event) => {
-            handleChange({ ...value, style: event.target.value });
+            handleChange({ style: event.target.value });
           }}
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label={`Speed ${rate}`}>
+        <Input.Wrapper label={`Speed ${rate2n(rate)}`}>
           <Slider
             label={rate}
             min={0}
@@ -154,24 +157,23 @@ export function SsmlDistributor({ value, onChange }: Props) {
             step={0.1}
             onChange={(rate) => {
               handleChange({
-                ...value,
-                rate: `${Math.round((rate - 1) * 10) * 10}%`,
+                rate: n2rate(rate),
               });
             }}
           />
         </Input.Wrapper>
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label={`Pitch ${pitch}`}>
+        <Input.Wrapper label={`Pitch ${pitch2n(pitch)}`}>
           <Slider
             label={pitch}
+            min={0}
             max={2}
             value={pitch2n(pitch)}
             step={0.1}
             onChange={(pitch) => {
               handleChange({
-                ...value,
-                pitch: `${Math.round((pitch - 1) * 10) * 5}%`,
+                pitch: n2pitch(pitch),
               });
             }}
           />
@@ -185,7 +187,6 @@ export function SsmlDistributor({ value, onChange }: Props) {
           value={outputFormat}
           onChange={(event) => {
             handleChange({
-              ...value,
               outputFormat: event.target.value,
             });
           }}
