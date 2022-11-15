@@ -7,8 +7,11 @@ import {
 } from 'react-router-dom';
 import { Group, Stack, Tabs } from '@mantine/core';
 
+import { ConfigCache } from 'caches';
+
 import { Header } from './components/Header';
 import { useRenderBadge } from './hooks/useRenderBadge';
+import { NotFound } from './Views/NotFound';
 import { mainRoutes, windowRoutes } from './Views/routes';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import { ThemeProvider } from './components';
@@ -29,6 +32,7 @@ const App = () => {
           variant='pills'
           value={location.pathname}
           onTabChange={(value: string) => {
+            ConfigCache.setRoute(value);
             navigate(value);
           }}
         >
@@ -54,6 +58,18 @@ const App = () => {
           {mainRoutes.map(({ path, Component }) => {
             return <Route path={path} key={path} element={<Component />} />;
           })}
+          <Route
+            path='*'
+            element={
+              <NotFound
+                text='Go home'
+                onClick={() => {
+                  navigate('/');
+                  ConfigCache.setRoute('/');
+                }}
+              />
+            }
+          />
         </Routes>
       </Stack>
     </>
@@ -74,6 +90,17 @@ export default () => {
                     <Route path={path} key={path} element={<Component />} />
                   );
                 })}
+                <Route
+                  path='*'
+                  element={
+                    <NotFound
+                      text='Close window'
+                      onClick={() => {
+                        window.close();
+                      }}
+                    />
+                  }
+                />
               </Route>
               <Route path='/*' element={<App />} />
             </Routes>

@@ -2,6 +2,7 @@ import os from 'os';
 
 import { app, Menu, Tray } from 'electron';
 
+import { ConfigCache } from 'caches';
 import { getAssetPath, resolveHtmlPath } from 'main/util';
 
 import { getMainWindow } from './windows/main';
@@ -15,7 +16,7 @@ export function setupTray() {
   }
   const tray = new Tray(getAssetPath(icon));
 
-  async function openMainWindow(path: string) {
+  async function openMainWindow(path: string, memo = true) {
     const mainWindow = await getMainWindow();
     mainWindow.loadURL(`${resolveHtmlPath('index.html')}#${path}`);
     if (mainWindow.isMinimized()) {
@@ -23,6 +24,9 @@ export function setupTray() {
     }
     mainWindow.show();
     mainWindow.focus();
+    if (memo) {
+      ConfigCache.setRoute(path);
+    }
   }
 
   const contextMenu = Menu.buildFromTemplate([
@@ -72,8 +76,9 @@ export function setupTray() {
   ]);
   tray.setToolTip('TTS Fluent');
   tray.setIgnoreDoubleClickEvents(true);
-  tray.on('click', () => {
-    openMainWindow('/');
+  tray.on('click', async () => {
+    const route = await ConfigCache.getRoute();
+    openMainWindow(route, false);
   });
   tray.on('right-click', () => {
     tray.popUpContextMenu(contextMenu);

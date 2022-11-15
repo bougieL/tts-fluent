@@ -10,6 +10,8 @@
  */
 import { app, BrowserWindow } from 'electron';
 
+import { ConfigCache } from 'caches';
+
 import { createMainWindow } from './windows/main';
 import MenuBuilder from './menu';
 import { setupSever } from './server';
@@ -50,7 +52,9 @@ const createWindow = async (firstLaunch = true) => {
 
   let mainWindow: BrowserWindow | null = await createMainWindow();
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  const route = await ConfigCache.getRoute();
+
+  mainWindow.loadURL(resolveHtmlPath(`index.html#${route}`));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
