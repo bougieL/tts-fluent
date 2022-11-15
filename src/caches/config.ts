@@ -12,6 +12,7 @@ export namespace ConfigCache {
     downloadsDir = 'downloadsDir',
     transferDir = 'transferDir',
     theme = 'theme',
+    route = 'route',
   }
 
   const getConfigPath = async () => {
@@ -80,5 +81,22 @@ export namespace ConfigCache {
     privTheme = theme;
 
     return theme;
+  }
+
+  let privRoute: string;
+
+  export function setRoute(p: string) {
+    privRoute = p;
+    writeConfig(ConfigKey.route, p);
+  }
+
+  export async function getRoute(): Promise<string> {
+    if (typeof privRoute === 'string') {
+      return privRoute;
+    }
+    const route = (await getConfig(ConfigKey.route)) || '';
+    privRoute = route;
+
+    return route;
   }
 }
