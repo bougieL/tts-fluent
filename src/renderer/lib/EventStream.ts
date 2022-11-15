@@ -4,22 +4,17 @@ import stream from 'stream';
 import { ipcRenderer, IpcRendererEvent } from 'electron';
 
 export class EventStream extends stream.Readable {
-  private channel: string;
-
   private removeSubscription?: () => void;
 
   constructor(channel: string) {
     super();
-    this.channel = channel;
-  }
 
-  _construct(callback: (error?: Error | null | undefined) => void): void {
     const handler = (
       event: IpcRendererEvent,
       { chunk, isEnd, isError, errorMessage }: any
     ) => {
       if (isError) {
-        callback(new Error(errorMessage));
+        this.destroy(new Error(errorMessage));
         return;
       }
       if (chunk) {
@@ -29,12 +24,10 @@ export class EventStream extends stream.Readable {
         this.removeSubscription?.();
         this.push(null);
       }
-      callback();
     };
-    ipcRenderer.on(this.channel, handler);
-
+    ipcRenderer.on(channel, handler);
     this.removeSubscription = () => {
-      ipcRenderer.off(this.channel, handler);
+      ipcRenderer.off(channel, handler);
     };
   }
 
@@ -45,4 +38,7 @@ export class EventStream extends stream.Readable {
     this.removeSubscription?.();
     callback(error);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  _read(size: number): void {}
 }

@@ -144,11 +144,11 @@ export class StreamAudio extends stream.Writable {
     callback();
   }
 
-  // _destroy(
-  //   error: Error | null,
-  //   callback: (error?: Error | null | undefined) => void
-  // ): void {
-  //   this.setStreamEnd();
-  //   callback(error);
-  // }
+  _destroy(
+    error: Error | null,
+    callback: (error?: Error | null | undefined) => void
+  ): void {
+    this.setStreamEnd();
+    callback(error);
+  }
 }
