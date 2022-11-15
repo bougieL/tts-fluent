@@ -115,6 +115,9 @@ const MicrosoftTTS: FC = () => {
       <Buttons
         onPlayClick={handlePlayClick}
         onDownloadClick={handleDownloadClick}
+        onResetClick={() => {
+          setConfig(defaultConfig);
+        }}
         disabled={empty || loading}
         loading={loading}
       />

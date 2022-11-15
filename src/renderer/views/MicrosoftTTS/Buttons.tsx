@@ -1,9 +1,10 @@
 import { Button, Group, Loader } from '@mantine/core';
-import { IconDownload, IconPlayerPlay } from '@tabler/icons';
+import { IconDownload, IconPlayerPlay, IconRefresh } from '@tabler/icons';
 
 interface Props {
   onPlayClick: () => void;
   onDownloadClick: () => void;
+  onResetClick: () => void;
   disabled: boolean;
   loading: boolean;
 }
@@ -13,6 +14,7 @@ export function Buttons({
   disabled,
   loading,
   onDownloadClick,
+  onResetClick,
 }: Props) {
   return (
     <Group position='right' spacing='sm'>
@@ -34,6 +36,14 @@ export function Buttons({
         size='xs'
       >
         Download
+      </Button>
+      <Button
+        variant='default'
+        leftIcon={<IconRefresh size={14} />}
+        onClick={onResetClick}
+        size='xs'
+      >
+        Reset
       </Button>
     </Group>
   );
