@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
-import { Space, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+import fs from 'fs-extra';
 import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
-import { useAudio } from 'renderer/hooks';
-import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
+import { useGetAudio } from 'renderer/hooks';
 import { EventStream } from 'renderer/lib/EventStream';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
@@ -32,13 +32,15 @@ const MicrosoftTTS: FC = () => {
     defaultValue: defaultConfig,
     getInitialValueInEffect: false,
   });
+  const getAudio = useGetAudio();
 
   const handlePlayStream = async (sessionId: string) => {
+    const audio = getAudio(sessionId);
+    audio.play();
+    if (audio.streamEnd) return;
     const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     const eventStream = new EventStream(channel);
-    const streamAudio = new StreamAudio();
-    eventStream.pipe(streamAudio);
-    streamAudio.play();
+    eventStream.pipe(audio);
   };
 
   const handlePlayClick = async () => {
@@ -59,11 +61,12 @@ const MicrosoftTTS: FC = () => {
       });
     if (src) {
       setLoading(false);
-      // audio.setSource(src);
-      // audio.play();
+      const audio = getAudio(src);
+      audio.play();
+      if (!audio.streamEnd) fs.createReadStream(src).pipe(audio);
       return;
     }
-    await handlePlayStream(sessionId);
+    handlePlayStream(sessionId);
     setLoading(false);
   };
 

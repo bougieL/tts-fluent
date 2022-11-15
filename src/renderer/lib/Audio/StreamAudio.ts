@@ -46,6 +46,10 @@ export class StreamAudio extends stream.Writable {
     return this.privStatus;
   }
 
+  get streamEnd() {
+    return this.privStreamEnd;
+  }
+
   async play() {
     this.status = AudioStatus.playing;
     await this.privAudio.play();

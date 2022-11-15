@@ -23,8 +23,7 @@ import fs from 'fs-extra';
 import { DownloadsCache } from 'caches';
 import { IpcEvents } from 'const';
 import { getSize } from 'lib/getSize';
-import { useAudio, useFn } from 'renderer/hooks';
-import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
+import { useFn, useGetAudio } from 'renderer/hooks';
 
 export interface Item extends DownloadsCache.Item {
   text: string;
@@ -37,16 +36,13 @@ interface CellProps {
 export function Cell({ item }: CellProps) {
   const [exists, setExists] = useState(true);
   const [size, setSize] = useState('0 B');
-  // const { audio, setIsStreamAudio } = useAudio();
+  const getAudio = useGetAudio();
 
   const handlePlayClick = useFn(async () => {
     const readStream = fs.createReadStream(item.path);
-    const streamAudio = new StreamAudio();
-    readStream.pipe(streamAudio);
-    streamAudio.play();
-    // setIsStreamAudio(false);
-    // audio.setSource(item.path);
-    // audio.play();
+    const audio = getAudio(item.path);
+    audio.play();
+    if (!audio.streamEnd) readStream.pipe(audio);
   });
 
   const handleRemove = useFn(async () => {
@@ -79,7 +75,11 @@ export function Cell({ item }: CellProps) {
     return (
       <>
         <Tooltip label={fileTip('Play')}>
-          <ActionIcon onClick={handlePlayClick} color='indigo'>
+          <ActionIcon
+            onClick={handlePlayClick}
+            color='indigo'
+            disabled={!exists}
+          >
             <IconPlayerPlay size={16} />
           </ActionIcon>
         </Tooltip>
@@ -106,6 +106,7 @@ export function Cell({ item }: CellProps) {
         <Tooltip label={fileTip('Open mp3 file in explorer')}>
           <ActionIcon
             color='indigo'
+            disabled={!exists}
             onClick={() => {
               shell.showItemInFolder(item.path);
             }}

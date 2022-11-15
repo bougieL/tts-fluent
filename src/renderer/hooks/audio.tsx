@@ -1,48 +1,29 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
+import { createContext, PropsWithChildren, useContext, useRef } from 'react';
 
-import { LocalAudio } from 'renderer/lib/Audio/LocalAudio';
 import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
 
-const isStreamAudioContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
->([false, () => {}]);
+export const streamAudioContext = createContext(new StreamAudio());
 
-const audioContext = createContext(new LocalAudio());
-
-const streamAudioContext = createContext(new StreamAudio());
-
-export function AudioProvider(props: PropsWithChildren<any>) {
-  const audioRef = useRef(new LocalAudio());
+export function AudioProvider({ children }: PropsWithChildren) {
   const streamAudioRef = useRef(new StreamAudio());
+
   return (
-    <isStreamAudioContext.Provider value={useState<boolean>(false)}>
-      <streamAudioContext.Provider value={streamAudioRef.current}>
-        <audioContext.Provider value={audioRef.current} {...props} />
-      </streamAudioContext.Provider>
-    </isStreamAudioContext.Provider>
+    <streamAudioContext.Provider value={streamAudioRef.current}>
+      {children}
+    </streamAudioContext.Provider>
   );
 }
 
-export function useAudio() {
-  const [isStreamAudio, setIsStreamAudio] = useContext(isStreamAudioContext);
-  const audio = useContext(audioContext);
-  const streamAudio = useContext(streamAudioContext);
-  const resetAudio = () => {
-    audio.stop();
-    streamAudio.reset();
-  };
+let globalSessionId = '';
 
-  return {
-    isStreamAudio,
-    setIsStreamAudio,
-    audio,
-    streamAudio,
-    resetAudio,
+export function useGetAudio() {
+  const audio = useContext(streamAudioContext);
+
+  return (sessionId: string) => {
+    if (sessionId !== globalSessionId || !audio.streamEnd) {
+      audio.reset();
+    }
+    globalSessionId = sessionId;
+    return audio;
   };
 }

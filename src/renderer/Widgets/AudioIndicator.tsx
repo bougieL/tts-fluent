@@ -1,36 +1,26 @@
-import { useLayoutEffect, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconPlayerPlay, IconPlayerStop } from '@tabler/icons';
 
-import { useAudio } from 'renderer/hooks';
+import { streamAudioContext } from 'renderer/hooks/audio';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
 export function AudioIndicator() {
-  const { audio, streamAudio, isStreamAudio } = useAudio();
+  const audio = useContext(streamAudioContext);
   const [status, setStatus] = useState(AudioStatus.empty);
-  const currentAudio = isStreamAudio ? streamAudio : audio;
 
   useLayoutEffect(() => {
-    if (isStreamAudio) {
-      audio.stop();
-    } else {
-      streamAudio.stop();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isStreamAudio]);
-
-  useLayoutEffect(() => {
-    const s = currentAudio.addStatusChangeListener((status) => {
+    const s = audio.addStatusChangeListener((status) => {
       setStatus(status);
     });
     return s.remove;
-  }, [currentAudio]);
+  }, [audio]);
 
   const handleClick = () => {
     if (status !== AudioStatus.playing) {
-      currentAudio.play();
+      audio.play();
     } else {
-      currentAudio.stop();
+      audio.stop();
     }
   };
 
