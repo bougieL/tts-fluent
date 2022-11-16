@@ -36,7 +36,7 @@ ipcMain.handle(
   async (event, { ssml, sessionId }) => {
     const hash = md5(ssml);
     const playCachesDir = await PlayCache.getCachePath();
-    const destFilePath = path.join(playCachesDir, `${hash}`);
+    const destFilePath = path.join(playCachesDir, `${hash}.mp3`);
     const isFinised = await PlayCache.getFinished(hash);
     const exists = await fs.pathExists(destFilePath);
     if (isFinised && exists) {

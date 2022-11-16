@@ -148,7 +148,7 @@ export function SsmlDistributor({ value, onChange }: Props) {
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label={`Speed ${rate2n(rate)}`}>
+        <Input.Wrapper label={`Speed ${rate}`}>
           <Slider
             label={rate}
             min={0}
@@ -164,7 +164,7 @@ export function SsmlDistributor({ value, onChange }: Props) {
         </Input.Wrapper>
       </Grid.Col>
       <Grid.Col span={4}>
-        <Input.Wrapper label={`Pitch ${pitch2n(pitch)}`}>
+        <Input.Wrapper label={`Pitch ${pitch}`}>
           <Slider
             label={pitch}
             min={0}

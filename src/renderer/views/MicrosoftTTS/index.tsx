@@ -43,36 +43,29 @@ const MicrosoftTTS: FC = () => {
   });
   const getAudio = useGetAudio();
 
-  const handlePlayStream = async (sessionId: string) => {
-    const audio = getAudio(sessionId);
-    audio.play();
-    const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
-    const ipcEventStream = new IpcEventStream(channel);
-    ipcEventStream.on('error', handlePlayError);
-    ipcEventStream.pipe(audio);
-  };
-
   const handlePlayClick = async () => {
     setLoading(true);
-    const sessionId = uuid.v4();
-
-    const src = await ipcRenderer
-      .invoke(IpcEvents.ttsMicrosoftPlayStream, {
+    try {
+      const sessionId = uuid.v4();
+      const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlayStream, {
         ssml,
         sessionId,
-      })
-      .catch((error) => {
-        setLoading(false);
-        handlePlayError(error);
       });
-    if (src) {
-      setLoading(false);
-      const audio = getAudio(src);
-      audio.play();
-      if (!audio.streamEnd) fs.createReadStream(src).pipe(audio);
-      return;
+      const audio = getAudio();
+      if (src) {
+        const readStream = fs.createReadStream(src);
+        readStream.pipe(audio);
+        audio.play();
+      } else {
+        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
+        const ipcEventStream = new IpcEventStream(channel);
+        ipcEventStream.on('error', handlePlayError);
+        ipcEventStream.pipe(audio);
+        audio.play();
+      }
+    } catch (error) {
+      handlePlayError(error);
     }
-    handlePlayStream(sessionId);
     setLoading(false);
   };
 

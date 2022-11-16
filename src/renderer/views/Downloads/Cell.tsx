@@ -39,10 +39,10 @@ export function Cell({ item }: CellProps) {
   const getAudio = useGetAudio();
 
   const handlePlayClick = useFn(async () => {
+    const audio = getAudio();
     const readStream = fs.createReadStream(item.path);
-    const audio = getAudio(item.path);
+    readStream.pipe(audio);
     audio.play();
-    if (!audio.streamEnd) readStream.pipe(audio);
   });
 
   const handleRemove = useFn(async () => {

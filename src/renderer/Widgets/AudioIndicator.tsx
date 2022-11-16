@@ -2,11 +2,11 @@ import { useContext, useLayoutEffect, useState } from 'react';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconPlayerPlay, IconPlayerStop } from '@tabler/icons';
 
-import { streamAudioContext } from 'renderer/hooks/audio';
+import { audioContext } from 'renderer/hooks/audio';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
 export function AudioIndicator() {
-  const audio = useContext(streamAudioContext);
+  const audio = useContext(audioContext);
   const [status, setStatus] = useState(AudioStatus.empty);
 
   useLayoutEffect(() => {

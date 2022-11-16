@@ -1,46 +1,32 @@
-import { createContext, PropsWithChildren, useContext, useRef } from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
 
-export const streamAudioContext = createContext(new StreamAudio());
+import { useFn } from './useFn';
+
+export const audioContext = createContext(new StreamAudio());
+
+export const getAudioContext = createContext(() => new StreamAudio());
 
 export function AudioProvider({ children }: PropsWithChildren) {
-  const streamAudioRef = useRef(new StreamAudio());
+  const [audio, setAudio] = useState(new StreamAudio());
+
+  const getAudio = useFn(() => {
+    audio.stop();
+    const newAudio = new StreamAudio();
+    setAudio(newAudio);
+    return newAudio;
+  });
 
   return (
-    <streamAudioContext.Provider value={streamAudioRef.current}>
-      {children}
-    </streamAudioContext.Provider>
+    <audioContext.Provider value={audio}>
+      <getAudioContext.Provider value={getAudio}>
+        {children}
+      </getAudioContext.Provider>
+    </audioContext.Provider>
   );
 }
 
-let globalSessionId = '';
-
 export function useGetAudio() {
-  const audio = useContext(streamAudioContext);
-
-  return (sessionId: string) => {
-    if (sessionId !== globalSessionId || !audio.streamEnd) {
-      audio.reset();
-    }
-    globalSessionId = sessionId;
-    return audio;
-  };
+  return useContext(getAudioContext);
 }
-
-// export function useAudio() {
-//   const audio = useContext(streamAudioContext);
-
-//   const oriPipe = audio.pipe;
-
-//   const customPipe: typeof audio['pipe'] = useCallback(
-//     (...params) => {
-//       return oriPipe(...params);
-//     },
-//     [oriPipe]
-//   );
-
-//   audio.pipe = customPipe;
-
-//   return audio;
-// }
