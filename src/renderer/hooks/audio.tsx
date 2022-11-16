@@ -27,3 +27,20 @@ export function useGetAudio() {
     return audio;
   };
 }
+
+// export function useAudio() {
+//   const audio = useContext(streamAudioContext);
+
+//   const oriPipe = audio.pipe;
+
+//   const customPipe: typeof audio['pipe'] = useCallback(
+//     (...params) => {
+//       return oriPipe(...params);
+//     },
+//     [oriPipe]
+//   );
+
+//   audio.pipe = customPipe;
+
+//   return audio;
+// }

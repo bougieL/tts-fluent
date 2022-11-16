@@ -7,7 +7,7 @@ import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
 import { useGetAudio } from 'renderer/hooks';
-import { EventStream } from 'renderer/lib/EventStream';
+import { IpcEventStream } from 'renderer/lib/EventStream';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 import { Buttons } from './Buttons';
@@ -23,6 +23,15 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
+function handlePlayError(error: any) {
+  console.error(error);
+  new Notification('Play failed 😭', {
+    body: `Click to show error message`,
+  }).onclick = () => {
+    alert(String(error));
+  };
+}
+
 const MicrosoftTTS: FC = () => {
   const [empty, setEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -37,15 +46,16 @@ const MicrosoftTTS: FC = () => {
   const handlePlayStream = async (sessionId: string) => {
     const audio = getAudio(sessionId);
     audio.play();
-    if (audio.streamEnd) return;
     const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
-    const eventStream = new EventStream(channel);
-    eventStream.pipe(audio);
+    const ipcEventStream = new IpcEventStream(channel);
+    ipcEventStream.on('error', handlePlayError);
+    ipcEventStream.pipe(audio);
   };
 
   const handlePlayClick = async () => {
     setLoading(true);
     const sessionId = uuid.v4();
+
     const src = await ipcRenderer
       .invoke(IpcEvents.ttsMicrosoftPlayStream, {
         ssml,
@@ -53,11 +63,7 @@ const MicrosoftTTS: FC = () => {
       })
       .catch((error) => {
         setLoading(false);
-        new Notification('Play failed 😭', {
-          body: `Click to show error message`,
-        }).onclick = () => {
-          alert(String(error));
-        };
+        handlePlayError(error);
       });
     if (src) {
       setLoading(false);

@@ -94,9 +94,11 @@ export namespace ConfigCache {
     if (typeof privRoute === 'string') {
       return privRoute;
     }
-    const route = (await getConfig(ConfigKey.route)) || '';
-    privRoute = route;
+    const route = await getConfig(ConfigKey.route);
+    if (typeof route === 'string') {
+      privRoute = route;
+    }
 
-    return route;
+    return route || '';
   }
 }

@@ -54,7 +54,7 @@ const createWindow = async (firstLaunch = true) => {
 
   const route = await ConfigCache.getRoute();
 
-  mainWindow.loadURL(resolveHtmlPath(`index.html#${route}`));
+  mainWindow.loadURL(`${resolveHtmlPath(`index.html`)}#${route}`);
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

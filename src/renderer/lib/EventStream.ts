@@ -3,7 +3,7 @@ import stream from 'stream';
 
 import { ipcRenderer, IpcRendererEvent } from 'electron';
 
-export class EventStream extends stream.Readable {
+export class IpcEventStream extends stream.Readable {
   private removeSubscription?: () => void;
 
   constructor(channel: string) {
