@@ -59,8 +59,6 @@ export function Cell({ item }: CellProps) {
     });
   });
 
-  const fileTip = useFn((text: string) => (exists ? text : 'File removed'));
-
   const renderDelete = useFn(() => {
     return (
       <Tooltip label='Delete'>
@@ -74,7 +72,7 @@ export function Cell({ item }: CellProps) {
   const renderActions = useFn(() => {
     return (
       <>
-        <Tooltip label={fileTip('Play')}>
+        <Tooltip label='Play'>
           <ActionIcon
             onClick={handlePlayClick}
             color='indigo'
@@ -103,7 +101,7 @@ export function Cell({ item }: CellProps) {
             <IconForms size={16} />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label={fileTip('Open mp3 file in explorer')}>
+        <Tooltip label='Open mp3 file in explorer'>
           <ActionIcon
             color='indigo'
             disabled={!exists}
@@ -116,6 +114,16 @@ export function Cell({ item }: CellProps) {
         </Tooltip>
         {renderDelete()}
       </>
+    );
+  });
+
+  const renderUnexists = useFn(() => {
+    return (
+      exists || (
+        <Text size='xs' color='dimmed'>
+          This file has beed removed
+        </Text>
+      )
     );
   });
 
@@ -182,6 +190,7 @@ export function Cell({ item }: CellProps) {
           case DownloadsCache.Status.finished:
             return (
               <Group position='right' align='center' spacing='sm'>
+                {renderUnexists()}
                 {renderDate()}
                 {renderActions()}
               </Group>
@@ -195,6 +204,7 @@ export function Cell({ item }: CellProps) {
         renderActions,
         renderDate,
         renderDelete,
+        renderUnexists,
         size,
       ])}
     </List.Item>

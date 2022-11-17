@@ -17,10 +17,7 @@ const TransferDirectory = () => {
     );
     if (filePaths?.[0]) {
       setPath(filePaths[0]);
-      await ConfigCache.writeConfig(
-        ConfigCache.ConfigKey.transferDir,
-        filePaths[0]
-      );
+      await ConfigCache.write(ConfigCache.Key.transferDir, filePaths[0]);
     }
   };
   useAsync(async () => {

@@ -17,10 +17,7 @@ const TTSDownloadsDirectory = () => {
     );
     if (filePaths?.[0]) {
       setPath(filePaths[0]);
-      await ConfigCache.writeConfig(
-        ConfigCache.ConfigKey.downloadsDir,
-        filePaths[0]
-      );
+      await ConfigCache.write(ConfigCache.Key.downloadsDir, filePaths[0]);
     }
   };
   useAsync(async () => {

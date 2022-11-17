@@ -25,7 +25,7 @@ export function setupTray() {
     mainWindow.show();
     mainWindow.focus();
     if (memo) {
-      ConfigCache.setRoute(path);
+      ConfigCache.write(ConfigCache.Key.route, path);
     }
   }
 

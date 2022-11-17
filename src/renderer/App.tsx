@@ -32,8 +32,8 @@ const App = () => {
           variant='pills'
           value={location.pathname}
           onTabChange={(value: string) => {
-            ConfigCache.setRoute(value);
             navigate(value);
+            ConfigCache.write(ConfigCache.Key.route, value);
           }}
         >
           <Group position='apart' align='center'>
@@ -65,7 +65,7 @@ const App = () => {
                 text='Go home'
                 onClick={() => {
                   navigate('/');
-                  ConfigCache.setRoute('/');
+                  ConfigCache.write(ConfigCache.Key.route, '/');
                 }}
               />
             }

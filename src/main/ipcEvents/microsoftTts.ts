@@ -9,27 +9,28 @@ import * as uuid from 'uuid';
 import { ConfigCache, DownloadsCache, PlayCache } from 'caches';
 import { ErrorMessage, IpcEvents } from 'const';
 
-ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
-  const hash = md5(ssml);
-  const playCachesDir = await PlayCache.getCachePath();
-  const destFilePath = path.join(playCachesDir, `${hash}`);
-  const isFinised = await PlayCache.getFinished(hash);
-  const exists = await fs.pathExists(destFilePath);
-  if (isFinised && exists) {
-    return destFilePath;
-  }
-  const stream = await ssmlToStream(ssml);
-  await fs.ensureFile(destFilePath);
-  const writeStream = fs.createWriteStream(destFilePath);
-  stream.pipe(writeStream);
-  return new Promise((resolve, reject) => {
-    writeStream.on('finish', () => {
-      PlayCache.setFinished(hash);
-      resolve(destFilePath);
-    });
-    writeStream.on('error', reject);
-  });
-});
+// ipcMain.handle(IpcEvents.ttsMicrosoftPlay, async (_, ssml) => {
+//   const hash = md5(ssml);
+//   const playCachesDir = await PlayCache.getCachePath();
+//   const destFilePath = path.join(playCachesDir, `${hash}`);
+//   const [isFinised, exists] = await Promise.all([
+//     PlayCache.getFinished(hash),
+//     fs.pathExists(destFilePath),
+//   ]);
+//   if (isFinised && exists) {
+//     return destFilePath;
+//   }
+//   const stream = await ssmlToStream(ssml);
+//   const writeStream = fs.createWriteStream(destFilePath);
+//   stream.pipe(writeStream);
+//   return new Promise((resolve, reject) => {
+//     writeStream.on('finish', () => {
+//       PlayCache.setFinished(hash);
+//       resolve(destFilePath);
+//     });
+//     writeStream.on('error', reject);
+//   });
+// });
 
 ipcMain.handle(
   IpcEvents.ttsMicrosoftPlayStream,
@@ -37,18 +38,14 @@ ipcMain.handle(
     const hash = md5(ssml);
     const playCachesDir = await PlayCache.getCachePath();
     const destFilePath = path.join(playCachesDir, `${hash}.mp3`);
-    const isFinised = await PlayCache.getFinished(hash);
-    const exists = await fs.pathExists(destFilePath);
+    const [isFinised, exists] = await Promise.all([
+      PlayCache.getFinished(hash),
+      fs.pathExists(destFilePath),
+    ]);
     if (isFinised && exists) {
       return destFilePath;
     }
     const stream = await ssmlToStream(ssml);
-    await fs.ensureFile(destFilePath);
-    const writeStream = fs.createWriteStream(destFilePath);
-    stream.pipe(writeStream);
-    writeStream.on('finish', () => {
-      PlayCache.setFinished(hash);
-    });
     const replyChannel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
     stream.on('data', (chunk) => {
       event.sender.send(replyChannel, { chunk });
@@ -64,6 +61,18 @@ ipcMain.handle(
         errorMessage: error.message,
       });
     });
+
+    const playCacheDisabled = await ConfigCache.get(
+      ConfigCache.Key.playCacheDisabled
+    );
+
+    if (!playCacheDisabled) {
+      const writeStream = fs.createWriteStream(destFilePath);
+      stream.pipe(writeStream);
+      writeStream.on('finish', () => {
+        PlayCache.setFinished(hash);
+      });
+    }
     return null;
   }
 );

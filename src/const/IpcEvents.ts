@@ -4,7 +4,7 @@ export enum IpcEvents {
   electronDialogShowOpenDialog = 'electron.dialog.showOpenDialog',
   electronDialogShowOpenDialogSync = 'electron.dialog.showOpenDialogSync',
 
-  ttsMicrosoftPlay = 'tts.microsoft.play',
+  // ttsMicrosoftPlay = 'tts.microsoft.play',
   ttsMicrosoftPlayStream = 'tts.microsoft.play.stream',
   ttsMicrosoftDownload = 'tts.microsoft.download',
   ttsMicrosoftDownloadStatusChange = 'tts.microsoft.download.status.change',

@@ -11,7 +11,7 @@ ipcMain.handle(IpcEvents.subWindowOpen, (_, arg) => {
 });
 
 ipcMain.on(IpcEvents.themeChange, (_, arg) => {
-  ConfigCache.setTheme(arg);
+  ConfigCache.write(ConfigCache.Key.theme, arg);
   nativeTheme.themeSource = arg;
 });
 
