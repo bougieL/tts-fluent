@@ -19,6 +19,7 @@ function formatVersion(version: string) {
 
 interface VersionContextValue {
   remoteVersion: string;
+  localVersion: string;
   hasUpdate: boolean;
   changeLog: string;
   forceUpdate: boolean;
@@ -43,6 +44,7 @@ export async function checkUpdate(): Promise<VersionContextValue> {
   }
   return {
     remoteVersion,
+    localVersion: version,
     hasUpdate,
     changeLog,
     forceUpdate,
@@ -54,6 +56,7 @@ const defaultValue: VersionContextValue = {
   hasUpdate: false,
   changeLog: '',
   forceUpdate: false,
+  localVersion: version,
 };
 
 const context = createContext<VersionContextValue>(defaultValue);

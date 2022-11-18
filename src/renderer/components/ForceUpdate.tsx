@@ -1,12 +1,12 @@
 import { shell } from 'electron';
-import { Button, Group, Modal, Stack } from '@mantine/core';
+import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 
 import { useVersion } from 'renderer/hooks';
 
 import { Markdown } from './Markdown';
 
 export function ForceUpdate() {
-  const { forceUpdate, changeLog } = useVersion();
+  const { forceUpdate, changeLog, remoteVersion, localVersion } = useVersion();
 
   return (
     <Modal
@@ -19,6 +19,7 @@ export function ForceUpdate() {
       <Stack spacing='lg'>
         <Markdown text={changeLog} />
         <Group position='right'>
+          <Text color='dimmed'>Local version: {localVersion}</Text>
           <Button
             onClick={() => {
               shell.openExternal(
@@ -26,7 +27,7 @@ export function ForceUpdate() {
               );
             }}
           >
-            🤡 Update to latest version 🤡
+            🤡 Update to {remoteVersion} 🤡
           </Button>
         </Group>
       </Stack>

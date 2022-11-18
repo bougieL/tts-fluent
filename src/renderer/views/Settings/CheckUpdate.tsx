@@ -6,7 +6,7 @@ import { useVersion } from 'renderer/hooks';
 import { openSubWindow } from 'renderer/lib';
 
 const CheckUpdate = () => {
-  const { hasUpdate, remoteVersion, changeLog } = useVersion();
+  const { hasUpdate, remoteVersion, changeLog, localVersion } = useVersion();
 
   if (!hasUpdate && isProd) {
     return null;
@@ -31,14 +31,16 @@ const CheckUpdate = () => {
           variant='default'
           onClick={() => {
             openSubWindow('/window/changeLog', {
-              title: 'Change log',
+              title: `Change log(${remoteVersion})`,
               initialData: {
+                localVersion,
+                remoteVersion,
                 content: changeLog,
               },
             });
           }}
         >
-          View change log
+          View {remoteVersion} change log
         </Button>
       </Group>
     </Input.Wrapper>

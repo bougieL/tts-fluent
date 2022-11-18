@@ -1,15 +1,15 @@
 import { TextInput } from '@mantine/core';
 
-import pkg from '../../../../release/app/package.json';
-
-const { version } = pkg;
+import { useVersion } from 'renderer/hooks';
 
 const AppVersion = () => {
+  const { localVersion } = useVersion();
+
   return (
     <TextInput
       label='Version'
       readOnly
-      value={version}
+      value={localVersion}
       // style={{ textAlign: 'left' }}
     />
   );
