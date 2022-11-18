@@ -1,4 +1,4 @@
-import { Group, Text } from '@mantine/core';
+import { Group } from '@mantine/core';
 
 export const Header = () => {
   return (

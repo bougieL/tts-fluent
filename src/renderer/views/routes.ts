@@ -7,10 +7,9 @@ import {
   IconSettings,
 } from '@tabler/icons';
 
+import ChangeLog from './ChangeLog';
 import CodeEditor from './CodeEditor';
 import Downloads from './Downloads';
-import ForceUpdate from './ForceUpdate';
-import Markdown from './Markdown';
 import MicrosoftTTS from './MicrosoftTTS';
 import Settings from './Settings';
 import Transfer from './Transfer';
@@ -56,8 +55,8 @@ export const mainRoutes: Array<
 
 export const windowRoutes: RouteConfig[] = [
   {
-    path: 'markdown',
-    Component: Markdown,
+    path: 'changeLog',
+    Component: ChangeLog,
   },
   {
     path: 'ttsCatEditor',
@@ -66,9 +65,5 @@ export const windowRoutes: RouteConfig[] = [
   {
     path: 'codeEditor',
     Component: CodeEditor,
-  },
-  {
-    path: 'forceUpdate',
-    Component: ForceUpdate,
   },
 ];

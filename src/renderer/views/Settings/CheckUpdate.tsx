@@ -30,7 +30,7 @@ const CheckUpdate = () => {
           size='xs'
           variant='default'
           onClick={() => {
-            openSubWindow('/window/markdown', {
+            openSubWindow('/window/changeLog', {
               title: 'Change log',
               initialData: {
                 content: changeLog,

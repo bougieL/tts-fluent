@@ -9,6 +9,7 @@ import { Group, Stack, Tabs } from '@mantine/core';
 
 import { ConfigCache } from 'caches';
 
+import { ForceUpdate } from './components/ForceUpdate';
 import { Header } from './components/Header';
 import { useRenderBadge } from './hooks/useRenderBadge';
 import { NotFound, NotFoundWindow } from './Views/NotFound';
@@ -27,6 +28,7 @@ const App = () => {
   return (
     <>
       <Header />
+      <ForceUpdate />
       <Stack className='main' spacing='xs'>
         <Tabs
           variant='pills'
