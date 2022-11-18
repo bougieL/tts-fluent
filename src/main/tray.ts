@@ -2,10 +2,9 @@ import os from 'os';
 
 import { app, Menu, Tray } from 'electron';
 
-import { ConfigCache } from 'caches';
-import { getAssetPath, resolveHtmlPath } from 'main/util';
+import { getAssetPath } from 'main/util';
 
-import { getMainWindow } from './windows/main';
+import { openMainWindow } from './windows/main';
 
 export function setupTray() {
   let icon = '';
@@ -16,46 +15,33 @@ export function setupTray() {
   }
   const tray = new Tray(getAssetPath(icon));
 
-  async function openMainWindow(path: string, memo = true) {
-    const mainWindow = await getMainWindow();
-    mainWindow.loadURL(`${resolveHtmlPath('index.html')}#${path}`);
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
-    }
-    mainWindow.show();
-    mainWindow.focus();
-    if (memo) {
-      ConfigCache.write(ConfigCache.Key.route, path);
-    }
-  }
-
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Microsoft TTS',
       type: 'normal',
       click: () => {
-        openMainWindow('/');
+        openMainWindow({ path: '/', memo: true });
       },
     },
     {
       label: 'TTS Cat',
       type: 'normal',
       click: () => {
-        openMainWindow('/ttsCat');
+        openMainWindow({ path: '/ttsCat', memo: true });
       },
     },
     {
       label: 'Transfer',
       type: 'normal',
       click: () => {
-        openMainWindow('/transfer');
+        openMainWindow({ path: '/transfer', memo: true });
       },
     },
     {
       label: 'Downloads',
       type: 'normal',
       click: () => {
-        openMainWindow('/downloads');
+        openMainWindow({ path: '/downloads', memo: true });
       },
     },
     { label: 'Others', type: 'separator' },
@@ -63,7 +49,7 @@ export function setupTray() {
       label: 'Settings',
       type: 'normal',
       click: () => {
-        openMainWindow('/settings');
+        openMainWindow({ path: '/settings', memo: true });
       },
     },
     {
@@ -76,9 +62,8 @@ export function setupTray() {
   ]);
   tray.setToolTip('TTS Fluent');
   tray.setIgnoreDoubleClickEvents(true);
-  tray.on('click', async () => {
-    const route = await ConfigCache.getRoute();
-    openMainWindow(route, false);
+  tray.on('click', () => {
+    openMainWindow();
   });
   tray.on('right-click', () => {
     tray.popUpContextMenu(contextMenu);

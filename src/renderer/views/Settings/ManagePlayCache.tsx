@@ -44,7 +44,7 @@ const ManagePlayCache = () => {
   }, []);
   return (
     <Input.Wrapper label='Manage play cache'>
-      <Group spacing='xs'>
+      <Group spacing='xs' align='center'>
         <Button variant='default' size='xs' onClick={handleClearCache}>
           Clear cache ({size})
         </Button>
@@ -54,6 +54,11 @@ const ManagePlayCache = () => {
         <Switch
           checked={disabled}
           label='Disable play cache'
+          styles={{
+            root: {
+              display: 'flex',
+            },
+          }}
           onChange={(event) => {
             const { checked } = event.target;
             setDisabled(checked);

@@ -9,6 +9,7 @@ import {
 
 import CodeEditor from './CodeEditor';
 import Downloads from './Downloads';
+import ForceUpdate from './ForceUpdate';
 import Markdown from './Markdown';
 import MicrosoftTTS from './MicrosoftTTS';
 import Settings from './Settings';
@@ -65,5 +66,9 @@ export const windowRoutes: RouteConfig[] = [
   {
     path: 'codeEditor',
     Component: CodeEditor,
+  },
+  {
+    path: 'forceUpdate',
+    Component: ForceUpdate,
   },
 ];

@@ -54,8 +54,10 @@ const TTSCat: FC = () => {
   const handleEdit = () => {
     openSubWindow('/window/ttsCatEditor', {
       title: 'TTSCat edit',
-      textConfig,
-      aiConfig,
+      initialData: {
+        textConfig,
+        aiConfig,
+      },
     });
   };
 
@@ -63,7 +65,9 @@ const TTSCat: FC = () => {
     openSubWindow('/window/codeEditor', {
       title: 'TTSCat edit',
       width: 600,
-      content: 'console.log("hello world")',
+      initialData: {
+        content: 'console.log("hello world")',
+      },
     });
   };
 

@@ -43,13 +43,13 @@ body {
   // [data-platform='windows'] & {
   //   padding-left: 0;
   // }
-  .title {
-    display: none;
+  // .title {
+  //   display: none;
 
-    [data-platform='windows'] & {
-      display: block;
-    }
-  }
+  // [data-platform='windows'] & {
+  //   display: block;
+  // }
+  // }
 }
 
 .main {
@@ -59,16 +59,19 @@ body {
 }
 
 * {
-  scrollbar-color: #eee transparent;
+  scrollbar-color: rgba(128, 128, 128, 0.2) transparent;
   scrollbar-width: thin;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar {
   height: 6px;
   width: 6px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 :hover::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 3px;
 }

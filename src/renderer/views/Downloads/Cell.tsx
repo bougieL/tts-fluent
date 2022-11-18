@@ -120,7 +120,7 @@ export function Cell({ item }: CellProps) {
   const renderUnexists = useFn(() => {
     return (
       exists || (
-        <Text size='xs' color='dimmed'>
+        <Text size='xs' color='red'>
           This file has beed removed
         </Text>
       )

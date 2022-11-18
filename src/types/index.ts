@@ -1,9 +1,9 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 
-export interface SubWindowBaseOptions {
+export interface SubWindowBaseOptions extends BrowserWindowConstructorOptions {
   title?: string;
-  content?: string;
-  singleton?: true;
+  singleton?: boolean;
   parent?: BrowserWindow;
   modal?: boolean;
+  initialData?: any;
 }

@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import { useAsync } from 'react-use';
-import { Stack, useMantineTheme } from '@mantine/core';
+import { shell } from 'electron';
+import { Button, Group, Stack, useMantineTheme } from '@mantine/core';
 
 import { withWindow } from 'renderer/components';
-
-import './style.scss';
 
 interface Props {
   title: string;
   initialData: {
     title: string;
     content: string;
-    confirmUrl?: string;
   };
 }
 
-function Markdown({ title, initialData }: Props) {
+function ForceUpdate({ title, initialData }: Props) {
   const { colorScheme } = useMantineTheme();
   const [html, setHtml] = useState('');
   useAsync(async () => {
@@ -26,15 +24,26 @@ function Markdown({ title, initialData }: Props) {
   }, []);
   return (
     <Stack
+      spacing='lg'
       className={colorScheme === 'light' ? 'markdown-light' : 'markdown-dark'}
     >
       <article
-        className='markdown-body'
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: html }}
       />
+      <Group position='right'>
+        <Button
+          onClick={() => {
+            shell.openExternal(
+              'https://github.com/bougieL/tts-fluent/releases'
+            );
+          }}
+        >
+          Update to latest version
+        </Button>
+      </Group>
     </Stack>
   );
 }
 
-export default withWindow(Markdown);
+export default withWindow(ForceUpdate);

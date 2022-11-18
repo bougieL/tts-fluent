@@ -45,12 +45,13 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async (firstLaunch = true) => {
+let mainWindow: BrowserWindow | null = null;
+
+const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
-
-  let mainWindow: BrowserWindow | null = await createMainWindow();
+  mainWindow = await createMainWindow();
 
   const route = await ConfigCache.getRoute();
 
@@ -73,26 +74,21 @@ const createWindow = async (firstLaunch = true) => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
-
-  if (firstLaunch) {
-    /**
-     * Add event listeners...
-     */
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow(false);
-    });
-
-    app.on('window-all-closed', () => {
-      // Respect the OSX convention of having the application in memory even
-      // after all windows have been closed
-      // if (process.platform !== 'darwin') {
-      //   app.quit();
-      // }
-    });
-  }
 };
+
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) createWindow();
+});
+
+app.on('window-all-closed', () => {
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  // }
+});
 
 app
   .whenReady()

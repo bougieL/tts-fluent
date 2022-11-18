@@ -1,12 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { Button, Center, Stack, Text } from '@mantine/core';
 
-export function NotFound({
-  text,
-  onClick,
-}: {
+import { ConfigCache } from 'caches';
+
+interface Props {
   text: string;
   onClick: () => void;
-}) {
+}
+
+function NotFoundBase({ text, onClick }: Props) {
   return (
     <Center>
       <Stack spacing='md'>
@@ -14,5 +16,30 @@ export function NotFound({
         <Button onClick={onClick}>{text}</Button>
       </Stack>
     </Center>
+  );
+}
+
+export function NotFound() {
+  const navigate = useNavigate();
+
+  return (
+    <NotFoundBase
+      text='Go home'
+      onClick={() => {
+        navigate('/');
+        ConfigCache.write(ConfigCache.Key.route, '/');
+      }}
+    />
+  );
+}
+
+export function NotFoundWindow() {
+  return (
+    <NotFoundBase
+      text='Close window'
+      onClick={() => {
+        window.close();
+      }}
+    />
   );
 }

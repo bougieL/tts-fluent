@@ -35,7 +35,11 @@ export async function openSubWindow<T extends SubWindowBaseOptions>(
     minWidth: 800,
     minHeight: 600,
     parent,
+    title: options?.title,
     modal: options?.modal,
+    closable: options?.closable ?? true,
+    minimizable: options?.minimizable ?? true,
+    maximizable: options?.maximizable ?? true,
     ...getSubWindowPosition(),
     ...commonOptions,
   });
@@ -46,7 +50,10 @@ export async function openSubWindow<T extends SubWindowBaseOptions>(
 
   subWindow.on('ready-to-show', () => {
     subWindow.show();
-    subWindow.webContents.send(IpcEvents.subWindowInitialData, options);
+    subWindow.webContents.send(IpcEvents.subWindowInitialData, {
+      title: options?.title,
+      initialData: options?.initialData,
+    });
   });
 
   subWindow.on('close', () => {

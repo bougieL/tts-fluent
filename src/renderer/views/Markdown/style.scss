@@ -1,4 +1,10 @@
-@import '~github-markdown-css/github-markdown-light.css';
+.markdown-light {
+  @import '~github-markdown-css/github-markdown-light.css';
+}
+
+.markdown-dark {
+  @import '~github-markdown-css/github-markdown-dark.css';
+}
 
 .markdown-body {
   // padding-left: 12px;

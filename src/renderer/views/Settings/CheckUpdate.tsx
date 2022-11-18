@@ -32,7 +32,9 @@ const CheckUpdate = () => {
           onClick={() => {
             openSubWindow('/window/markdown', {
               title: 'Change log',
-              content: changeLog,
+              initialData: {
+                content: changeLog,
+              },
             });
           }}
         >
