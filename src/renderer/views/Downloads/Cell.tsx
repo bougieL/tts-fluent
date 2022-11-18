@@ -31,9 +31,10 @@ export interface Item extends DownloadsCache.Item {
 
 interface CellProps {
   item: Item;
+  expand: boolean;
 }
 
-export function Cell({ item }: CellProps) {
+export function Cell({ item, expand }: CellProps) {
   const [exists, setExists] = useState(true);
   const [size, setSize] = useState('0 B');
   const getAudio = useGetAudio();
@@ -154,8 +155,12 @@ export function Cell({ item }: CellProps) {
     <List.Item>
       <Text>{item.text.slice(0, 20)}</Text>
       <Space h={4} />
-      <Text size='sm' color='dimmed'>
-        {item.text.length > 200 ? `${item.text.slice(0, 200)}...` : item.text}
+      <Text
+        size='sm'
+        color='dimmed'
+        className={expand ? '' : 'download-item-collapse'}
+      >
+        {item.text}
       </Text>
       <Space h='sm' />
       {useMemo(() => {

@@ -29,4 +29,5 @@ export const STORAGE_KEYS = {
   ttsCat: 'tts_cat',
   ttsCatAiChat: 'tts_cat_ai_chat',
   themeVariant: 'theme_variant',
+  downloadExpand: 'download_expand',
 };

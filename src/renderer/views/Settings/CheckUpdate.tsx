@@ -32,6 +32,7 @@ const CheckUpdate = () => {
           onClick={() => {
             openSubWindow('/window/changeLog', {
               title: `Change log(${remoteVersion})`,
+              parent: null,
               initialData: {
                 localVersion,
                 remoteVersion,

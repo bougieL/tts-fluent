@@ -54,10 +54,8 @@ const ManagePlayCache = () => {
         <Switch
           checked={disabled}
           label='Disable play cache'
-          styles={{
-            root: {
-              display: 'flex',
-            },
+          style={{
+            display: 'flex',
           }}
           onChange={(event) => {
             const { checked } = event.target;
