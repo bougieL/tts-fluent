@@ -7,6 +7,7 @@ import {
   Input,
   Stack,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { IconCircleCheck } from '@tabler/icons';
@@ -93,10 +94,15 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
       <Group align='flex-start' noWrap>
         <Stack spacing='sm'>
           <Input.Wrapper label='Qrcode'>
-            <Group>
+            <Tooltip label='Click to copy url'>
               <canvas
                 ref={canvasRef}
-                style={{ cursor: 'pointer', width: 250, height: 250 }}
+                style={{
+                  cursor: 'pointer',
+                  width: 250,
+                  height: 250,
+                  borderRadius: 4,
+                }}
                 onClick={() => {
                   clipboard.writeText(serverUrl);
                   new Notification(
@@ -104,7 +110,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
                   ).onclick = () => {};
                 }}
               />
-            </Group>
+            </Tooltip>
           </Input.Wrapper>
           {bottomSlot}
         </Stack>

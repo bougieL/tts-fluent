@@ -17,10 +17,9 @@ export function setupDataStreamRouter(router: Router) {
   });
 
   const storage = multer.diskStorage({
-    destination(req, file, cb) {
-      ConfigCache.getTransferDir()
-        .then((dir) => cb(null, dir))
-        .catch();
+    async destination(req, file, cb) {
+      const dir = await ConfigCache.getTransferDir();
+      cb(null, dir);
     },
     filename(req, file, cb) {
       const t = Date.now();

@@ -1,4 +1,5 @@
 import { TextInput } from '@mantine/core';
+import { IconGitMerge } from '@tabler/icons';
 
 import { useVersion } from 'renderer/hooks';
 
@@ -10,6 +11,7 @@ const AppVersion = () => {
       label='Version'
       readOnly
       value={localVersion}
+      icon={<IconGitMerge size={14} />}
       // style={{ textAlign: 'left' }}
     />
   );

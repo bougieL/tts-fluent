@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { Button, Group, Input } from '@mantine/core';
-import { IconClearAll, IconSend } from '@tabler/icons';
+import { IconClearAll, IconFolder, IconSend } from '@tabler/icons';
 import fs from 'fs-extra';
 
+import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 
@@ -22,7 +23,6 @@ export function SendFiles() {
     globalState.files = files;
   };
   const sendFiles = () => {
-    // console.log('files', files);
     ipcRenderer.send(IpcEvents.transferSSEData, {
       type: TransferType.sendFiles,
       payload: files.map((item) => {
@@ -33,6 +33,11 @@ export function SendFiles() {
       }),
     });
   };
+  const openDir = async () => {
+    const dir = await ConfigCache.getTransferDir();
+    shell.openPath(dir);
+  };
+
   return (
     <Group position='right' spacing='sm'>
       <Input.Wrapper label='Transfer files' style={{ width: '100%' }}>
@@ -57,6 +62,14 @@ export function SendFiles() {
           onClick={sendFiles}
         >
           Send Files
+        </Button>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconFolder size={14} />}
+          onClick={openDir}
+        >
+          Open directory
         </Button>
       </Group>
     </Group>

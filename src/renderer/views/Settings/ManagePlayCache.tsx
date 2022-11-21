@@ -24,7 +24,7 @@ const ManagePlayCache = () => {
   };
   const handleOpenCache = async () => {
     await fs.ensureDir(cachePathRef.current);
-    shell.showItemInFolder(cachePathRef.current);
+    shell.openPath(cachePathRef.current);
   };
   const updateSize = async () => {
     await fs.ensureDir(cachePathRef.current);

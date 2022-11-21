@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAsync } from 'react-use';
 import { ipcRenderer } from 'electron';
 import { TextInput } from '@mantine/core';
+import { IconFolder } from '@tabler/icons';
 
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
@@ -30,6 +31,7 @@ const TTSDownloadsDirectory = () => {
       type='button'
       value={path}
       onClick={handleSetFilePath}
+      icon={<IconFolder size={14} />}
       style={{ textAlign: 'left' }}
     />
   );

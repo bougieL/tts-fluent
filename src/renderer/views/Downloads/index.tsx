@@ -1,9 +1,17 @@
 import { FC, useMemo, useRef, useState } from 'react';
 import { useAsync } from 'react-use';
 import { ssmlToText } from '@bougiel/tts-node';
-import { Group, Input, List, Stack, Switch, TextInput } from '@mantine/core';
+import {
+  Box,
+  Group,
+  Input,
+  List,
+  Stack,
+  Switch,
+  TextInput,
+} from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import { IconSearch } from '@tabler/icons';
+import { IconForms, IconSearch } from '@tabler/icons';
 import fs from 'fs-extra';
 
 import { DownloadsCache } from 'caches';
@@ -89,11 +97,23 @@ const Downloads: FC = () => {
       <List
         listStyleType='none'
         spacing='md'
+        icon={
+          <Box pt={1}>
+            <IconForms size={14} />
+          </Box>
+        }
         style={{
           height: 'calc(100vh - 174px)',
           overflow: 'overlay',
         }}
-        styles={{ itemWrapper: { width: '100%' } }}
+        styles={{
+          itemWrapper: {
+            width: '100%',
+            '>span:last-child': {
+              width: '100%',
+            },
+          },
+        }}
       >
         {filteredList.map((item) => {
           return <Cell key={item.id} item={item!} expand={expand} />;
