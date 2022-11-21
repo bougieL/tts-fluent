@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Alert, Stack, Text } from '@mantine/core';
+import { useRef, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { Alert, MantineProvider, Stack, Text } from '@mantine/core';
+import { useColorScheme } from '@mantine/hooks';
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons';
 
 import { serverContext, useAsync, useInterval } from './hooks';
@@ -8,7 +10,7 @@ import { Send } from './Views';
 
 import './App.scss';
 
-export function App() {
+function App() {
   const [server, setServer] = useState<{
     serverName: string;
     serverOrigin: string;
@@ -44,3 +46,28 @@ export function App() {
     </serverContext.Provider>
   );
 }
+
+export default () => {
+  const initialSystemColorScheme = useRef<'dark' | 'light'>(
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  ).current;
+
+  const systemColorScheme = useColorScheme(initialSystemColorScheme, {
+    getInitialValueInEffect: false,
+  });
+
+  return (
+    <MantineProvider
+      theme={{ colorScheme: systemColorScheme }}
+      withGlobalStyles
+      withNormalizeCSS
+    >
+      <App />
+      <ToastContainer
+        theme={systemColorScheme}
+        autoClose={3000}
+        draggable={false}
+      />
+    </MantineProvider>
+  );
+};

@@ -17,9 +17,9 @@ function ChangeLog({ title, initialData }: Props) {
   const { localVersion, remoteVersion, content } = initialData;
 
   return (
-    <Stack spacing='lg'>
+    <Stack>
       <Markdown text={`# ${title}\n${content}`} />
-      <Group position='right'>
+      <Group position='right' mt='lg'>
         <Text color='dimmed'>Local version: {localVersion}</Text>
         <Button
           onClick={() => {
