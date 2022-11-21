@@ -27,16 +27,18 @@ export async function createMainWindow() {
   return mainWindow;
 }
 
-const gotTheLock = app.requestSingleInstanceLock();
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    openMainWindow();
-  });
-  // Create myWindow, load the rest of the app, etc...
-  app.on('ready', () => {});
+if (isProd) {
+  const gotTheLock = app.requestSingleInstanceLock();
+  if (!gotTheLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      openMainWindow();
+    });
+    // Create myWindow, load the rest of the app, etc...
+    app.on('ready', () => {});
+  }
 }
 
 export function getSubWindowPosition() {
