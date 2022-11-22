@@ -16,7 +16,7 @@ import { NotFound, NotFoundWindow } from './Views/NotFound';
 import { mainRoutes, windowRoutes } from './Views/routes';
 import { AudioIndicator } from './Widgets/AudioIndicator';
 import { ThemeProvider } from './components';
-import { AudioProvider, Version } from './hooks';
+import { AudioProvider, VersionProvider } from './hooks';
 
 import './App.scss';
 
@@ -73,7 +73,7 @@ export default () => {
     <Router>
       <ThemeProvider>
         <AudioProvider>
-          <Version>
+          <VersionProvider>
             <Routes>
               <Route path='/window'>
                 {windowRoutes.map(({ path, Component }) => {
@@ -85,7 +85,7 @@ export default () => {
               </Route>
               <Route path='/*' element={<App />} />
             </Routes>
-          </Version>
+          </VersionProvider>
         </AudioProvider>
       </ThemeProvider>
     </Router>

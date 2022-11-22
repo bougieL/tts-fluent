@@ -18,7 +18,7 @@ export function ForceUpdate() {
     >
       <Stack spacing='lg'>
         <Markdown text={changeLog} />
-        <Group position='right'>
+        <Group position='right' mt='lg'>
           <Text color='dimmed'>Local version: {localVersion}</Text>
           <Button
             onClick={() => {

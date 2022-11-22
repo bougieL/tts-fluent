@@ -77,7 +77,7 @@ ipcMain.handle(
   }
 );
 
-const streamMap: Record<string, fs.WriteStream> = {};
+const streamMap = new Map<string, fs.WriteStream>();
 
 ipcMain.handle(
   IpcEvents.ttsMicrosoftDownload,
@@ -93,11 +93,10 @@ ipcMain.handle(
       await DownloadsCache.updateItem(id, { date: now });
       return destFilePath;
     }
-    // await fs.remove(destFilePath);
     await fs.ensureFile(destFilePath);
     const stream = await ssmlToStream(ssml);
     const writeStream = fs.createWriteStream(destFilePath);
-    streamMap[id] = writeStream;
+    streamMap.set(id, writeStream);
     await DownloadsCache.addItem({
       id,
       content: ssml,
@@ -107,7 +106,7 @@ ipcMain.handle(
       status: DownloadsCache.Status.downloading,
     });
     stream.pipe(writeStream);
-    writeStream.on('finish', async () => {
+    writeStream.on('finish', () => {
       DownloadsCache.updateItem(id, {
         path: destFilePath,
         status: DownloadsCache.Status.finished,
@@ -116,6 +115,7 @@ ipcMain.handle(
         status: DownloadsCache.Status.finished,
         payload: destFilePath,
       });
+      streamMap.delete(id);
     });
     writeStream.on('error', (error) => {
       if (error.message === ErrorMessage.abort) {
@@ -129,14 +129,16 @@ ipcMain.handle(
         status: DownloadsCache.Status.error,
         payload: `${destFilePath} ${error.message}`,
       });
+      streamMap.delete(id);
     });
     return destFilePath;
   }
 );
 
 ipcMain.handle(IpcEvents.ttsMidrosoftDownloadRemove, (_, id) => {
-  streamMap[id]?.destroy(new Error(ErrorMessage.abort));
   DownloadsCache.removeItem(id);
+  streamMap.get(id)?.destroy(new Error(ErrorMessage.abort));
+  streamMap.delete(id);
 });
 
 app.on('ready', async () => {

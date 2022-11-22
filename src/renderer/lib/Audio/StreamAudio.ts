@@ -21,7 +21,6 @@ export class StreamAudio extends stream.Writable {
 
   constructor() {
     super();
-    this.setupAudioListener();
 
     // this.privMediaSource.onsourceclose = () => {};
     this.privMediaSource.onsourceopen = () => {
@@ -36,6 +35,8 @@ export class StreamAudio extends stream.Writable {
         this.tryEndStream();
       };
     };
+
+    this.setupAudioListener();
   }
 
   private set status(value: AudioStatus) {
@@ -53,9 +54,20 @@ export class StreamAudio extends stream.Writable {
   }
 
   private setupAudioListener() {
-    this.privAudio.addEventListener('ended', () => {
+    const handleEnded = () => {
       this.status = AudioStatus.stopped;
-    });
+    };
+    const handleError = (error: ErrorEvent) => {
+      console.error(error);
+      this.status = AudioStatus.error;
+    };
+    this.privAudio.addEventListener('ended', handleEnded);
+    this.privAudio.addEventListener('error', handleError);
+
+    return () => {
+      this.privAudio.removeEventListener('ended', handleEnded);
+      this.privAudio.removeEventListener('error', handleError);
+    };
   }
 
   private updateSourceBuffer() {

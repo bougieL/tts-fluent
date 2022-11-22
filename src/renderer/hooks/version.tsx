@@ -61,7 +61,7 @@ const defaultValue: VersionContextValue = {
 
 const context = createContext<VersionContextValue>(defaultValue);
 
-export function Version(props: PropsWithChildren<any>) {
+export function VersionProvider(props: PropsWithChildren<any>) {
   const [value, setValue] = useState(defaultValue);
   useAsync(async () => {
     setValue(await checkUpdate());

@@ -1,5 +1,5 @@
 import { useContext, useLayoutEffect, useState } from 'react';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconPlayerPlay, IconPlayerStop } from '@tabler/icons';
 
 import { audioContext } from 'renderer/hooks/audio';
@@ -24,18 +24,23 @@ export function AudioIndicator() {
     }
   };
 
+  const { primaryColor } = useMantineTheme();
+
   if (status === AudioStatus.empty) {
     return null;
   }
 
   return (
     <Tooltip label={status === AudioStatus.stopped ? 'Play' : 'Stop'}>
-      <ActionIcon onClick={handleClick} color='indigo'>
-        {status === AudioStatus.stopped ? (
-          <IconPlayerPlay />
-        ) : (
-          <IconPlayerStop />
-        )}
+      <ActionIcon color={primaryColor} onClick={handleClick}>
+        {(() => {
+          switch (status) {
+            case AudioStatus.stopped:
+              return <IconPlayerPlay />;
+            default:
+              return <IconPlayerStop />;
+          }
+        })()}
       </ActionIcon>
     </Tooltip>
   );
