@@ -4,14 +4,13 @@ import {
   PropsWithChildren,
   useContext,
   useMemo,
-  useRef,
 } from 'react';
 import { ipcRenderer } from 'electron';
 import { MantineProvider } from '@mantine/core';
-import { useColorScheme, useLocalStorage } from '@mantine/hooks';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { IpcEvents, ThemeVariant } from 'const';
-import { useFn } from 'renderer/hooks';
+import { useFn, useSystemColorScheme } from 'renderer/hooks';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 const themeVariantContext = createContext(ThemeVariant.system);
@@ -27,13 +26,7 @@ export function useThemeVariant() {
 }
 
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-  const initialSystemColorScheme = useRef<'dark' | 'light'>(
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  ).current;
-
-  const systemColorScheme = useColorScheme(initialSystemColorScheme, {
-    getInitialValueInEffect: false,
-  });
+  const systemColorScheme = useSystemColorScheme();
 
   const [themeVariant, setLThemeVariant] = useLocalStorage({
     key: STORAGE_KEYS.themeVariant,

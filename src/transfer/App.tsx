@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { useAsync, useInterval } from 'react-use';
 import { Alert, MantineProvider, Stack, Text } from '@mantine/core';
-import { useColorScheme } from '@mantine/hooks';
 import { IconAlertCircle, IconCircleCheck } from '@tabler/icons';
 
-import { serverContext, useAsync, useInterval } from './hooks';
+import { serverContext, useSystemColorScheme } from './hooks';
 import { deviceAlivePolling } from './requests';
 import { Send } from './Views';
 
@@ -48,13 +48,7 @@ function App() {
 }
 
 export default () => {
-  const initialSystemColorScheme = useRef<'dark' | 'light'>(
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  ).current;
-
-  const systemColorScheme = useColorScheme(initialSystemColorScheme, {
-    getInitialValueInEffect: false,
-  });
+  const systemColorScheme = useSystemColorScheme();
 
   return (
     <MantineProvider
