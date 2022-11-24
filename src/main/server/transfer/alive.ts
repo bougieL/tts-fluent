@@ -2,7 +2,7 @@ import { Response, Router } from 'express';
 import { ipcMain } from 'electron';
 import { v4 } from 'uuid';
 
-import { TransferCache } from 'caches/transfer';
+import { TransferCache } from 'caches';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 

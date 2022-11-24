@@ -4,7 +4,7 @@ import { Input, List, Stack, Text } from '@mantine/core';
 import { IconDevices2 } from '@tabler/icons';
 import fs from 'fs-extra';
 
-import { TransferCache } from 'caches/transfer';
+import { TransferCache } from 'caches';
 
 export function ConnectedDevices() {
   const [devices, setDevices] = useState<TransferCache.Device[]>([]);

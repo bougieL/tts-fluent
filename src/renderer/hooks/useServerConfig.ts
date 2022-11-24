@@ -3,7 +3,7 @@ import { useAsync } from 'react-use';
 import address from 'address';
 import fs from 'fs-extra';
 
-import { TransferCache } from 'caches/transfer';
+import { TransferCache } from 'caches';
 
 export function useServerConfig() {
   const [config, setConfig] = useState<TransferCache.ServerConfig>();
