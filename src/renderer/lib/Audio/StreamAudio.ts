@@ -64,9 +64,11 @@ export class StreamAudio extends stream.Writable {
     this.privAudio.addEventListener('ended', handleEnded);
     this.privAudio.addEventListener('error', handleError);
 
-    return () => {
-      this.privAudio.removeEventListener('ended', handleEnded);
-      this.privAudio.removeEventListener('error', handleError);
+    return {
+      remove: () => {
+        this.privAudio.removeEventListener('ended', handleEnded);
+        this.privAudio.removeEventListener('error', handleError);
+      },
     };
   }
 
@@ -77,14 +79,19 @@ export class StreamAudio extends stream.Writable {
     ) {
       const buffer = this.privBuffers.shift();
       if (buffer) {
-        try {
-          this.privSourceBuffer?.appendBuffer(buffer);
-        } catch (error) {
-          this.privBuffers.unshift(buffer);
-        }
+        // try {
+        this.privSourceBuffer?.appendBuffer(buffer);
+        // } catch (error) {
+        //   this.privBuffers.unshift(buffer);
+        // }
         this.tryEndStream();
       }
     }
+  }
+
+  private setStreamEnd() {
+    this.privStreamEnd = true;
+    this.tryEndStream();
   }
 
   private tryEndStream() {
@@ -93,9 +100,7 @@ export class StreamAudio extends stream.Writable {
       this.privBuffers.length === 0 &&
       this.privStreamEnd
     ) {
-      try {
-        this.privMediaSource?.endOfStream();
-      } catch (error) {}
+      this.privMediaSource?.endOfStream();
     }
   }
 
@@ -104,24 +109,15 @@ export class StreamAudio extends stream.Writable {
     return this.privAudio.play();
   }
 
-  reset() {
-    this.stop();
-  }
-
-  private setStreamEnd() {
-    this.privStreamEnd = true;
-    this.tryEndStream();
+  pause() {
+    this.status = AudioStatus.paused;
+    this.privAudio.pause();
   }
 
   stop() {
     this.status = AudioStatus.stopped;
     this.privAudio.pause();
     this.privAudio.currentTime = 0;
-  }
-
-  pause() {
-    this.status = AudioStatus.paused;
-    this.privAudio.pause();
   }
 
   addStatusChangeListener(callback: StatusChangeCallback) {
@@ -139,20 +135,29 @@ export class StreamAudio extends stream.Writable {
     encoding: BufferEncoding,
     callback: (error?: Error | null | undefined) => void
   ): void {
-    this.appendBuffer(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    callback();
+    try {
+      this.appendBuffer(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    } catch (error) {
+      callback(error as Error);
+    }
   }
 
   _final(callback: (error?: Error | null | undefined) => void): void {
-    this.setStreamEnd();
-    callback();
+    try {
+      this.setStreamEnd();
+    } catch (error) {
+      callback(error as Error);
+    }
   }
 
   _destroy(
     error: Error | null,
     callback: (error?: Error | null | undefined) => void
   ): void {
-    this.setStreamEnd();
-    callback(error);
+    try {
+      this.setStreamEnd();
+    } catch (unexpectError) {
+      callback((unexpectError as Error) || error);
+    }
   }
 }

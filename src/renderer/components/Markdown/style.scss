@@ -1,13 +1,7 @@
 .markdown-light {
-  @import '~github-markdown-css/github-markdown-light.css';
+  @import '~github-markdown-css/github-markdown-light';
 }
 
 .markdown-dark {
-  @import '~github-markdown-css/github-markdown-dark.css';
-}
-
-.markdown-body {
-  // padding-left: 12px;
-  // padding-right: 12px;
-  // padding-bottom: 36px;
+  @import '~github-markdown-css/github-markdown-dark';
 }

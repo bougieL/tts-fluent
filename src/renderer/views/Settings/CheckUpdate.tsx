@@ -11,6 +11,7 @@ const CheckUpdate = () => {
   if (!hasUpdate && isProd) {
     return null;
   }
+
   return (
     <Input.Wrapper
       label={`New version! ${isProd ? '' : `hasUpdate = ${hasUpdate}`}`}

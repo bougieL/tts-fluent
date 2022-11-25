@@ -23,6 +23,7 @@ export function Markdown({ text, ...restProps }: Props) {
       className={colorScheme === 'light' ? 'markdown-light' : 'markdown-dark'}
     >
       <article
+        className='markdown-body'
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: html }}
       />
