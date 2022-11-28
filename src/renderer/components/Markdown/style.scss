@@ -5,3 +5,7 @@
 .markdown-dark {
   @import '~github-markdown-css/github-markdown-dark';
 }
+
+.markdown-body {
+  background-color: inherit !important;
+}

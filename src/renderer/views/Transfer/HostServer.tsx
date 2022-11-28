@@ -50,7 +50,7 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
       },
       (error) => {
         if (error) console.error(error);
-        console.log('success!');
+        else console.log('success!');
       }
     );
   }, [colorScheme, serverName, serverUrl]);

@@ -18,6 +18,7 @@ import { setupSever } from './server';
 import { setupTray } from './tray';
 import { resolveHtmlPath } from './util';
 
+import 'lib/log';
 import './ipcEvents';
 
 if (process.env.NODE_ENV === 'production') {
@@ -42,7 +43,7 @@ const installExtensions = async () => {
       extensions.map((name) => installer[name]),
       forceDownload
     )
-    .catch(console.log);
+    .catch(console.error);
 };
 
 let mainWindow: BrowserWindow | null = null;
@@ -97,4 +98,4 @@ app
     setupSever();
     setupTray();
   })
-  .catch(console.log);
+  .catch(console.error);

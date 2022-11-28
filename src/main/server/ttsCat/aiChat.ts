@@ -20,8 +20,9 @@ export function setupAiChatRouter(router: Router) {
       res.sendStatus(400);
       return;
     }
-    const danmu = text.slice(text.indexOf(':') + 1).trim();
-    const feifei = await getQyk(danmu);
+    const danmuPosition = text.indexOf('说:');
+    const danmu = text.slice(danmuPosition + 2).trim();
+    const feifei = danmuPosition > -1 ? await getQyk(danmu) : '';
     const ssml = text2ssml(
       { text, voice: voiceA },
       { text: feifei, voice: voiceB }
