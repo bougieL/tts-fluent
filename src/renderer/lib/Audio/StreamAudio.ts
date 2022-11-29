@@ -39,7 +39,7 @@ export class StreamAudio extends stream.Writable {
     this.setupAudioListener();
   }
 
-  private set status(value: AudioStatus) {
+  set status(value: AudioStatus) {
     this.privStatus = value;
     this.privStatusChangeCallbacks.forEach((item) => item(value));
   }
@@ -79,11 +79,12 @@ export class StreamAudio extends stream.Writable {
     ) {
       const buffer = this.privBuffers.shift();
       if (buffer) {
-        // try {
-        this.privSourceBuffer?.appendBuffer(buffer);
-        // } catch (error) {
-        //   this.privBuffers.unshift(buffer);
-        // }
+        try {
+          this.privSourceBuffer?.appendBuffer(buffer);
+        } catch (error) {
+          console.error(error);
+          this.privBuffers.unshift(buffer);
+        }
         this.tryEndStream();
       }
     }
@@ -100,7 +101,11 @@ export class StreamAudio extends stream.Writable {
       this.privBuffers.length === 0 &&
       this.privStreamEnd
     ) {
-      this.privMediaSource?.endOfStream();
+      try {
+        this.privMediaSource?.endOfStream();
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -135,29 +140,20 @@ export class StreamAudio extends stream.Writable {
     encoding: BufferEncoding,
     callback: (error?: Error | null | undefined) => void
   ): void {
-    try {
-      this.appendBuffer(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    } catch (error) {
-      callback(error as Error);
-    }
+    this.appendBuffer(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    callback();
   }
 
   _final(callback: (error?: Error | null | undefined) => void): void {
-    try {
-      this.setStreamEnd();
-    } catch (error) {
-      callback(error as Error);
-    }
+    this.setStreamEnd();
+    callback(new Error('Custom error'));
   }
 
   _destroy(
     error: Error | null,
     callback: (error?: Error | null | undefined) => void
   ): void {
-    try {
-      this.setStreamEnd();
-    } catch (unexpectError) {
-      callback((unexpectError as Error) || error);
-    }
+    this.setStreamEnd();
+    callback(error);
   }
 }

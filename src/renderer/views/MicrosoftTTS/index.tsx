@@ -7,6 +7,8 @@ import * as uuid from 'uuid';
 
 import { IpcEvents } from 'const';
 import { useGetAudio } from 'renderer/hooks';
+import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
+import { AudioStatus } from 'renderer/lib/Audio/types';
 import { IpcEventStream } from 'renderer/lib/EventStream';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
@@ -23,8 +25,9 @@ const defaultConfig: SsmlConfig = {
   outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-function handlePlayError(error: any) {
+function handlePlayError(audio: StreamAudio, error: any) {
   console.error(error);
+  audio.status = AudioStatus.error;
   new Notification('Play failed 😭', {
     body: `Click to show error message`,
   }).onclick = () => {
@@ -45,26 +48,27 @@ const MicrosoftTTS: FC = () => {
 
   const handlePlayClick = async () => {
     setLoading(true);
+    const audio = getAudio();
+    audio.play();
+    audio.on('error', handlePlayError.bind(null, audio));
     try {
       const sessionId = uuid.v4();
       const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlayStream, {
         ssml,
         sessionId,
       });
-      const audio = getAudio();
       if (src) {
         const readStream = fs.createReadStream(src);
         readStream.pipe(audio);
-        audio.play();
+        readStream.on('error', handlePlayError.bind(null, audio));
       } else {
         const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
         const ipcEventStream = new IpcEventStream(channel);
-        ipcEventStream.on('error', handlePlayError);
         ipcEventStream.pipe(audio);
-        audio.play();
+        ipcEventStream.on('error', handlePlayError.bind(null, audio));
       }
     } catch (error) {
-      handlePlayError(error);
+      handlePlayError(audio, error);
     }
     setLoading(false);
   };
@@ -79,6 +83,7 @@ const MicrosoftTTS: FC = () => {
         }).onclick = () => {
           alert(String(error));
         };
+        console.error(error);
       });
     setLoading(false);
   };

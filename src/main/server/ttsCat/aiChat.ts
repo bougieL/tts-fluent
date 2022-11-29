@@ -40,6 +40,7 @@ export function setupAiChatRouter(router: Router) {
     }
 
     function handleError(error: any) {
+      console.error(error);
       const errorMessage = String(error);
       res.header('Content-Type', 'text/plain');
       if (errorMessage.includes('429')) {
@@ -107,6 +108,7 @@ async function getQyk(text: string) {
     }
     return '';
   } catch (error) {
+    console.error(error);
     return '';
   }
 }

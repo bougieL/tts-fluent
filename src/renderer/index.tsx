@@ -11,3 +11,7 @@ root.render(<App />);
 if (/win/i.test(navigator.userAgent)) {
   document.body.setAttribute('data-platform', 'windows');
 }
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error(event);
+});
