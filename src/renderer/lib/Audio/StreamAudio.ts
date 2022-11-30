@@ -26,10 +26,10 @@ export class StreamAudio extends stream.Writable {
     this.privMediaSource.onsourceopen = () => {
       this.privSourceBuffer =
         this.privMediaSource.addSourceBuffer('audio/mpeg');
-      this.privSourceBuffer.onupdate = () => {
-        this.updateSourceBuffer();
-        this.tryEndStream();
-      };
+      // this.privSourceBuffer.onupdate = () => {
+      //   this.updateSourceBuffer();
+      //   this.tryEndStream();
+      // };
       this.privSourceBuffer.onupdateend = () => {
         this.updateSourceBuffer();
         this.tryEndStream();
@@ -99,10 +99,11 @@ export class StreamAudio extends stream.Writable {
     if (
       !this.privSourceBuffer?.updating &&
       this.privBuffers.length === 0 &&
-      this.privStreamEnd
+      this.privStreamEnd &&
+      this.privMediaSource.readyState === 'open'
     ) {
       try {
-        this.privMediaSource?.endOfStream();
+        this.privMediaSource.endOfStream();
       } catch (error) {
         console.error(error);
       }
@@ -146,7 +147,7 @@ export class StreamAudio extends stream.Writable {
 
   _final(callback: (error?: Error | null | undefined) => void): void {
     this.setStreamEnd();
-    callback(new Error('Custom error'));
+    callback();
   }
 
   _destroy(

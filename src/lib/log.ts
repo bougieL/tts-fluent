@@ -11,6 +11,7 @@ import pkg from '../../release/app/package.json';
 const { version } = pkg;
 
 const isDev = process.env.NODE_ENV !== 'production';
+// const isDev = false;
 
 enum LogType {
   log = 'log',
@@ -66,9 +67,13 @@ function main() {
     // @ts-ignore
     console[key] = withWritter(key);
   });
-  process?.addListener?.('unhandledRejection', console.error);
-  process?.addListener?.('uncaughtException', console.error);
-  window?.addEventListener?.('unhandledrejection', console.error);
+  if (global.process) {
+    process.addListener('unhandledRejection', console.error);
+    process.addListener('uncaughtException', console.error);
+  }
+  if (global.window) {
+    window.addEventListener('unhandledrejection', console.error);
+  }
 }
 
 main();
