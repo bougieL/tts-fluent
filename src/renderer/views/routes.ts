@@ -7,6 +7,7 @@ import {
   IconSettings,
 } from '@tabler/icons';
 
+import Badanmu from './Badanmu';
 import ChangeLog from './ChangeLog';
 import CodeEditor from './CodeEditor';
 import Downloads from './Downloads';
@@ -34,6 +35,11 @@ export const mainRoutes: Array<
   {
     path: '/ttsCat',
     Component: TTSCat,
+    Icon: IconPokeball,
+  },
+  {
+    path: '/badanmu',
+    Component: Badanmu,
     Icon: IconPokeball,
   },
   {

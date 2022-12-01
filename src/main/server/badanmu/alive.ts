@@ -1,46 +1,43 @@
 import { Response, Router } from 'express';
 import { ipcMain } from 'electron';
-import { v4 } from 'uuid';
+import { createClient } from 'badanmu';
+import { BadanmuConfig } from 'types';
 
-import { TransferCache } from 'caches';
-import { IpcEvents } from 'const';
+import { BadanmuState, IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 
 import { getServerName, getServerOrigin } from '../utils';
 
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
+let client: ReturnType<typeof createClient> | null = null;
+
+ipcMain.handle(IpcEvents.badanmuOpen, (_, config: BadanmuConfig) => {
+  client = createClient(config.platform, config.roomId);
+  return new Promise((resolve, reject) => {
+    client?.on('open', () => resolve('ok'));
+    client?.on('error', reject);
+  });
+});
+
+ipcMain.handle(IpcEvents.badanmuClose, (_) => {
+  client?.stop();
+  client = null;
+});
+
+ipcMain.handle(IpcEvents.badanmuState, () => {
+  return client ? BadanmuState.connected : BadanmuState.disconnected;
+});
 
 export function setupAliveRouter(router: Router) {
   const timerMap = new Map<string, ReturnType<typeof setTimeout>>();
   const responses = new Map<string, Response>();
 
-  ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
-    Array.from(responses.values()).forEach((res) => {
-      res.write(toEventStreamData(payload));
-    });
-  });
-
   router.get('/deviceAlivePolling', async (req, res) => {
-    const { query, cookies } = req;
-    let deviceId = (query.deviceId as string) || cookies?.deviceId;
-    if (!deviceId) {
-      deviceId = v4();
-      res.cookie('deviceId', deviceId, {
-        maxAge: COOKIE_MAX_AGE,
-        sameSite: 'none',
-        secure: true,
-      });
-    }
-    TransferCache.connect({
-      deviceId,
-      deviceName: query.deviceName as string,
-      deviceHost: req.ip,
-    });
+    const { query } = req;
+    const deviceId = query.deviceId as string;
     clearTimeout(timerMap.get(deviceId));
     timerMap.set(
       deviceId,
       setTimeout(() => {
-        TransferCache.disconnect(deviceId);
         timerMap.delete(deviceId);
         responses.get(deviceId)?.end();
         responses.delete(deviceId);
@@ -49,10 +46,17 @@ export function setupAliveRouter(router: Router) {
     res.status(200).send({
       serverName: getServerName(),
       serverOrigin: await getServerOrigin(),
+      state: client ? BadanmuState.connected : BadanmuState.disconnected,
     });
   });
 
-  router.get('/serverAliveSse', async (req, res) => {
+  client?.on('message', (msg) => {
+    Array.from(responses.values()).forEach((res) => {
+      res.write(toEventStreamData(msg));
+    });
+  });
+
+  router.get('/message', async (req, res) => {
     const deviceId = req.query.deviceId as string;
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',

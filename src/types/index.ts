@@ -8,3 +8,8 @@ export interface SubWindowBaseOptions
   modal?: boolean;
   initialData?: any;
 }
+
+export interface BadanmuConfig {
+  platform: string;
+  roomId: string | number;
+}

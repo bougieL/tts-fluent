@@ -48,6 +48,7 @@
     "@tabler/icons": "^1.110.0",
     "address": "^1.2.1",
     "axios": "^1.1.3",
+    "badanmu": "link:/Users/qiliu/Projects/open-source/badanmu/packages/badanmu",
     "codemirror": "^6.0.1",
     "cookie-parser": "^1.4.6",
     "copy-to-clipboard": "^3.3.2",

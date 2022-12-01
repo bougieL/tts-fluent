@@ -18,4 +18,8 @@ export enum IpcEvents {
   subWindowInitialData = 'subWindow.initial.data',
 
   themeChange = 'theme.change',
+
+  badanmuOpen = 'badanmu.open',
+  badanmuClose = 'badanmu.close',
+  badanmuState = 'badanmu.state',
 }

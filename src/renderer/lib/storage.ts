@@ -30,4 +30,5 @@ export const STORAGE_KEYS = {
   ttsCatAiChat: 'tts_cat_ai_chat',
   themeVariant: 'theme_variant',
   downloadExpand: 'download_expand',
+  badanmuConfig: 'badanmu_config',
 };
