@@ -8,6 +8,7 @@ const srcPath = path.join(rootPath, 'src');
 const srcMainPath = path.join(srcPath, 'main');
 const srcRendererPath = path.join(srcPath, 'renderer');
 const srcTransferPath = path.join(srcPath, 'transfer');
+const srcBadanmuPath = path.join(srcPath, 'badanum');
 
 const releasePath = path.join(rootPath, 'release');
 const appPath = path.join(releasePath, 'app');
@@ -20,6 +21,7 @@ const distPath = path.join(appPath, 'dist');
 const distMainPath = path.join(distPath, 'main');
 const distRendererPath = path.join(distPath, 'renderer');
 const distTransferPath = path.join(distPath, 'transfer');
+const distBadanmuPath = path.join(distPath, 'badanmu');
 
 const buildPath = path.join(releasePath, 'build');
 
@@ -30,6 +32,7 @@ export default {
   srcMainPath,
   srcRendererPath,
   srcTransferPath,
+  srcBadanmuPath,
   releasePath,
   appPath,
   appPackagePath,
@@ -39,6 +42,7 @@ export default {
   distMainPath,
   distRendererPath,
   distTransferPath,
+  distBadanmuPath,
   buildPath,
   assetsPath,
 };
