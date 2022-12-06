@@ -110,7 +110,7 @@ const Badanmu: FC = () => {
         src={isDev ? 'http://localhost:1214/badanmu' : url}
         // src='https://www.baidu.com'
         // allowtransparency='true'
-        frameBorder={0}
+        // frameBorder={0}
         style={{
           width: 360,
           height: 640,
