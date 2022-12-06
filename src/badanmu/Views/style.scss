@@ -1,0 +1,26 @@
+@import '../styles';
+
+.danmu-list {
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  @for $i from 1 through 10 {
+    li:nth-last-child(#{$i}) {
+      opacity: 1 - ($i - 1) * 0.1;
+    }
+  }
+
+  li {
+    opacity: 0;
+    margin: 8px;
+    font-size: r(18);
+  }
+
+  .danmu-text {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    color: #333;
+  }
+}

@@ -10,11 +10,13 @@ import {
   NativeSelect,
   Stack,
   TextInput,
+  useMantineTheme,
 } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { BadanmuConfig } from 'types';
 
 import { BadanmuState, IpcEvents } from 'const';
+import { isDev } from 'lib/env';
 import { useServerConfig } from 'renderer/hooks';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
@@ -29,10 +31,14 @@ const Badanmu: FC = () => {
 
   useAsync(async () => {
     setState(await ipcRenderer.invoke(IpcEvents.badanmuState));
+    ipcRenderer.on(IpcEvents.badanmuState, (_, state) => {
+      setState(state);
+    });
   }, []);
 
   const handleConnectClick = () => {
     try {
+      setState(BadanmuState.loading);
       ipcRenderer.invoke(IpcEvents.badanmuOpen, config);
       setState(BadanmuState.connected);
     } catch (error) {
@@ -53,6 +59,10 @@ const Badanmu: FC = () => {
 
   const url = `${serverOrigin}/badanmu`;
 
+  const connected = state === BadanmuState.connected;
+
+  const { colors } = useMantineTheme();
+
   return (
     <Stack>
       <Alert>
@@ -64,6 +74,7 @@ const Badanmu: FC = () => {
             label='Platform'
             data={['bilibili']}
             value={config.platform}
+            disabled={connected || state === BadanmuState.loading}
             onChange={(event) => {
               setConfig((prev) => ({ ...prev, platform: event.target.value }));
             }}
@@ -73,6 +84,7 @@ const Badanmu: FC = () => {
           <TextInput
             label='RoomId'
             value={config.roomId}
+            disabled={connected || state === BadanmuState.loading}
             onChange={(event) => {
               setConfig((prev) => ({ ...prev, roomId: event.target.value }));
             }}
@@ -83,24 +95,30 @@ const Badanmu: FC = () => {
             <Button
               disabled={
                 state === BadanmuState.loading ||
-                state === BadanmuState.connected ||
                 !config.platform ||
                 !config.roomId
               }
-              onClick={handleConnectClick}
+              onClick={connected ? handleDisconnectClick : handleConnectClick}
             >
-              Connect
-            </Button>
-            <Button
-              variant='default'
-              disabled={state !== BadanmuState.connected}
-              onClick={handleDisconnectClick}
-            >
-              Disconnect
+              {connected ? 'Disconnect' : 'Connect'}
             </Button>
           </Group>
         </Grid.Col>
       </Grid>
+      <webview
+        title='Badanmu'
+        src={isDev ? 'http://localhost:1214/badanmu' : url}
+        // src='https://www.baidu.com'
+        // allowtransparency='true'
+        frameBorder={0}
+        style={{
+          width: 360,
+          height: 640,
+          background: 'none transparent',
+          border: `1px solid ${colors.gray[0]}`,
+          outline: 'none',
+        }}
+      />
     </Stack>
   );
 };

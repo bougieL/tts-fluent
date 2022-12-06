@@ -10,8 +10,8 @@ import pkg from '../../release/app/package.json';
 
 const { version } = pkg;
 
-const isDev = process.env.NODE_ENV !== 'production';
-// const isDev = false;
+// const isDev = process.env.NODE_ENV !== 'production';
+const isDev = false;
 
 enum LogType {
   log = 'log',

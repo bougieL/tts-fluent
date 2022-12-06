@@ -4,28 +4,19 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  padding-bottom: 50px;
-  overflow: 'overlay';
-}
-
-* {
-  scrollbar-color: #eee transparent;
-  scrollbar-width: thin;
+  background-color: transparent !important;
+  background: none transparent !important;
 }
 
 ::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover,
-:hover::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
+  width: 0;
+  background-color: transparent;
 }
 
 #root {
-  max-width: 500px;
+  width: 100%;
   margin: 0 auto;
-  padding: 8px;
+  padding: 0 8px;
 }

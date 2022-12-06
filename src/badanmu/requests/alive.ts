@@ -1,22 +1,19 @@
-import { TransferType } from 'const/Transfer';
+import { BadanmuType } from 'const/Badanmu';
 
 import { baseQuery, baseURL, http } from './_http';
 
 export function deviceAlivePolling() {
-  return http.get('/transfer/deviceAlivePolling', {
+  return http.get('/badanmu/deviceAlivePolling', {
     timeout: 10000,
   });
 }
 
 export function serverAliveSse(
-  onReceiveData?: (data: { type: TransferType; payload: any }) => void
+  onReceiveData?: (data: { type: BadanmuType; payload: any }) => void
 ) {
-  const source = new EventSource(
-    `${baseURL}/transfer/serverAliveSse?${baseQuery}`,
-    {
-      withCredentials: true,
-    }
-  );
+  const source = new EventSource(`${baseURL}/badanmu/message?${baseQuery}`, {
+    withCredentials: true,
+  });
   source.onopen = () => {
     console.log('event source open');
   };

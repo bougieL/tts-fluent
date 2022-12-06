@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
-import { TransferType } from 'const/Transfer';
-import { serverAliveSse } from 'transfer/requests';
+import { BadanmuState, BadanmuType } from 'const';
 
-type Callback = (data: { type: TransferType; payload: any }) => void;
+import { serverAliveSse } from '../requests';
+
+type Callback = (data: { type: BadanmuType; payload: any }) => void;
 
 const callbacks = new Set<Callback>();
 
@@ -20,15 +21,21 @@ export function useServerAliveSse(callback: Callback) {
   }, [callback]);
 }
 
-interface TransferPayloadMap {
-  [TransferType.heartbeat]: {
-    deviceName: string;
-    deviceHost: string;
+interface BadanmuPayloadMap {
+  [BadanmuType.heartbeat]: {
+    platform: string;
+    roomId: string;
+    state: BadanmuState;
   };
-  [TransferType.getClipboard]: void;
-  [TransferType.sendClipboard]: string;
-  [TransferType.getFiles]: void;
-  [TransferType.sendFiles]: string[];
+  [BadanmuType.connect]: {
+    platform: string;
+    roomId: string;
+  };
+  [BadanmuType.disconnect]: {
+    platform: string;
+    roomId: string;
+  };
+  [BadanmuType.message]: any;
 }
 
-export type TransferPayload<T extends TransferType> = TransferPayloadMap[T];
+export type BadanmuPayload<T extends BadanmuType> = BadanmuPayloadMap[T];

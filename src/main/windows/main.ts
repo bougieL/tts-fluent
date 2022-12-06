@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 
 import { ConfigCache } from 'caches';
-import { isProd } from 'lib/env';
+import { isDev, isProd } from 'lib/env';
 import { resolveHtmlPath } from 'main/util';
 
 import { getCommonOptions } from './common';
@@ -15,7 +15,7 @@ export async function createMainWindow() {
     show: true,
     width: 800,
     height: 600,
-    minWidth: 800,
+    minWidth: isDev ? undefined : 800,
     minHeight: 600,
     ...commonOptions,
   });

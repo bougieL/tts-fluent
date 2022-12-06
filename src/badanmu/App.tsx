@@ -1,67 +1,85 @@
 import { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { useAsync, useInterval } from 'react-use';
-import { Alert, MantineProvider, Stack, Text } from '@mantine/core';
-import { IconAlertCircle, IconCircleCheck } from '@tabler/icons';
+import { MantineProvider } from '@mantine/core';
 
-import { serverContext, useSystemColorScheme } from './hooks';
+import { BadanmuType, DanmuType } from 'const';
+
+import { Danmu, DanmuList } from './Views/DanmuList';
+import { useServerAliveSse } from './hooks';
 import { deviceAlivePolling } from './requests';
-import { Send } from './Views';
 
 import './App.scss';
 
+const MAX_DANMU_NUM = 15;
+
 function App() {
-  const [server, setServer] = useState<{
-    serverName: string;
-    serverOrigin: string;
-  }>();
+  const [list, setList] = useState<Danmu[]>([]);
+
   const polling = async () => {
     try {
       const { data } = await deviceAlivePolling();
-      setServer(data);
     } catch (error) {
-      setServer(undefined);
+      console.error('Could not get response from server');
     }
   };
   useAsync(polling, []);
-  useInterval(polling, 5000);
-  return (
-    <serverContext.Provider value={server}>
-      <Stack spacing='md'>
-        {server ? (
-          <Alert color='green' icon={<IconCircleCheck />} p='6px 12px'>
-            <Text size='xs'>
-              Connect to transfer server {server.serverName} success, can
-              transfer files now.
-            </Text>
-          </Alert>
-        ) : (
-          <Alert color='red' icon={<IconAlertCircle />}>
-            Can not get response from server, please wait or scan the qrcode
-            again.
-          </Alert>
-        )}
-        <Send disabled={!server} />
-      </Stack>
-    </serverContext.Provider>
-  );
+  useInterval(polling, 10000);
+
+  function addDanmu(item: Danmu) {
+    setList((prev) => [...prev.slice(1 - MAX_DANMU_NUM), item]);
+  }
+
+  useServerAliveSse(({ type, payload }) => {
+    console.log(payload);
+    switch (type) {
+      case BadanmuType.connect:
+        addDanmu({
+          id: payload.uuid,
+          type: DanmuType.system,
+          content: `已成功连接至房间 ${payload.platform} - ${payload.roomId}`,
+        });
+        break;
+      case BadanmuType.disconnect:
+        addDanmu({
+          id: payload.uuid,
+          type: DanmuType.system,
+          content: `已断开连接`,
+        });
+        break;
+      case BadanmuType.message:
+        switch (payload.type) {
+          case DanmuType.comment:
+            addDanmu({
+              id: payload.uuid,
+              type: DanmuType.comment,
+              username: payload.playerName,
+              content: payload.data,
+            });
+            break;
+          case DanmuType.gift:
+            addDanmu({
+              id: payload.uuid,
+              type: DanmuType.gift,
+              username: payload.playerName,
+              content: `${payload.giftName} x ${payload.num}`,
+            });
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  });
+
+  return <DanmuList data={list} />;
 }
 
 export default () => {
-  const systemColorScheme = useSystemColorScheme();
-
   return (
-    <MantineProvider
-      theme={{ colorScheme: systemColorScheme }}
-      withGlobalStyles
-      withNormalizeCSS
-    >
+    <MantineProvider withGlobalStyles withNormalizeCSS>
       <App />
-      <ToastContainer
-        theme={systemColorScheme}
-        autoClose={3000}
-        draggable={false}
-      />
     </MantineProvider>
   );
 };

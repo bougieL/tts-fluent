@@ -8,7 +8,7 @@ const srcPath = path.join(rootPath, 'src');
 const srcMainPath = path.join(srcPath, 'main');
 const srcRendererPath = path.join(srcPath, 'renderer');
 const srcTransferPath = path.join(srcPath, 'transfer');
-const srcBadanmuPath = path.join(srcPath, 'badanum');
+const srcBadanmuPath = path.join(srcPath, 'badanmu');
 
 const releasePath = path.join(rootPath, 'release');
 const appPath = path.join(releasePath, 'app');

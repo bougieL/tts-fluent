@@ -1,35 +1,75 @@
 import { Response, Router } from 'express';
 import { ipcMain } from 'electron';
-import { createClient } from 'badanmu';
+import { createClient } from '@bougiel/badanmu';
 import { BadanmuConfig } from 'types';
+import * as uuid from 'uuid';
 
-import { BadanmuState, IpcEvents } from 'const';
-import { TransferType } from 'const/Transfer';
+import { BadanmuState, BadanmuType, IpcEvents } from 'const';
+import { getMainWindow } from 'main/windows/main';
 
-import { getServerName, getServerOrigin } from '../utils';
-
-let client: ReturnType<typeof createClient> | null = null;
-
-ipcMain.handle(IpcEvents.badanmuOpen, (_, config: BadanmuConfig) => {
-  client = createClient(config.platform, config.roomId);
-  return new Promise((resolve, reject) => {
-    client?.on('open', () => resolve('ok'));
-    client?.on('error', reject);
-  });
-});
-
-ipcMain.handle(IpcEvents.badanmuClose, (_) => {
-  client?.stop();
-  client = null;
-});
-
-ipcMain.handle(IpcEvents.badanmuState, () => {
-  return client ? BadanmuState.connected : BadanmuState.disconnected;
-});
-
-export function setupAliveRouter(router: Router) {
+export async function setupAliveRouter(router: Router) {
   const timerMap = new Map<string, ReturnType<typeof setTimeout>>();
   const responses = new Map<string, Response>();
+
+  let client: ReturnType<typeof createClient> | undefined;
+
+  const sendSse = (data: { type: BadanmuType; payload: any }) => {
+    Array.from(responses.values()).forEach((res) => {
+      res.write(toEventStreamData(data));
+    });
+  };
+
+  const handleMessage = (msg: any) => {
+    sendSse({ type: BadanmuType.message, payload: msg });
+  };
+
+  const handleClose = async () => {
+    sendSse({
+      type: BadanmuType.disconnect,
+      payload: {
+        uuid: uuid.v4(),
+        platform: client?.platform,
+        roomId: client?.roomID,
+      },
+    });
+    client?.off('message', handleMessage);
+    client = undefined;
+    const mainWindow = await getMainWindow(false);
+    mainWindow?.webContents.send(
+      IpcEvents.badanmuState,
+      BadanmuState.disconnected
+    );
+  };
+
+  ipcMain.handle(IpcEvents.badanmuOpen, (_, config: BadanmuConfig) => {
+    client = createClient(config.platform, config.roomId);
+    return new Promise((resolve, reject) => {
+      client?.on('open', () => {
+        sendSse({
+          type: BadanmuType.connect,
+          payload: {
+            uuid: uuid.v4(),
+            platform: client?.platform,
+            roomId: client?.roomID,
+          },
+        });
+        client?.on('message', handleMessage);
+        client?.once('close', handleClose);
+        resolve('ok');
+      });
+      client?.on('error', reject);
+    });
+  });
+
+  ipcMain.handle(IpcEvents.badanmuClose, (_) => {
+    client?.stop();
+    client?.off('message', handleMessage);
+    client = undefined;
+  });
+
+  ipcMain.handle(IpcEvents.badanmuState, () => {
+    return client ? BadanmuState.connected : BadanmuState.disconnected;
+  });
 
   router.get('/deviceAlivePolling', async (req, res) => {
     const { query } = req;
@@ -41,18 +81,12 @@ export function setupAliveRouter(router: Router) {
         timerMap.delete(deviceId);
         responses.get(deviceId)?.end();
         responses.delete(deviceId);
-      }, 10000)
+      }, 20000)
     );
     res.status(200).send({
-      serverName: getServerName(),
-      serverOrigin: await getServerOrigin(),
+      platform: client?.platform,
+      roomId: client?.roomID,
       state: client ? BadanmuState.connected : BadanmuState.disconnected,
-    });
-  });
-
-  client?.on('message', (msg) => {
-    Array.from(responses.values()).forEach((res) => {
-      res.write(toEventStreamData(msg));
     });
   });
 
@@ -64,10 +98,11 @@ export function setupAliveRouter(router: Router) {
       Connection: 'keep-alive',
     });
     const heartbeatData = toEventStreamData({
-      type: TransferType.heartbeat,
+      type: BadanmuType.heartbeat,
       payload: {
-        serverName: getServerName(),
-        serverOrigin: await getServerOrigin(),
+        platform: client?.platform,
+        roomId: client?.roomID,
+        state: client ? BadanmuState.connected : BadanmuState.disconnected,
       },
     });
     res.write(heartbeatData);

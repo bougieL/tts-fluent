@@ -1,4 +1,4 @@
-import { createClient } from 'badanmu';
+import { createClient } from '@bougiel/badanmu';
 
 const client = createClient('bilibili', 139);
 

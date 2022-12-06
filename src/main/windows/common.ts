@@ -30,6 +30,7 @@ export async function getCommonOptions() {
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
+      webviewTag: true,
     },
   };
 
