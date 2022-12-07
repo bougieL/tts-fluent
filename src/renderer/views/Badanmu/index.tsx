@@ -1,8 +1,7 @@
 import { FC, useRef, useState } from 'react';
 import { useAsync } from 'react-use';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import {
-  Alert,
   Anchor,
   Button,
   Grid,
@@ -20,7 +19,7 @@ import { useServerConfig } from 'renderer/hooks';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 const Badanmu: FC = () => {
-  const { serverOrigin } = useServerConfig();
+  const { serverOrigin, serverPort } = useServerConfig();
   const [state, setState] = useState<BadanmuState>(BadanmuState.disconnected);
   const [config, setConfig] = useLocalStorage<BadanmuConfig>({
     key: STORAGE_KEYS.badanmuConfig,
@@ -61,11 +60,14 @@ const Badanmu: FC = () => {
 
   const ts = useRef(Date.now()).current;
 
+  const urls = [
+    `http://localhost:${serverPort}/badanmu`,
+    `http://127.0.0.1:${serverPort}/badanmu`,
+    url,
+  ];
+
   return (
     <Stack>
-      <Alert>
-        <Anchor href={url}>{url}</Anchor>
-      </Alert>
       <Grid align='flex-end'>
         <Grid.Col span={3}>
           <NativeSelect
@@ -99,22 +101,37 @@ const Badanmu: FC = () => {
           </Group>
         </Grid.Col>
       </Grid>
-      <webview
-        title='Badanmu'
-        src={webUrl}
-        style={{
-          width: 360,
-          height: 640,
-          background: 'none transparent',
-          borderRadius: 4,
-          overflow: 'hidden',
-          backgroundSize: 'cover',
-          backgroundImage: webUrl.includes('localhost')
-            ? 'none'
-            : `url(https://picsum.photos/360/640?t=${ts}`,
-          outline: 'none',
-        }}
-      />
+      <Group align='flex-start'>
+        <webview
+          title='Badanmu'
+          src={webUrl}
+          style={{
+            width: 360,
+            height: 'calc(100vh - 172px)',
+            background: 'none transparent',
+            borderRadius: 4,
+            overflow: 'hidden',
+            backgroundSize: 'cover',
+            backgroundImage: webUrl.includes('localhost')
+              ? 'none'
+              : `url(https://picsum.photos/360/640?t=${ts}`,
+            outline: 'none',
+          }}
+        />
+        <Stack>
+          {urls.map((item) => (
+            <Anchor
+              onClick={() => {
+                navigator.clipboard.writeText(item);
+                shell.openExternal(item);
+              }}
+              key={item}
+            >
+              {item}
+            </Anchor>
+          ))}
+        </Stack>
+      </Group>
     </Stack>
   );
 };
