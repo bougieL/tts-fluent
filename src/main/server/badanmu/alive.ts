@@ -82,7 +82,7 @@ export async function setupAliveRouter(router: Router) {
   });
 
   ipcMain.handle(IpcEvents.badanmuClose, (_) => {
-    client?.stop();
+    client?.stop(1000);
     client = undefined;
   });
 

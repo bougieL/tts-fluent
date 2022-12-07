@@ -6,8 +6,8 @@
 
 html,
 body {
-  background-color: transparent;
-  background: none transparent;
+  background-color: transparent !important;
+  background: none transparent !important;
 }
 
 ::-webkit-scrollbar {
@@ -19,4 +19,5 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 0 8px;
+  height: 100vh;
 }

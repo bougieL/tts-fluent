@@ -1,0 +1,23 @@
+@import '../../styles';
+
+.text-list {
+  $hegiht: r(32);
+
+  border-top: r(1) solid #eee;
+
+  overflow: hidden;
+  height: $hegiht;
+
+  .text-item {
+    height: $hegiht;
+    line-height: $hegiht;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .text {
+    font-size: r(14);
+    text-shadow: r(1) r(1) r(1) rgba(0, 0, 0, 0.2);
+    color: #eee;
+  }
+}

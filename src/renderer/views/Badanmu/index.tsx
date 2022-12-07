@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useAsync } from 'react-use';
 import { ipcRenderer } from 'electron';
 import {
@@ -10,7 +10,6 @@ import {
   NativeSelect,
   Stack,
   TextInput,
-  useMantineTheme,
 } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { BadanmuConfig } from 'types';
@@ -58,7 +57,9 @@ const Badanmu: FC = () => {
 
   const connected = state === BadanmuState.connected;
 
-  const { colors } = useMantineTheme();
+  const webUrl = isDev ? 'http://localhost:1214/badanmu' : url;
+
+  const ts = useRef(Date.now()).current;
 
   return (
     <Stack>
@@ -100,15 +101,17 @@ const Badanmu: FC = () => {
       </Grid>
       <webview
         title='Badanmu'
-        src={isDev ? 'http://localhost:1214/badanmu' : url}
-        // src='https://www.baidu.com'
-        // allowtransparency='true'
-        // frameBorder={0}
+        src={webUrl}
         style={{
           width: 360,
           height: 640,
           background: 'none transparent',
-          border: `1px solid ${colors.gray[0]}`,
+          borderRadius: 4,
+          overflow: 'hidden',
+          backgroundSize: 'cover',
+          backgroundImage: webUrl.includes('localhost')
+            ? 'none'
+            : `url(https://picsum.photos/360/640?t=${ts}`,
           outline: 'none',
         }}
       />

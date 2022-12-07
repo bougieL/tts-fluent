@@ -1,4 +1,10 @@
-import { useEffect, useRef } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { Avatar, Group, List, Stack, Text } from '@mantine/core';
 
 import { BadanmuType } from 'const';
@@ -11,13 +17,16 @@ export interface Danmu {
   username?: string;
   avatar?: string;
   content: string;
+  image?: string;
 }
 
-interface Props {
-  data: Danmu[];
+export interface DanmuListHandle {
+  addItem(item: Danmu): void;
 }
 
-export function DanmuList({ data }: Props) {
+export const DanmuList = forwardRef<DanmuListHandle>((_, ref) => {
+  const [list, setList] = useState<Danmu[]>([]);
+
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -26,11 +35,21 @@ export function DanmuList({ data }: Props) {
       left: 0,
       top: listRef.current.scrollHeight,
     });
-  }, [data]);
+  }, [list]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      addItem(item) {
+        setList((prev) => prev.slice(-29).concat(item));
+      },
+    }),
+    []
+  );
 
   return (
     <List listStyleType='none' className='danmu-list' ref={listRef}>
-      {data.map((item) => {
+      {list.map((item) => {
         return (
           <List.Item
             className={`danmu-item danmu-item-${item.type}`}
@@ -51,7 +70,15 @@ export function DanmuList({ data }: Props) {
                       <Avatar src={item.avatar} className='avatar' />
                       <Stack className='text' spacing={0}>
                         <Text className='username'>{item.username}</Text>
-                        <Text className='content'>{item.content}</Text>
+                        {item.image ? (
+                          <img
+                            className='image'
+                            src={item.image}
+                            alt={item.content}
+                          />
+                        ) : (
+                          <Text className='content'>{item.content}</Text>
+                        )}
                       </Stack>
                     </Group>
                   );
@@ -75,4 +102,4 @@ export function DanmuList({ data }: Props) {
       })}
     </List>
   );
-}
+});
