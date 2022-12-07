@@ -1,18 +1,17 @@
 export enum BadanmuState {
-  loading,
-  connected,
-  disconnected,
+  connected = 'connected',
+  disconnected = 'disconnected',
+  error = 'error',
 }
 
 export enum BadanmuType {
-  heartbeat,
-  connect,
-  disconnect,
-  message,
-}
-
-export enum DanmuType {
+  heartbeat = 'heartbeat',
+  connect = 'connect',
+  disconnectUnexpect = 'disconnectUnexpect',
+  disconnectManually = 'disconnectManually',
+  error = 'error',
   comment = 'comment',
   gift = 'gift',
-  system = 'system',
+  enter = 'enter',
+  follow = 'follow',
 }

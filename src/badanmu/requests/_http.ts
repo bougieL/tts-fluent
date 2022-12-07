@@ -3,7 +3,9 @@ import md5 from 'md5';
 import { v4 } from 'uuid';
 
 export const baseURL =
-  process.env.NODE_ENV === 'development' ? `http://localhost:1236` : '';
+  process.env.NODE_ENV === 'development'
+    ? `http://${process.env.HOST_IP}:1236`
+    : '';
 
 export const http = axios.create({
   baseURL,

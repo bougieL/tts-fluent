@@ -13,57 +13,76 @@ export async function setupAliveRouter(router: Router) {
 
   let client: ReturnType<typeof createClient> | undefined;
 
-  const sendSse = (data: { type: BadanmuType; payload: any }) => {
+  const sendSse = (type: BadanmuType, payload: any = {}) => {
     Array.from(responses.values()).forEach((res) => {
-      res.write(toEventStreamData(data));
-    });
-  };
-
-  const handleMessage = (msg: any) => {
-    sendSse({ type: BadanmuType.message, payload: msg });
-  };
-
-  const handleClose = async () => {
-    sendSse({
-      type: BadanmuType.disconnect,
-      payload: {
-        uuid: uuid.v4(),
-        platform: client?.platform,
-        roomId: client?.roomID,
-      },
-    });
-    client?.off('message', handleMessage);
-    client = undefined;
-    const mainWindow = await getMainWindow(false);
-    mainWindow?.webContents.send(
-      IpcEvents.badanmuState,
-      BadanmuState.disconnected
-    );
-  };
-
-  ipcMain.handle(IpcEvents.badanmuOpen, (_, config: BadanmuConfig) => {
-    client = createClient(config.platform, config.roomId);
-    return new Promise((resolve, reject) => {
-      client?.on('open', () => {
-        sendSse({
-          type: BadanmuType.connect,
+      res.write(
+        toEventStreamData({
+          type,
           payload: {
+            ...payload,
             uuid: uuid.v4(),
             platform: client?.platform,
             roomId: client?.roomID,
           },
-        });
-        client?.on('message', handleMessage);
-        client?.once('close', handleClose);
-        resolve('ok');
-      });
-      client?.on('error', reject);
+        })
+      );
     });
+  };
+
+  const sendState = async (data: any) => {
+    const mainWindow = await getMainWindow(false);
+    mainWindow?.webContents.send(IpcEvents.badanmuState, data);
+  };
+
+  function connectWithRetry(platform: string, roomId: string | number) {
+    client = createClient(platform, roomId);
+    sendState(BadanmuState.connected);
+    client.on('open', () => {
+      sendSse(BadanmuType.connect);
+      client?.on('message', (msg: any) => {
+        switch (msg.type) {
+          case 'comment':
+            sendSse(BadanmuType.comment, msg);
+            break;
+          case 'gift':
+            sendSse(BadanmuType.gift, msg);
+            break;
+          case 'system':
+            if (msg.msgType === 1) {
+              sendSse(BadanmuType.enter, msg);
+            } else if (msg.msgType === 2) {
+              sendSse(BadanmuType.follow, msg);
+            }
+            break;
+          default:
+            break;
+        }
+      });
+      client?.on('error', (error) => {
+        sendSse(BadanmuType.error, {
+          data: String(error),
+        });
+      });
+      client?.once('close', async (code, reason) => {
+        if (code === 1000) {
+          client = undefined;
+          sendSse(BadanmuType.disconnectManually);
+          sendState(BadanmuState.disconnected);
+          return;
+        }
+        console.error(reason);
+        sendState(BadanmuState.error);
+        setTimeout(connectWithRetry.bind(null, platform, roomId), 5000);
+      });
+    });
+  }
+
+  ipcMain.handle(IpcEvents.badanmuOpen, (_, config: BadanmuConfig) => {
+    connectWithRetry(config.platform, config.roomId);
   });
 
   ipcMain.handle(IpcEvents.badanmuClose, (_) => {
     client?.stop();
-    client?.off('message', handleMessage);
     client = undefined;
   });
 
@@ -84,6 +103,7 @@ export async function setupAliveRouter(router: Router) {
       }, 20000)
     );
     res.status(200).send({
+      uuid: uuid.v4(),
       platform: client?.platform,
       roomId: client?.roomID,
       state: client ? BadanmuState.connected : BadanmuState.disconnected,

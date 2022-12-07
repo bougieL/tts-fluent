@@ -22,7 +22,7 @@ import { STORAGE_KEYS } from 'renderer/lib/storage';
 
 const Badanmu: FC = () => {
   const { serverOrigin } = useServerConfig();
-  const [state, setState] = useState<BadanmuState>(BadanmuState.loading);
+  const [state, setState] = useState<BadanmuState>(BadanmuState.disconnected);
   const [config, setConfig] = useLocalStorage<BadanmuConfig>({
     key: STORAGE_KEYS.badanmuConfig,
     getInitialValueInEffect: false,
@@ -38,11 +38,8 @@ const Badanmu: FC = () => {
 
   const handleConnectClick = () => {
     try {
-      setState(BadanmuState.loading);
       ipcRenderer.invoke(IpcEvents.badanmuOpen, config);
-      setState(BadanmuState.connected);
     } catch (error) {
-      setState(BadanmuState.disconnected);
       console.error(error);
     }
   };
@@ -74,7 +71,7 @@ const Badanmu: FC = () => {
             label='Platform'
             data={['bilibili']}
             value={config.platform}
-            disabled={connected || state === BadanmuState.loading}
+            disabled={connected}
             onChange={(event) => {
               setConfig((prev) => ({ ...prev, platform: event.target.value }));
             }}
@@ -84,7 +81,7 @@ const Badanmu: FC = () => {
           <TextInput
             label='RoomId'
             value={config.roomId}
-            disabled={connected || state === BadanmuState.loading}
+            disabled={connected}
             onChange={(event) => {
               setConfig((prev) => ({ ...prev, roomId: event.target.value }));
             }}
@@ -93,11 +90,7 @@ const Badanmu: FC = () => {
         <Grid.Col span={3}>
           <Group noWrap>
             <Button
-              disabled={
-                state === BadanmuState.loading ||
-                !config.platform ||
-                !config.roomId
-              }
+              disabled={!config.platform || !config.roomId}
               onClick={connected ? handleDisconnectClick : handleConnectClick}
             >
               {connected ? 'Disconnect' : 'Connect'}

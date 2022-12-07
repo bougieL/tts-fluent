@@ -21,3 +21,13 @@ export function serverAliveSse(
     onReceiveData?.(JSON.parse(data));
   };
 }
+
+export function getSpeakUrl(text: string) {
+  const params = `${new URLSearchParams({
+    outputFormat: '',
+    voice: '',
+    text,
+  }).toString()}`;
+
+  return `${baseURL}/ttsCat?${params}`;
+}

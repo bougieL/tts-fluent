@@ -1,0 +1,68 @@
+@import '../styles';
+
+.danmu-list {
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  // @for $i from 1 through 10 {
+  //   li:nth-last-child(#{$i}) {
+  //     opacity: 1 - ($i - 1) * 0.1;
+  //   }
+  // }
+
+  // li {
+  //   opacity: 0;
+  //   margin: 8px;
+  //   font-size: r(18);
+  // }
+
+  // .text {
+  //   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  //   color: #333;
+  // }
+
+  .danmu-item {
+    font-size: r(16);
+    text-shadow: r(1) r(1) r(1) rgba(0, 0, 0, 0.2);
+    margin-bottom: r(10);
+    &-connect {
+      color: green;
+    }
+    &-disconnectManually {
+      color: gray;
+    }
+    &-disconnectUnexpect,
+    &-error {
+      color: red;
+    }
+    &-enter {
+      color: #ccc;
+    }
+    &-comment,
+    &-gift,
+    &-follow {
+      .avatar {
+        width: r(30);
+        height: r(30);
+        min-width: auto;
+        border-radius: 50%;
+      }
+      .text {
+        color: #fff;
+      }
+      .username {
+        font-size: r(14);
+        margin-bottom: r(2);
+      }
+      .content {
+        border-radius: r(8);
+        border: r(1) solid #fff;
+        padding: r(4) r(12);
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
