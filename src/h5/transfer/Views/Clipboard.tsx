@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconDownload, IconSend } from '@tabler/icons';
 import copy from 'copy-to-clipboard';
-import { useServer, useServerAliveSse } from 'h5/transfer/hooks';
-import { getClipboard, sendClipboard } from 'h5/transfer/requests';
+import { useServer, useServerAliveSse } from 'h5/Transfer/hooks';
+import { getClipboard, sendClipboard } from 'h5/Transfer/requests';
 
 import { TransferType } from 'const/Transfer';
 

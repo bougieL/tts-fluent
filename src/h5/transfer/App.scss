@@ -1,31 +1,22 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  padding-bottom: 50px;
-  overflow: 'overlay';
-}
-
-* {
-  scrollbar-color: #eee transparent;
-  scrollbar-width: thin;
-}
-
-::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover,
-:hover::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
-}
-
-#root {
+.transfer-app {
   max-width: 500px;
   margin: 0 auto;
   padding: 8px;
+  padding-bottom: 50px;
+  overflow: 'overlay';
+
+  * {
+    scrollbar-color: #eee transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover,
+  :hover::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+  }
 }

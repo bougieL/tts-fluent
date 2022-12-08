@@ -1,8 +1,8 @@
 import { Id, toast } from 'react-toastify';
 import { Stack, Text } from '@mantine/core';
-import { detectMobile } from 'h5/transfer/lib/detectMobile';
-import { saveByObjectUrl } from 'h5/transfer/lib/saveFile';
-import { getFile, getFileDownloadUrl } from 'h5/transfer/requests';
+import { detectMobile } from 'h5/Transfer/lib/detectMobile';
+import { saveByObjectUrl } from 'h5/Transfer/lib/saveFile';
+import { getFile, getFileDownloadUrl } from 'h5/Transfer/requests';
 
 import { TransferType } from 'const/Transfer';
 

@@ -1,23 +1,10 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  background-color: transparent !important;
-  background: none transparent !important;
-}
-
-::-webkit-scrollbar {
+.badanmu-app::-webkit-scrollbar {
   width: 0;
   background-color: transparent;
 }
 
-#root {
+.badanmu-app {
   width: 100%;
-  margin: 0 auto;
   padding: 0 8px;
   height: 100vh;
 }

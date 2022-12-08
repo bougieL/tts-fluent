@@ -1,19 +1,20 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAsync, useInterval } from 'react-use';
-import { MantineProvider, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { BadanmuState, BadanmuType } from 'const';
 
-import { Danmu, DanmuList, DanmuListHandle } from './Views/DanmuList';
+import { DanmuList, DanmuListHandle } from './Views/DanmuList';
 import { TextCarousel, TextCarouselHandle } from './Views/TextCarousel';
 import { useServerAliveSse } from './hooks';
 import { deviceAlivePolling } from './requests';
 
 import './App.scss';
 
-function App() {
+function BadanmuApp() {
   const danmuListRef = useRef<DanmuListHandle>(null);
   const textCarouselRef = useRef<TextCarouselHandle>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const polling = async () => {
     try {
@@ -31,6 +32,17 @@ function App() {
   };
   useAsync(polling, []);
   useInterval(polling, 10000);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      containerRef.current?.style.setProperty(
+        'background-image',
+        `url(https://picsum.photos/360/640?t=${Date.now()})`,
+        'important'
+      );
+      containerRef.current?.style.setProperty('background-size', 'cover');
+    }
+  }, []);
 
   useServerAliveSse(({ type, payload }) => {
     // console.log({ type, payload });
@@ -105,7 +117,12 @@ function App() {
     }
   });
   return (
-    <Stack style={{ height: '100vh' }} spacing={0}>
+    <Stack
+      className='badanmu-app'
+      style={{ height: '100vh' }}
+      spacing={0}
+      ref={containerRef}
+    >
       <DanmuList ref={danmuListRef} />
       <TextCarousel ref={textCarouselRef} />
     </Stack>
@@ -114,12 +131,12 @@ function App() {
 
 export default () => {
   return (
-    <MantineProvider
-      theme={{ colorScheme: 'light' }}
-      withGlobalStyles
-      withNormalizeCSS
-    >
-      <App />
-    </MantineProvider>
+    // <MantineProvider
+    //   theme={{ colorScheme: 'light' }}
+    //   withGlobalStyles
+    //   withNormalizeCSS
+    // >
+    <BadanmuApp />
+    // </MantineProvider>
   );
 };

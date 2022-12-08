@@ -10,7 +10,7 @@ import {
   Text,
 } from '@mantine/core';
 import { IconDownload } from '@tabler/icons';
-import { useReceiveFiles, useServer } from 'h5/transfer/hooks';
+import { useReceiveFiles, useServer } from 'h5/Transfer/hooks';
 
 import { humanFileSize } from 'lib/humanFileSize';
 

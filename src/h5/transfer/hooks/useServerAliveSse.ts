@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { serverAliveSse } from 'h5/transfer/requests';
+import { serverAliveSse } from 'h5/Transfer/requests';
 
 import { TransferType } from 'const/Transfer';
 

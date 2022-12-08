@@ -10,7 +10,7 @@ import { Send } from './Views';
 
 import './App.scss';
 
-function App() {
+function TransferApp() {
   const [server, setServer] = useState<{
     serverName: string;
     serverOrigin: string;
@@ -27,7 +27,7 @@ function App() {
   useInterval(polling, 5000);
   return (
     <serverContext.Provider value={server}>
-      <Stack spacing='md'>
+      <Stack spacing='md' className='transfer-app'>
         {server ? (
           <Alert color='green' icon={<IconCircleCheck />} p='6px 12px'>
             <Text size='xs'>
@@ -56,7 +56,7 @@ export default () => {
       withGlobalStyles
       withNormalizeCSS
     >
-      <App />
+      <TransferApp />
       <ToastContainer
         theme={systemColorScheme}
         autoClose={3000}

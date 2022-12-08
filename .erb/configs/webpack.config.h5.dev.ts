@@ -52,12 +52,12 @@ const configuration: webpack.Configuration = {
   // target: ['web', 'electron-renderer'],
   target: 'web',
 
-  entry: [path.join(webpackPaths.srcTransferPath, 'index.tsx')],
+  entry: [path.join(webpackPaths.srcH5Path, 'index.tsx')],
 
   output: {
-    path: webpackPaths.distTransferPath,
-    publicPath: '/transfer',
-    filename: 'transfer.dev.js',
+    path: webpackPaths.srcH5Path,
+    publicPath: '/',
+    filename: 'h5.dev.js',
     library: {
       type: 'umd',
     },
@@ -135,7 +135,7 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: path.join('index.html'),
-      template: path.join(webpackPaths.srcTransferPath, 'index.ejs'),
+      template: path.join(webpackPaths.srcH5Path, 'index.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
@@ -167,7 +167,7 @@ const configuration: webpack.Configuration = {
     // server: {
     //   type: 'https',
     // },
-    open: `http://${address.ip()}:${port}/transfer`,
+    open: `http://${address.ip()}:${port}`,
     client: {
       overlay: {
         warnings: false,

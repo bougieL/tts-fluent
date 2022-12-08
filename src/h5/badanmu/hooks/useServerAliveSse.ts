@@ -21,21 +21,21 @@ export function useServerAliveSse(callback: Callback) {
   }, [callback]);
 }
 
-interface BadanmuPayloadMap {
-  [BadanmuType.heartbeat]: {
-    platform: string;
-    roomId: string;
-    state: BadanmuState;
-  };
-  [BadanmuType.connect]: {
-    platform: string;
-    roomId: string;
-  };
-  [BadanmuType.disconnect]: {
-    platform: string;
-    roomId: string;
-  };
-  [BadanmuType.message]: any;
-}
+// interface BadanmuPayloadMap {
+//   [BadanmuType.heartbeat]: {
+//     platform: string;
+//     roomId: string;
+//     state: BadanmuState;
+//   };
+//   [BadanmuType.connect]: {
+//     platform: string;
+//     roomId: string;
+//   };
+//   [BadanmuType.disconnect]: {
+//     platform: string;
+//     roomId: string;
+//   };
+//   [BadanmuType.message]: any;
+// }
 
-export type BadanmuPayload<T extends BadanmuType> = BadanmuPayloadMap[T];
+// export type BadanmuPayload<T extends BadanmuType> = BadanmuPayloadMap[T];
