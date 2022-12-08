@@ -4,6 +4,8 @@ import BadanmuApp from './Badanmu/App';
 import TransferApp from './Transfer/App';
 import Home from './Home';
 
+import './App.scss';
+
 const router = createBrowserRouter([
   {
     path: '/',

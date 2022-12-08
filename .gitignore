@@ -31,4 +31,5 @@ npm-debug.log.*
 release/cert
 assets/transfer
 assets/badanmu
+assets/h5
 .erb-js

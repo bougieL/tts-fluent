@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { TransferCache } from 'caches';
 
 import { router as badanmuRouter } from './badanmu';
+import { router as staticRouter } from './static';
 import { router as transferRouter } from './transfer';
 import { router as ttsCatRouter } from './ttsCat';
 import { getServerName, getServerPort } from './utils';
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (_, res) => res.send('TTS Fluent services running.'));
+app.use('/', staticRouter);
 app.use('/transfer', transferRouter);
 app.use('/ttsCat', ttsCatRouter);
 app.use('/badanmu', badanmuRouter);

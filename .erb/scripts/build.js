@@ -18,8 +18,7 @@ async function main(arg) {
     console.log(chalk.blueBright(`Start build ${platform} platform`));
     exec('rm -r release/build || true');
     exec('rm -r release/app/dist || true');
-    buildStatic('transfer');
-    buildStatic('badanmu');
+    buildStatic('h5');
     exec('npm run build');
     let args = '--win --mac --linux';
     if (platform === 'win') {
@@ -33,7 +32,7 @@ async function main(arg) {
 
   if (arg === 'static') {
     // buildStatic();
-    buildStatic('badanmu');
+    buildStatic('h5');
   } else if (arg) {
     buildPlatform(arg);
   }

@@ -33,7 +33,7 @@ const configuration: webpack.Configuration = {
 
   output: {
     path: webpackPaths.distH5Path,
-    publicPath: '/transfer',
+    publicPath: '/',
     filename: '[name].[contenthash].js',
     library: {
       type: 'umd',
