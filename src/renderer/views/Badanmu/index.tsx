@@ -136,6 +136,7 @@ const Badanmu: FC = () => {
         <Stack>
           <Checkbox
             label='Show background'
+            checked={config.background}
             onChange={(event) => {
               setConfig((prev) => ({
                 ...prev,
@@ -145,6 +146,7 @@ const Badanmu: FC = () => {
           />
           <Checkbox
             label='Speak danmu'
+            checked={config.speak}
             onChange={(event) => {
               setConfig((prev) => ({
                 ...prev,

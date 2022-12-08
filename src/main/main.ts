@@ -99,3 +99,5 @@ app
     setupTray();
   })
   .catch(console.error);
+
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');

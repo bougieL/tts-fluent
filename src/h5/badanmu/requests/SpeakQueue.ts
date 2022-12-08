@@ -10,6 +10,9 @@ export class SpeakQueue {
       this.list.shift();
       this.playfirst();
     });
+    // this.audio.addEventListener('error', (error) => {
+    //   alert(String(error));
+    // });
   }
 
   private playfirst() {
