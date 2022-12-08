@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { Id, toast } from 'react-toastify';
 import { Button, Group, Input, Stack, Text } from '@mantine/core';
 import { IconSend, IconTrash } from '@tabler/icons';
-
-import { useServer } from 'transfer/hooks';
-import { sendFiles } from 'transfer/requests';
+import { useServer } from 'h5/hooks';
+import { sendFiles } from 'h5/requests';
 
 import { Clipboard } from './Clipboard';
 import { Dropzone } from './Dropzone';

@@ -1,10 +1,10 @@
 import { Id, toast } from 'react-toastify';
 import { Stack, Text } from '@mantine/core';
+import { detectMobile } from 'h5/lib/detectMobile';
+import { saveByObjectUrl } from 'h5/lib/saveFile';
+import { getFile, getFileDownloadUrl } from 'h5/requests';
 
 import { TransferType } from 'const/Transfer';
-import { detectMobile } from 'transfer/lib/detectMobile';
-import { saveByObjectUrl } from 'transfer/lib/saveFile';
-import { getFile, getFileDownloadUrl } from 'transfer/requests';
 
 import { useServer } from './useServer';
 import { useServerAliveSse } from './useServerAliveSse';

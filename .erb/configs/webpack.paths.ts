@@ -7,8 +7,7 @@ const dllPath = path.join(__dirname, '../dll');
 const srcPath = path.join(rootPath, 'src');
 const srcMainPath = path.join(srcPath, 'main');
 const srcRendererPath = path.join(srcPath, 'renderer');
-const srcTransferPath = path.join(srcPath, 'transfer');
-const srcBadanmuPath = path.join(srcPath, 'badanmu');
+const srcH5Path = path.join(srcPath, 'h5');
 
 const releasePath = path.join(rootPath, 'release');
 const appPath = path.join(releasePath, 'app');
@@ -20,8 +19,7 @@ const assetsPath = path.join(rootPath, 'assets');
 const distPath = path.join(appPath, 'dist');
 const distMainPath = path.join(distPath, 'main');
 const distRendererPath = path.join(distPath, 'renderer');
-const distTransferPath = path.join(distPath, 'transfer');
-const distBadanmuPath = path.join(distPath, 'badanmu');
+const distH5Path = path.join(distPath, 'h5');
 
 const buildPath = path.join(releasePath, 'build');
 
@@ -31,8 +29,7 @@ export default {
   srcPath,
   srcMainPath,
   srcRendererPath,
-  srcTransferPath,
-  srcBadanmuPath,
+  srcH5Path,
   releasePath,
   appPath,
   appPackagePath,
@@ -41,8 +38,7 @@ export default {
   distPath,
   distMainPath,
   distRendererPath,
-  distTransferPath,
-  distBadanmuPath,
+  distH5Path,
   buildPath,
   assetsPath,
 };

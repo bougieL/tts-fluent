@@ -10,9 +10,9 @@ import {
   Text,
 } from '@mantine/core';
 import { IconDownload } from '@tabler/icons';
+import { useReceiveFiles, useServer } from 'h5/hooks';
 
 import { humanFileSize } from 'lib/humanFileSize';
-import { useReceiveFiles, useServer } from 'transfer/hooks';
 
 export function ReceiveFiles() {
   const server = useServer();

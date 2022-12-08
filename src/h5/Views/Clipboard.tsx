@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconDownload, IconSend } from '@tabler/icons';
 import copy from 'copy-to-clipboard';
+import { useServer, useServerAliveSse } from 'h5/hooks';
+import { getClipboard, sendClipboard } from 'h5/requests';
 
 import { TransferType } from 'const/Transfer';
-import { useServer, useServerAliveSse } from 'transfer/hooks';
-import { getClipboard, sendClipboard } from 'transfer/requests';
 
 interface ClipboardProps {
   disabled?: boolean;

@@ -29,10 +29,10 @@ const configuration: webpack.Configuration = {
   // target: ['web', 'electron-renderer'],
   target: 'web',
 
-  entry: [path.join(webpackPaths.srcTransferPath, 'index.tsx')],
+  entry: [path.join(webpackPaths.srcH5Path, 'index.tsx')],
 
   output: {
-    path: webpackPaths.distTransferPath,
+    path: webpackPaths.distH5Path,
     publicPath: '/transfer',
     filename: '[name].[contenthash].js',
     library: {
@@ -140,7 +140,7 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(webpackPaths.srcTransferPath, 'index.ejs'),
+      template: path.join(webpackPaths.srcH5Path, 'index.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
