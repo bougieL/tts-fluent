@@ -8,8 +8,8 @@ export const router = express.Router();
 
 const staticPath = getAssetPath('h5');
 
-router.use(express.static(staticPath));
-
-router.get('/badanmu|transfer/', (req, res) => {
+router.get(['/badanmu', '/transfer'], (req, res) => {
   res.status(200).sendFile(path.join(staticPath, 'index.html'));
 });
+
+router.use(express.static(staticPath));

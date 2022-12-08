@@ -1,4 +1,6 @@
-export class SpeakerQueue {
+import { getSpeakUrl } from './alive';
+
+export class SpeakQueue {
   private list: string[] = [];
 
   private audio = new Audio();
@@ -18,7 +20,9 @@ export class SpeakerQueue {
     }
   }
 
-  add(url: string) {
+  add(text: string) {
+    const url = getSpeakUrl(text);
+
     this.list.push(url);
     if (this.list.length === 1) {
       this.playfirst();

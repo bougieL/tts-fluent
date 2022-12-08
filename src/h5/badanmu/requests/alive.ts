@@ -24,8 +24,9 @@ export function serverAliveSse(
 
 export function getSpeakUrl(text: string) {
   const params = `${new URLSearchParams({
-    outputFormat: '',
-    voice: '',
+    outputFormat: 'audio-16khz-16kbps-mono-siren',
+    voice: 'zh-CN-XiaoshuangNeural',
+    style: 'general',
     text,
   }).toString()}`;
 

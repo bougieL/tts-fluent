@@ -29,7 +29,7 @@ function getVoicesByLocale(locale: string) {
 }
 
 function getStyles(name: string) {
-  return [{ value: 'genreal', label: 'General' }].concat(
+  return [{ value: 'general', label: 'General' }].concat(
     (voices.find((item) => item.ShortName === name)?.StyleList || []).map(
       (item) => {
         return {
