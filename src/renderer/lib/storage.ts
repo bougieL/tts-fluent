@@ -31,4 +31,6 @@ export const STORAGE_KEYS = {
   themeVariant: 'theme_variant',
   downloadExpand: 'download_expand',
   badanmuConfig: 'badanmu_config',
+  badanmuSettings: 'badanmu_settings',
+  badanmuFloatWindow: 'badanmu_float_window',
 };

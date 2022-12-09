@@ -19,7 +19,8 @@ function BadanmuApp() {
 
   const showBackground = useSearchParam('background');
   const speakDanmu = useSearchParam('speak');
-  const speakQueue = useRef(new SpeakQueue()).current;
+  const aiChat = !!useSearchParam('aiChat');
+  const speakQueue = useRef(new SpeakQueue({ aiChat })).current;
 
   function addDanmu(item: Danmu, speakText?: string) {
     danmuListRef.current?.addItem(item);

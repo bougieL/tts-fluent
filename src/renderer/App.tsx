@@ -12,6 +12,7 @@ import { ConfigCache } from 'caches';
 import { ForceUpdate } from './components/ForceUpdate';
 import { Header } from './components/Header';
 import { useRenderBadge } from './hooks/useRenderBadge';
+import { BadanmuFloatWindow } from './Views/Badanmu/FloatWindow';
 import { NotFound, NotFoundWindow } from './Views/NotFound';
 import { mainRoutes, windowRoutes } from './Views/routes';
 import { AudioIndicator } from './Widgets/AudioIndicator';
@@ -83,6 +84,7 @@ export default () => {
                 })}
                 <Route path='*' element={<NotFoundWindow />} />
               </Route>
+              <Route path='/badanmu-float' element={<BadanmuFloatWindow />} />
               <Route path='/*' element={<App />} />
             </Routes>
           </VersionProvider>

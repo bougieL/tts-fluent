@@ -13,3 +13,12 @@ export interface BadanmuConfig {
   platform: string;
   roomId: string | number;
 }
+
+export interface IBadanmuSetting {
+  background: boolean;
+  speak: boolean;
+  aiChat: boolean;
+  width: number;
+  height: number;
+  floatWindow: boolean;
+}

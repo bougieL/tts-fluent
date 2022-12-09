@@ -22,4 +22,5 @@ export enum IpcEvents {
   badanmuOpen = 'badanmu.open',
   badanmuClose = 'badanmu.close',
   badanmuState = 'badanmu.state',
+  badanmuFloatWindow = 'badanmu.float.window',
 }

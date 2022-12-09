@@ -1,10 +1,9 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 import { ipcRenderer, shell } from 'electron';
 import {
   Anchor,
   Button,
-  Checkbox,
   Group,
   List,
   NativeSelect,
@@ -12,36 +11,41 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import { BadanmuConfig } from 'types';
+import { BadanmuConfig, IBadanmuSetting } from 'types';
 
 import { BadanmuState, IpcEvents } from 'const';
-import { isDev } from 'lib/env';
-import { useServerConfig } from 'renderer/hooks';
 import { STORAGE_KEYS } from 'renderer/lib/storage';
 
+import { defaultSetting } from './common';
+import { Setting, useUrlsBySetting } from './Setting';
+
 interface StyledBadanmuConfig extends BadanmuConfig {
-  background: boolean;
-  speak: boolean;
+  noop?: boolean;
 }
 
 const Badanmu: FC = () => {
-  const { serverOrigin, serverPort } = useServerConfig();
-  const [state, setState] = useState<BadanmuState>(BadanmuState.disconnected);
+  const [connectionState, setConnectionState] = useState<BadanmuState>(
+    BadanmuState.disconnected
+  );
   const [config, setConfig] = useLocalStorage<StyledBadanmuConfig>({
     key: STORAGE_KEYS.badanmuConfig,
     getInitialValueInEffect: false,
     defaultValue: {
       platform: 'bilibili',
       roomId: '',
-      background: true,
-      speak: true,
     },
   });
 
+  const [setting, setSetting] = useLocalStorage<IBadanmuSetting>({
+    key: STORAGE_KEYS.badanmuSettings,
+    getInitialValueInEffect: false,
+    defaultValue: defaultSetting,
+  });
+
   useAsync(async () => {
-    setState(await ipcRenderer.invoke(IpcEvents.badanmuState));
+    setConnectionState(await ipcRenderer.invoke(IpcEvents.badanmuState));
     ipcRenderer.on(IpcEvents.badanmuState, (_, state) => {
-      setState(state);
+      setConnectionState(state);
     });
   }, []);
 
@@ -56,36 +60,26 @@ const Badanmu: FC = () => {
   const handleDisconnectClick = () => {
     try {
       ipcRenderer.invoke(IpcEvents.badanmuClose);
-      setState(BadanmuState.disconnected);
+      setConnectionState(BadanmuState.disconnected);
     } catch (error) {
-      setState(BadanmuState.disconnected);
+      setConnectionState(BadanmuState.disconnected);
       console.error(error);
     }
   };
 
-  const searchParams = useMemo(() => {
-    const params = new URLSearchParams();
-    if (config.background) {
-      params.set('background', '1');
-    }
-    if (config.speak) {
-      params.set('speak', '1');
-    }
-    const str = params.toString();
-    return str ? `?${str}` : '';
-  }, [config.background, config.speak]);
+  const connected = connectionState === BadanmuState.connected;
 
-  const url = `${serverOrigin}/badanmu${searchParams}`;
+  const { webUrl, urls } = useUrlsBySetting(setting);
 
-  const connected = state === BadanmuState.connected;
+  console.log(setting);
 
-  const webUrl = isDev ? `http://localhost:1213/badanmu${searchParams}` : url;
-
-  const urls = [
-    `http://localhost:${serverPort}/badanmu${searchParams}`,
-    `http://127.0.0.1:${serverPort}/badanmu${searchParams}`,
-    url,
-  ];
+  useEffect(() => {
+    ipcRenderer.invoke(IpcEvents.badanmuFloatWindow, {
+      floatWindow: setting.floatWindow,
+      width: setting.width || 400,
+      height: setting.height || 800,
+    });
+  }, [setting.floatWindow, setting.width, setting.height]);
 
   return (
     <Stack>
@@ -134,26 +128,7 @@ const Badanmu: FC = () => {
           [webUrl]
         )}
         <Stack>
-          <Checkbox
-            label='Show background'
-            checked={config.background}
-            onChange={(event) => {
-              setConfig((prev) => ({
-                ...prev,
-                background: event.target.checked,
-              }));
-            }}
-          />
-          <Checkbox
-            label='Speak danmu'
-            checked={config.speak}
-            onChange={(event) => {
-              setConfig((prev) => ({
-                ...prev,
-                speak: event.target.checked,
-              }));
-            }}
-          />
+          <Setting config={setting} onConfigChange={setSetting} />
           <List style={{ maxWidth: 'calc(100vw - 410px)' }}>
             {urls.map((item) => (
               <List.Item key={item}>
