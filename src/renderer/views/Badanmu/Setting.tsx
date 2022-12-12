@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Checkbox, NumberInput, Stack } from '@mantine/core';
+import { Checkbox, Group, NumberInput, Stack } from '@mantine/core';
 import { IBadanmuSetting } from 'types';
 
 import { isDev } from 'lib/env';
@@ -56,20 +56,38 @@ export function Setting({
           }));
         }}
       />
-      <NumberInput
-        label='Width'
-        value={config.width}
-        onChange={(width: number) =>
-          (width || 0) > 0 && onConfigChange((prev) => ({ ...prev, width }))
-        }
-      />
-      <NumberInput
-        label='Height'
-        value={config.height}
-        onChange={(height: number) =>
-          (height || 0) > 0 && onConfigChange((prev) => ({ ...prev, height }))
-        }
-      />
+      <Group noWrap>
+        <NumberInput
+          label='Width'
+          value={config.width}
+          onChange={(width: number) =>
+            (width || 0) > 0 && onConfigChange((prev) => ({ ...prev, width }))
+          }
+        />
+        <NumberInput
+          label='Height'
+          value={config.height}
+          onChange={(height: number) =>
+            (height || 0) > 0 && onConfigChange((prev) => ({ ...prev, height }))
+          }
+        />
+      </Group>
+      <Group noWrap>
+        <NumberInput
+          label='Left'
+          value={config.left}
+          onChange={(left: number) =>
+            (left || 0) >= 0 && onConfigChange((prev) => ({ ...prev, left }))
+          }
+        />
+        <NumberInput
+          label='Top'
+          value={config.top}
+          onChange={(top: number) =>
+            (top || 0) >= 0 && onConfigChange((prev) => ({ ...prev, top }))
+          }
+        />
+      </Group>
     </Stack>
   );
 }

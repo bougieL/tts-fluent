@@ -20,5 +20,7 @@ export interface IBadanmuSetting {
   aiChat: boolean;
   width: number;
   height: number;
+  left: number;
+  top: number;
   floatWindow: boolean;
 }

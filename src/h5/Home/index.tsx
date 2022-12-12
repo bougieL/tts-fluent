@@ -6,10 +6,10 @@ export default function Home() {
     <Center style={{ height: '100vh' }}>
       <Stack>
         <Link to='/badanmu'>
-          <Button>Badanmu</Button>
+          <Button variant='default'>Badanmu</Button>
         </Link>
         <Link to='/transfer'>
-          <Button>Transfer</Button>
+          <Button variant='default'>Transfer</Button>
         </Link>
       </Stack>
     </Center>

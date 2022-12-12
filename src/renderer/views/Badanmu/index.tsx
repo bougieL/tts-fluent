@@ -71,15 +71,21 @@ const Badanmu: FC = () => {
 
   const { webUrl, urls } = useUrlsBySetting(setting);
 
-  console.log(setting);
-
   useEffect(() => {
     ipcRenderer.invoke(IpcEvents.badanmuFloatWindow, {
       floatWindow: setting.floatWindow,
       width: setting.width || 400,
       height: setting.height || 800,
+      left: setting.left || 0,
+      top: setting.top || 0,
     });
-  }, [setting.floatWindow, setting.width, setting.height]);
+  }, [
+    setting.floatWindow,
+    setting.width,
+    setting.height,
+    setting.left,
+    setting.top,
+  ]);
 
   return (
     <Stack>

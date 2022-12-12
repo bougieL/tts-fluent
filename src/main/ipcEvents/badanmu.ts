@@ -11,6 +11,8 @@ ipcMain.handle(
   async (_, config: IBadanmuSetting) => {
     if (config.floatWindow) {
       if (floatWindow) {
+        floatWindow.setSize(config.width, config.height, true);
+        floatWindow.setPosition(config.left, config.top, true);
       } else {
         floatWindow = await openBadanmuFloatWindow(config);
 

@@ -1,4 +1,4 @@
-import { BrowserWindow, screen } from 'electron';
+import { BrowserWindow } from 'electron';
 import { IBadanmuSetting } from 'types';
 
 import { resolveHtmlPath } from 'main/util';
@@ -9,8 +9,6 @@ export async function openBadanmuFloatWindow<T extends IBadanmuSetting>(
   config: T
 ) {
   const url = `${resolveHtmlPath('index.html')}#/badanmu-float`;
-
-  const display = screen.getPrimaryDisplay();
 
   const commonOptions = await getCommonOptions();
 
@@ -28,8 +26,9 @@ export async function openBadanmuFloatWindow<T extends IBadanmuSetting>(
     hasShadow: false,
     titleBarStyle: 'hidden',
     alwaysOnTop: true,
-    x: display.workAreaSize.width - config.width,
-    y: display.workAreaSize.height - config.height + 36,
+    x: config.left,
+    y: config.top,
+    skipTaskbar: true,
   });
 
   floatWindow.setIgnoreMouseEvents(true);
