@@ -10,7 +10,7 @@ import { TextCarousel, TextCarouselHandle } from './Views/TextCarousel';
 import { useServerAliveSse } from './hooks';
 import { deviceAlivePolling } from './requests';
 
-import './App.scss';
+import './style.scss';
 
 function BadanmuApp() {
   const danmuListRef = useRef<DanmuListHandle>(null);

@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
+const fs = require('fs-extra');
 const { exec } = require('./_utils');
 
 const arg = process.argv[2];
@@ -8,18 +9,18 @@ async function main(arg) {
   function buildStatic(type) {
     console.log(chalk.blueBright(`Start build ${type}`));
     exec(`pnpm webpack --config ./.erb/configs/webpack.config.${type}.prod.ts`);
-    exec(`rm -r assets/${type} || true`);
-    exec(`cp -r release/app/dist/${type} assets`);
-    exec(`rm -r release/app/dist/${type}`);
+    fs.removeSync(`assets/${type}`);
+    fs.copySync(`release/app/dist/${type}`, `assets/${type}`);
+    fs.removeSync(`release/app/dist/${type}`);
     console.log(chalk.blueBright(`Finish build ${type}`));
   }
 
   function buildPlatform(platform = 'all') {
     console.log(chalk.blueBright(`Start build ${platform} platform`));
-    exec('rm -r release/build || true');
-    exec('rm -r release/app/dist || true');
+    fs.removeSync('release/build');
+    fs.removeSync('release/app/dist');
     buildStatic('h5');
-    exec('npm run build');
+    exec('pnpm run build');
     let args = '--win --mac --linux';
     if (platform === 'win') {
       args = '--win';

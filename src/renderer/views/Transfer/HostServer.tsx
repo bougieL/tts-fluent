@@ -105,9 +105,6 @@ export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
                 }}
                 onClick={() => {
                   clipboard.writeText(serverUrl);
-                  new Notification(
-                    'Server url copied to clipboard 😁'
-                  ).onclick = () => {};
                 }}
               />
             </Tooltip>

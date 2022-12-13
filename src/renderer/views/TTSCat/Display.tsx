@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { shell } from 'electron';
-import { Anchor, Divider, Input, Stack } from '@mantine/core';
+import { Anchor, Divider, Input, Stack, Tooltip } from '@mantine/core';
 
 import { useServerConfig } from 'renderer/hooks';
 
@@ -64,7 +64,6 @@ export function Display({ textConfig, aiChatConfig }: Props) {
     (url: string, open = false) =>
     () => {
       navigator.clipboard.writeText(url);
-      new Notification('Url copied to clipboard 😄').onclick = () => {};
       if (open) {
         shell.openExternal(url);
       }
@@ -76,49 +75,53 @@ export function Display({ textConfig, aiChatConfig }: Props) {
   return (
     <Stack spacing='sm'>
       <Input.Wrapper label='Danmuji'>
-        <Stack spacing='sm'>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(danmuUrls.url1)}
-          >
-            {danmuUrls.url1}
-          </Anchor>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(danmuUrls.url2)}
-          >
-            {danmuUrls.url2}
-          </Anchor>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(danmuUrls.url3, true)}
-          >
-            {danmuUrls.url3}
-          </Anchor>
-        </Stack>
+        <Tooltip label='Click to copy'>
+          <Stack spacing='sm'>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url1)}
+            >
+              {danmuUrls.url1}
+            </Anchor>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url2)}
+            >
+              {danmuUrls.url2}
+            </Anchor>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(danmuUrls.url3, true)}
+            >
+              {danmuUrls.url3}
+            </Anchor>
+          </Stack>
+        </Tooltip>
       </Input.Wrapper>
       <Divider />
       <Input.Wrapper label='Danmuji with AI chat'>
-        <Stack spacing='sm'>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(aiChatUrls.url1)}
-          >
-            {aiChatUrls.url1}
-          </Anchor>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(aiChatUrls.url2)}
-          >
-            {aiChatUrls.url2}
-          </Anchor>
-          <Anchor
-            style={{ fontSize: 12 }}
-            onClick={createClick(aiChatUrls.url3, true)}
-          >
-            {aiChatUrls.url3}
-          </Anchor>
-        </Stack>
+        <Tooltip label='Click to copy'>
+          <Stack spacing='sm'>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(aiChatUrls.url1)}
+            >
+              {aiChatUrls.url1}
+            </Anchor>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(aiChatUrls.url2)}
+            >
+              {aiChatUrls.url2}
+            </Anchor>
+            <Anchor
+              style={{ fontSize: 12 }}
+              onClick={createClick(aiChatUrls.url3, true)}
+            >
+              {aiChatUrls.url3}
+            </Anchor>
+          </Stack>
+        </Tooltip>
       </Input.Wrapper>
     </Stack>
   );

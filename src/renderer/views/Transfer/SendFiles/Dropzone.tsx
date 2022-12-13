@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { useDropzone } from 'react-dropzone';
 import { ipcRenderer } from 'electron';
 import { Box, Text, useMantineTheme } from '@mantine/core';
@@ -32,7 +34,7 @@ export function Dropzone({ value = [], onChange }: Props) {
       const files = filePaths.map((item: string) => {
         return {
           path: item,
-          name: item.split('/').pop(),
+          name: item.split(path.sep).pop(),
         };
       });
       onChange?.(files);

@@ -8,7 +8,7 @@ import { serverContext, useSystemColorScheme } from './hooks';
 import { deviceAlivePolling } from './requests';
 import { Send } from './Views';
 
-import './App.scss';
+import './style.scss';
 
 function TransferApp() {
   const [server, setServer] = useState<{

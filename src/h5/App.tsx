@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import BadanmuApp from './Badanmu';
 import Home from './Home';
+import { NotFound } from './NotFound';
 import TransferApp from './Transfer';
 
 import './App.scss';
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/transfer',
     element: <TransferApp />,
+  },
+  {
+    path: '/*',
+    element: <NotFound />,
   },
 ]);
 
