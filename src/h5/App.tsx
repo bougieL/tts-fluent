@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import BadanmuApp from './Badanmu/App';
-import TransferApp from './Transfer/App';
+import BadanmuApp from './Badanmu';
 import Home from './Home';
+import TransferApp from './Transfer';
 
 import './App.scss';
 

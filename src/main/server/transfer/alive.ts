@@ -1,14 +1,11 @@
 import { Response, Router } from 'express';
 import { ipcMain } from 'electron';
-import { v4 } from 'uuid';
 
 import { TransferCache } from 'caches';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
 
 import { getServerName, getServerOrigin } from '../utils';
-
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
 
 export function setupAliveRouter(router: Router) {
   const timerMap = new Map<string, ReturnType<typeof setTimeout>>();
@@ -21,16 +18,8 @@ export function setupAliveRouter(router: Router) {
   });
 
   router.get('/deviceAlivePolling', async (req, res) => {
-    const { query, cookies } = req;
-    let deviceId = (query.deviceId as string) || cookies?.deviceId;
-    if (!deviceId) {
-      deviceId = v4();
-      res.cookie('deviceId', deviceId, {
-        maxAge: COOKIE_MAX_AGE,
-        sameSite: 'none',
-        secure: true,
-      });
-    }
+    const { query } = req;
+    const deviceId = query.deviceId as string;
     TransferCache.connect({
       deviceId,
       deviceName: query.deviceName as string,
@@ -44,7 +33,7 @@ export function setupAliveRouter(router: Router) {
         timerMap.delete(deviceId);
         responses.get(deviceId)?.end();
         responses.delete(deviceId);
-      }, 10000)
+      }, 8000)
     );
     res.status(200).send({
       serverName: getServerName(),
