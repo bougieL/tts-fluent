@@ -1,36 +1,51 @@
-import { CompoundButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
+
+import { isProd } from 'lib/env';
 import { useVersion } from 'renderer/hooks';
+import { openSubWindow } from 'renderer/lib';
 
 const CheckUpdate = () => {
-  const { hasUpdate, remoteVersion } = useVersion();
+  const { hasUpdate, remoteVersion, changeLog, localVersion } = useVersion();
 
-  if (!hasUpdate) {
+  if (!hasUpdate && isProd) {
     return null;
   }
+
   return (
-    <>
-      <Label>New version!</Label>
-      <Stack
-        horizontal
-        horizontalAlign="start"
-        tokens={{ childrenGap: 12 }}
-        styles={{ root: { marginTop: '0 !important' } }}
-      >
-        <CompoundButton
-          primary
-          secondaryText={`Click here update to ${remoteVersion}`}
+    <Input.Wrapper
+      label={`New version! ${isProd ? '' : `hasUpdate = ${hasUpdate}`}`}
+    >
+      <Group spacing='sm'>
+        <Button
+          size='xs'
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/releases'
             );
           }}
-          styles={{ label: { fontSize: 18 } }}
         >
-          🤡 Download 🤡
-        </CompoundButton>
-      </Stack>
-    </>
+          🤡 Download {remoteVersion} 🤡
+        </Button>
+        <Button
+          size='xs'
+          variant='default'
+          onClick={() => {
+            openSubWindow('/window/changeLog', {
+              title: `Change log(${remoteVersion})`,
+              parent: null,
+              initialData: {
+                localVersion,
+                remoteVersion,
+                content: changeLog,
+              },
+            });
+          }}
+        >
+          View {remoteVersion} change log
+        </Button>
+      </Group>
+    </Input.Wrapper>
   );
 };
 

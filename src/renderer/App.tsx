@@ -5,83 +5,63 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { Pivot, PivotItem, Stack } from 'renderer/components';
-import MicrosoftTTS from './Views/MicrosoftTTS';
-import Settings from './Views/Settings';
-import Downloads from './Views/Downloads';
-import {
-  AudioProvider,
-  Version,
-  useDownloadsNum,
-  useVersion,
-  useAsync,
-} from './hooks';
-import { AudioIndicator } from './Widgets/AudioIndicator';
-import { Transfer } from './Views/Transfer';
-import './App.scss';
+import { Group, Stack, Tabs } from '@mantine/core';
 
-const pathCache = {
-  key: '__path__',
-  set(path: string) {
-    localStorage.setItem(this.key, path);
-  },
-  get() {
-    return localStorage.getItem(this.key) || '/';
-  },
-};
+import { ConfigCache } from 'caches';
+
+import { ForceUpdate } from './components/ForceUpdate';
+import { Header } from './components/Header';
+import { useRenderBadge } from './hooks/useRenderBadge';
+import { BadanmuFloatWindow } from './Views/Badanmu/FloatWindow';
+import { NotFound, NotFoundWindow } from './Views/NotFound';
+import { mainRoutes, windowRoutes } from './Views/routes';
+import { AudioIndicator } from './Widgets/AudioIndicator';
+import { ThemeProvider } from './components';
+import { AudioProvider, VersionProvider } from './hooks';
+
+import './App.scss';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const downloadsNum = useDownloadsNum();
-  const { hasUpdate } = useVersion();
-  const handlePivotClick = (item?: PivotItem) => {
-    const path = item?.props.itemKey || '/';
-    navigate(path);
-    pathCache.set(path);
-  };
-  useAsync(async () => {
-    navigate(pathCache.get());
-  }, []);
+  const renderBadge = useRenderBadge();
+
   return (
     <>
-      <Stack styles={{ root: { height: 36 } }} className="header" />
-      <Stack tokens={{ childrenGap: 12 }} className="main">
-        <Stack
-          horizontal
-          horizontalAlign="space-between"
-          verticalAlign="center"
+      <Header />
+      <ForceUpdate />
+      <Stack className='main' spacing='xs'>
+        <Tabs
+          variant='pills'
+          value={location.pathname}
+          onTabChange={(value: string) => {
+            navigate(value);
+            ConfigCache.write(ConfigCache.Key.route, value);
+          }}
         >
-          <Pivot
-            selectedKey={location.pathname}
-            onLinkClick={handlePivotClick}
-            styles={{
-              text: { fontSize: 16 },
-              count: { fontSize: 16 },
-              link: { height: 32 },
-            }}
-            // linkFormat="tabs"
-          >
-            <PivotItem headerText="Microsoft TTS" itemKey="/" />
-            <PivotItem headerText="Transfer" itemKey="/transfer" />
-            <PivotItem
-              headerText="Downloads"
-              itemKey="/downloads"
-              itemCount={downloadsNum || undefined}
-            />
-            <PivotItem
-              headerText="Settings"
-              itemKey="/settings"
-              itemCount={hasUpdate ? '🤡 New version !' : undefined}
-            />
-          </Pivot>
-          <AudioIndicator />
-        </Stack>
+          <Group position='apart' align='center'>
+            <Tabs.List>
+              {mainRoutes.map(({ path, Component, Icon }, index) => {
+                return (
+                  <Tabs.Tab
+                    value={path}
+                    key={path}
+                    icon={<Icon size={16} />}
+                    rightSection={renderBadge(index)}
+                  >
+                    {Component.displayName}
+                  </Tabs.Tab>
+                );
+              })}
+            </Tabs.List>
+            <AudioIndicator />
+          </Group>
+        </Tabs>
         <Routes>
-          <Route path="/" element={<MicrosoftTTS />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/downloads" element={<Downloads />} />
-          <Route path="/settings" element={<Settings />} />
+          {mainRoutes.map(({ path, Component }) => {
+            return <Route path={path} key={path} element={<Component />} />;
+          })}
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Stack>
     </>
@@ -89,13 +69,27 @@ const App = () => {
 };
 
 export default () => {
+  // return null;
   return (
     <Router>
-      <AudioProvider>
-        <Version>
-          <App />
-        </Version>
-      </AudioProvider>
+      <ThemeProvider>
+        <AudioProvider>
+          <VersionProvider>
+            <Routes>
+              <Route path='/window'>
+                {windowRoutes.map(({ path, Component }) => {
+                  return (
+                    <Route path={path} key={path} element={<Component />} />
+                  );
+                })}
+                <Route path='*' element={<NotFoundWindow />} />
+              </Route>
+              <Route path='/badanmu-float' element={<BadanmuFloatWindow />} />
+              <Route path='/*' element={<App />} />
+            </Routes>
+          </VersionProvider>
+        </AudioProvider>
+      </ThemeProvider>
     </Router>
   );
 };

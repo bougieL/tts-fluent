@@ -1,11 +1,15 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { useAsync } from 'react-use';
 import axios from 'axios';
-import { useAsync } from './external';
-import { version } from '../../../release/app/package.json';
+
+import pkg from '../../../release/app/package.json';
+
+const { version } = pkg;
 
 function formatVersion(version: string) {
   return Number(
     version
+      .replace(/-.*/, '')
       .replace(/[A-Za-z]/g, '')
       .split('.')
       .map((item) => item.padStart(2, '0'))
@@ -15,39 +19,54 @@ function formatVersion(version: string) {
 
 interface VersionContextValue {
   remoteVersion: string;
+  localVersion: string;
   hasUpdate: boolean;
+  changeLog: string;
+  forceUpdate: boolean;
 }
 
 export async function checkUpdate(): Promise<VersionContextValue> {
   let remoteVersion = '';
   let hasUpdate = false;
+  let forceUpdate = false;
+  let changeLog = '';
   try {
-    const localVersion = version;
-    remoteVersion = await axios
+    [remoteVersion, changeLog] = await axios
       .get('https://api.github.com/repos/bougieL/tts-fluent/releases/latest')
-      .then(({ data }) => data.tag_name);
-    hasUpdate = formatVersion(remoteVersion) > formatVersion(localVersion);
+      .then(({ data }) => [data.tag_name, data.body]);
+    hasUpdate = formatVersion(remoteVersion) > formatVersion(version);
+    const rmv = remoteVersion.split('.')[0].replace(/[a-zA-Z]/g, '');
+    const lmv = version.split('.')[0].replace(/[a-zA-Z]/gi, '');
+    forceUpdate = rmv > lmv;
   } catch (error) {
-    hasUpdate = false;
+    // hasUpdate = false;
+    // forceUpdate = false;
   }
   return {
     remoteVersion,
+    localVersion: version,
     hasUpdate,
+    changeLog,
+    forceUpdate,
   };
 }
 
 const defaultValue: VersionContextValue = {
   remoteVersion: '',
   hasUpdate: false,
+  changeLog: '',
+  forceUpdate: false,
+  localVersion: version,
 };
 
 const context = createContext<VersionContextValue>(defaultValue);
 
-export function Version(props: PropsWithChildren<any>) {
+export function VersionProvider(props: PropsWithChildren<any>) {
   const [value, setValue] = useState(defaultValue);
   useAsync(async () => {
     setValue(await checkUpdate());
   }, []);
+
   return <context.Provider value={value} {...props} />;
 }
 

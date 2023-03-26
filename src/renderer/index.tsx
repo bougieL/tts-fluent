@@ -1,9 +1,17 @@
 import { createRoot } from 'react-dom/client';
-import { initializeIcons } from '@fluentui/font-icons-mdl2';
+
 import App from './App';
 
-initializeIcons();
+import 'lib/log';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
+
+if (/win/i.test(navigator.userAgent)) {
+  document.body.setAttribute('data-platform', 'windows');
+}
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error(event);
+});

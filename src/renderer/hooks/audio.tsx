@@ -1,42 +1,32 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
-import { LocalAudio } from 'renderer/lib/Audio/LocalAudio';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
+
 import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
 
-const isStreamAudioContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
->([false, () => {}]);
+import { useFn } from './useFn';
 
-const audioContext = createContext(new LocalAudio());
+export const audioContext = createContext(new StreamAudio());
 
-const streamAudioContext = createContext(new StreamAudio());
+export const getAudioContext = createContext(() => new StreamAudio());
 
-export function AudioProvider(props: PropsWithChildren<any>) {
-  const audioRef = useRef(new LocalAudio());
-  const streamAudioRef = useRef(new StreamAudio());
+export function AudioProvider({ children }: PropsWithChildren) {
+  const [audio, setAudio] = useState(new StreamAudio());
+
+  const getAudio = useFn(() => {
+    audio.stop();
+    const newAudio = new StreamAudio();
+    setAudio(newAudio);
+    return newAudio;
+  });
+
   return (
-    <isStreamAudioContext.Provider value={useState<boolean>(false)}>
-      <streamAudioContext.Provider value={streamAudioRef.current}>
-        <audioContext.Provider value={audioRef.current} {...props} />
-      </streamAudioContext.Provider>
-    </isStreamAudioContext.Provider>
+    <audioContext.Provider value={audio}>
+      <getAudioContext.Provider value={getAudio}>
+        {children}
+      </getAudioContext.Provider>
+    </audioContext.Provider>
   );
 }
 
-export function useAudio() {
-  const [isStreamAudio, setIsStreamAudio] = useContext(isStreamAudioContext);
-  const audio = useContext(audioContext);
-  const streamAudio = useContext(streamAudioContext);
-
-  return {
-    isStreamAudio,
-    setIsStreamAudio,
-    audio,
-    streamAudio,
-  };
+export function useGetAudio() {
+  return useContext(getAudioContext);
 }

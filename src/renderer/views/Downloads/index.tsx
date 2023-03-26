@@ -1,27 +1,45 @@
+import { FC, useMemo, useRef, useState } from 'react';
+import { useAsync } from 'react-use';
+import { ssmlToText } from '@bougiel/tts-node';
 import {
-  FocusZone,
-  FocusZoneDirection,
+  Box,
+  Group,
+  Input,
   List,
   Stack,
-  TextField,
-} from 'renderer/components';
-import { useMemo, useRef, useState } from 'react';
-import { useAsync } from 'renderer/hooks';
-import { DownloadsCache } from 'caches';
-import { ssmlToText } from '@bougiel/tts-node/lib/ssml/index';
+  Switch,
+  TextInput,
+} from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
+import { IconForms, IconSearch } from '@tabler/icons';
 import fs from 'fs-extra';
+
+import { DownloadsCache } from 'caches';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
+
 import { Cell, Item } from './Cell';
+
+import './style.scss';
 
 const globalState = {
   filter: '',
 };
 
-function Downloads() {
+const Downloads: FC = () => {
   const [list, setList] = useState<Item[]>([]);
+
   const [filterReg, setFilterReg] = useState<RegExp>(
     new RegExp(globalState.filter.split(/\s+/).join('.*'))
   );
+
   const [filter, setFilter] = useState(globalState.filter);
+
+  const [expand, setExpand] = useLocalStorage({
+    key: STORAGE_KEYS.downloadExpand,
+    defaultValue: false,
+    getInitialValueInEffect: false,
+  });
+
   useAsync(async () => {
     const p = await DownloadsCache.getCachePath();
     const updater = async () => {
@@ -35,7 +53,9 @@ function Downloads() {
     updater();
     return watcher.close;
   }, []);
+
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+
   const handleFilterChange = (value: string) => {
     setFilter(value);
     globalState.filter = value;
@@ -45,35 +65,64 @@ function Downloads() {
       setFilterReg(new RegExp(v.split(/\s+/).join('.*')));
     }, 500);
   };
+
   const filteredList = useMemo(() => {
     return filterReg
       ? list.filter((item) => filterReg.test(item.content))
       : list;
   }, [filterReg, list]);
+
   return (
-    <FocusZone direction={FocusZoneDirection.vertical}>
-      <TextField
-        label="Search content"
-        value={filter}
-        onChange={(_, value) => handleFilterChange(value!)}
-        placeholder="Type some keywords here (use blank space separate) ..."
-      />
-      <Stack
+    <Stack>
+      <Input.Wrapper label='Search content'>
+        <Group position='apart'>
+          <TextInput
+            value={filter}
+            onChange={(event) => handleFilterChange(event.target.value)}
+            placeholder='Type some keywords here (use blank space separate) ...'
+            icon={<IconSearch size={14} />}
+            style={{ flex: 1 }}
+          />
+          <Switch
+            label='Expand'
+            checked={expand}
+            onChange={(event) => {
+              const { checked } = event.target;
+              setExpand(checked);
+            }}
+            style={{ display: 'flex' }}
+          />
+        </Group>
+      </Input.Wrapper>
+      <List
+        listStyleType='none'
+        spacing='md'
+        icon={
+          <Box pt={1}>
+            <IconForms size={14} />
+          </Box>
+        }
+        style={{
+          height: 'calc(100vh - 174px)',
+          overflow: 'overlay',
+        }}
         styles={{
-          // @ts-ignore
-          root: { height: 'calc(100vh - 144px)', overflow: 'overlay' },
+          itemWrapper: {
+            width: '100%',
+            '>span:last-child': {
+              width: '100%',
+            },
+          },
         }}
       >
-        <List
-          items={filteredList}
-          getKey={(item) => item.id}
-          onRenderCell={(item) => {
-            return <Cell key={item?.id} item={item!} />;
-          }}
-        />
-      </Stack>
-    </FocusZone>
+        {filteredList.map((item) => {
+          return <Cell key={item.id} item={item!} expand={expand} />;
+        })}
+      </List>
+    </Stack>
   );
-}
+};
+
+Downloads.displayName = 'Downloads';
 
 export default Downloads;

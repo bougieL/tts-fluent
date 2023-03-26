@@ -1,13 +1,10 @@
-import {
-  DefaultButton,
-  PrimaryButton,
-  Spinner,
-  Stack,
-} from 'renderer/components';
+import { Button, Group, Loader } from '@mantine/core';
+import { IconDownload, IconPlayerPlay, IconRefresh } from '@tabler/icons';
 
 interface Props {
   onPlayClick: () => void;
   onDownloadClick: () => void;
+  onResetClick: () => void;
   disabled: boolean;
   loading: boolean;
 }
@@ -17,24 +14,37 @@ export function Buttons({
   disabled,
   loading,
   onDownloadClick,
+  onResetClick,
 }: Props) {
   return (
-    <Stack horizontal tokens={{ childrenGap: 24 }} horizontalAlign="end">
-      {loading && <Spinner />}
-      <PrimaryButton
-        text="Play"
-        iconProps={{ iconName: 'TriangleSolidRight12' }}
+    <Group position='right' spacing='sm'>
+      {loading && <Loader size='sm' />}
+      <Button
+        variant='default'
+        leftIcon={<IconPlayerPlay size={14} />}
         onClick={onPlayClick}
-        allowDisabledFocus
         disabled={disabled}
-      />
-      <DefaultButton
-        text="Download"
-        iconProps={{ iconName: 'save' }}
+        size='xs'
+      >
+        Play
+      </Button>
+      <Button
+        variant='default'
+        leftIcon={<IconDownload size={14} />}
         onClick={onDownloadClick}
-        allowDisabledFocus
         disabled={disabled}
-      />
-    </Stack>
+        size='xs'
+      >
+        Download
+      </Button>
+      <Button
+        variant='default'
+        leftIcon={<IconRefresh size={14} />}
+        onClick={onResetClick}
+        size='xs'
+      >
+        Reset
+      </Button>
+    </Group>
   );
 }

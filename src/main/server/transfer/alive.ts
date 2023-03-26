@@ -1,27 +1,25 @@
-import { TransferCache } from 'caches/transfer';
+import { Response, Router } from 'express';
+import { ipcMain } from 'electron';
+
+import { TransferCache } from 'caches';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { ipcMain } from 'electron';
-import { Router, Response } from 'express';
-import { v4 } from 'uuid';
-import { getServerName, getServerHost } from '../utils';
 
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;
+import { getServerName, getServerOrigin } from '../utils';
 
 export function setupAliveRouter(router: Router) {
   const timerMap = new Map<string, ReturnType<typeof setTimeout>>();
+  const responses = new Map<string, Response>();
+
+  ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
+    Array.from(responses.values()).forEach((res) => {
+      res.write(toEventStreamData(payload));
+    });
+  });
+
   router.get('/deviceAlivePolling', async (req, res) => {
-    const { query, cookies } = req;
-    let deviceId = (query.deviceId as string) || cookies?.deviceId;
-    if (!deviceId) {
-      deviceId = v4();
-      res.cookie('deviceId', deviceId, {
-        maxAge: COOKIE_MAX_AGE,
-        // httpOnly: true,
-        sameSite: 'none',
-        secure: true,
-      });
-    }
+    const { query } = req;
+    const deviceId = query.deviceId as string;
     TransferCache.connect({
       deviceId,
       deviceName: query.deviceName as string,
@@ -33,23 +31,14 @@ export function setupAliveRouter(router: Router) {
       setTimeout(() => {
         TransferCache.disconnect(deviceId);
         timerMap.delete(deviceId);
-      }, 10000)
+        responses.get(deviceId)?.end();
+        responses.delete(deviceId);
+      }, 8000)
     );
     res.status(200).send({
       serverName: getServerName(),
-      serverHost: await getServerHost(),
+      serverOrigin: await getServerOrigin(),
     });
-  });
-
-  const responses = new Map<string, Response>();
-  const timers = new Map<string, ReturnType<typeof setInterval>>();
-
-  ipcMain.on(IpcEvents.transferSSEData, (_, payload) => {
-    // console.log('on ', IpcEvents.transferSSEData, payload);
-    Array.from(responses.values()).forEach((res) => {
-      res.write(toEventStreamData(payload));
-    });
-    // res.write(toEventStreamData(payload));
   });
 
   router.get('/serverAliveSse', async (req, res) => {
@@ -63,15 +52,10 @@ export function setupAliveRouter(router: Router) {
       type: TransferType.heartbeat,
       payload: {
         serverName: getServerName(),
-        serverHost: await getServerHost(),
+        serverOrigin: await getServerOrigin(),
       },
     });
     res.write(heartbeatData);
-    clearInterval(timers.get(deviceId));
-    const timer = setInterval(() => {
-      res.write(heartbeatData);
-    }, 5000);
-    timers.set(deviceId, timer);
     responses.set(deviceId, res);
   });
 }

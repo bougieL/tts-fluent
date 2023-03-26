@@ -1,73 +1,78 @@
-import { Stack } from 'renderer/components';
-import { IpcEvents } from 'const';
+import { FC, useState } from 'react';
 import { ipcRenderer } from 'electron';
-import { useState } from 'react';
-import { useAudio } from 'renderer/hooks';
+import { Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
+import fs from 'fs-extra';
 import * as uuid from 'uuid';
+
+import { IpcEvents } from 'const';
+import { useGetAudio } from 'renderer/hooks';
+import { StreamAudio } from 'renderer/lib/Audio/StreamAudio';
+import { AudioStatus } from 'renderer/lib/Audio/types';
+import { IpcEventStream } from 'renderer/lib/EventStream';
+import { STORAGE_KEYS } from 'renderer/lib/storage';
+
 import { Buttons } from './Buttons';
 import { Inputs } from './Inputs';
-import { Options, SsmlConfig } from './Options';
+import { SsmlConfig, SsmlDistributor } from './SsmlDistributor';
 
 const defaultConfig: SsmlConfig = {
+  locale: 'Chinese (Mandarin, Simplified)',
   voice: 'zh-CN-XiaoxiaoNeural',
   rate: '0%',
   pitch: '0%',
   style: 'general',
+  outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
 };
 
-const MicrosoftTTS = () => {
+function handlePlayError(audio: StreamAudio, error: any) {
+  console.error(error);
+  audio.status = AudioStatus.error;
+  new Notification('Play failed 😭', {
+    body: `Click to show error message`,
+  }).onclick = () => {
+    alert(String(error));
+  };
+}
+
+const MicrosoftTTS: FC = () => {
   const [empty, setEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [ssml, setSsml] = useState('');
-  const [config, setConfig] = useState(defaultConfig);
-  const { audio, streamAudio, setIsStreamAudio } = useAudio();
-  const handlePlayStream = async () => {
+  const [config, setConfig] = useLocalStorage({
+    key: STORAGE_KEYS.micorsoftTts,
+    defaultValue: defaultConfig,
+    getInitialValueInEffect: false,
+  });
+  const getAudio = useGetAudio();
+
+  const handlePlayClick = async () => {
     setLoading(true);
+    const audio = getAudio();
+    audio.play();
+    audio.on('error', handlePlayError.bind(null, audio));
     try {
-      const id = uuid.v4();
+      const sessionId = uuid.v4();
       const src = await ipcRenderer.invoke(IpcEvents.ttsMicrosoftPlayStream, {
         ssml,
-        sessionId: id,
+        sessionId,
       });
       if (src) {
-        setIsStreamAudio(false);
-        audio.setSource(src);
-        audio.play();
+        const readStream = fs.createReadStream(src);
+        readStream.pipe(audio);
+        readStream.on('error', handlePlayError.bind(null, audio));
       } else {
-        setIsStreamAudio(true);
-        streamAudio.reset();
-        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${id}`;
-        const streamHandler = (
-          _: any,
-          { chunk, isEnd, isError, errorMessage }: any
-        ) => {
-          if (chunk) {
-            streamAudio.appendBuffer(chunk);
-          }
-          if (isEnd || isError) {
-            streamAudio.setStreamEnd();
-            ipcRenderer.off(channel, streamHandler);
-          }
-          if (isError && errorMessage) {
-            new Notification('Play failed 😭', {
-              body: `Click to show error message`,
-            }).onclick = () => {
-              alert(errorMessage);
-            };
-          }
-        };
-        ipcRenderer.on(channel, streamHandler);
-        streamAudio.play();
+        const channel = `${IpcEvents.ttsMicrosoftPlayStream}-${sessionId}`;
+        const ipcEventStream = new IpcEventStream(channel);
+        ipcEventStream.pipe(audio);
+        ipcEventStream.on('error', handlePlayError.bind(null, audio));
       }
     } catch (error) {
-      new Notification('Play failed 😭', {
-        body: `Click to show error message`,
-      }).onclick = () => {
-        alert(String(error));
-      };
+      handlePlayError(audio, error);
     }
     setLoading(false);
   };
+
   const handleDownloadClick = async () => {
     setLoading(true);
     await ipcRenderer
@@ -78,11 +83,13 @@ const MicrosoftTTS = () => {
         }).onclick = () => {
           alert(String(error));
         };
+        console.error(error);
       });
     setLoading(false);
   };
+
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { height: '100%' } }}>
+    <Stack spacing='lg'>
       <Inputs
         ssmlConfig={config}
         onChange={(nssml, empty) => {
@@ -92,15 +99,20 @@ const MicrosoftTTS = () => {
           }
         }}
       />
-      <Options onChange={setConfig} />
+      <SsmlDistributor value={config} onChange={setConfig} />
       <Buttons
-        onPlayClick={handlePlayStream}
+        onPlayClick={handlePlayClick}
         onDownloadClick={handleDownloadClick}
+        onResetClick={() => {
+          setConfig(defaultConfig);
+        }}
         disabled={empty || loading}
         loading={loading}
       />
     </Stack>
   );
 };
+
+MicrosoftTTS.displayName = 'Microsoft TTS';
 
 export default MicrosoftTTS;

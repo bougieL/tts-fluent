@@ -1,9 +1,13 @@
 import express from 'express';
-import address from 'address';
 import cookieParser from 'cookie-parser';
-import { TransferCache } from 'caches/transfer';
-import { getServerName, getServerPort } from './utils';
+
+import { TransferCache } from 'caches';
+
+import { router as badanmuRouter } from './badanmu';
+import { router as staticRouter } from './static';
 import { router as transferRouter } from './transfer';
+import { router as ttsCatRouter } from './ttsCat';
+import { getServerName, getServerPort } from './utils';
 
 const app = express();
 
@@ -22,22 +26,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/', staticRouter);
 app.use('/transfer', transferRouter);
+app.use('/ttsCat', ttsCatRouter);
+app.use('/badanmu', badanmuRouter);
 
 export async function setupSever() {
   await TransferCache.clear();
   const port = await getServerPort();
-  return app.listen(port, async () => {
-    function updateServerConfig() {
-      const host = `http://${address.ip()}:${port}`;
-      TransferCache.writeServerConfig({
-        serverHost: `${host}/transfer`,
-        serverName: getServerName(),
-      });
-    }
-
-    updateServerConfig();
-
-    setInterval(updateServerConfig, 10000);
+  return app.listen(port, () => {
+    TransferCache.writeServerConfig({
+      serverPort: port,
+      serverName: getServerName(),
+    });
   });
 }

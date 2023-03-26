@@ -1,16 +1,19 @@
-import {
-  Label,
-  Link,
-  MessageBar,
-  MessageBarType,
-  Stack,
-} from 'renderer/components';
-import { TransferCache } from 'caches/transfer';
+import { useEffect, useRef } from 'react';
 import { clipboard, shell } from 'electron';
-import fs from 'fs-extra';
-import { useEffect, useRef, useState } from 'react';
+import {
+  Alert,
+  Anchor,
+  Group,
+  Input,
+  Stack,
+  Text,
+  Tooltip,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconCircleCheck } from '@tabler/icons';
 import qrcode from 'qrcode';
-import { useAsync } from 'renderer/hooks';
+
+import { useServerConfig } from 'renderer/hooks';
 
 interface HostServerProps {
   bottomSlot: React.ReactNode;
@@ -18,66 +21,98 @@ interface HostServerProps {
 }
 
 export function HostServer({ rightSlot, bottomSlot }: HostServerProps) {
-  const [config, setConfig] = useState<TransferCache.ServerConfig>();
-  useAsync(async () => {
-    const updater = async () => {
-      const c = await TransferCache.getServerConfig();
-      setConfig(c);
-    };
-    const p = await TransferCache.getServerConfigPath();
-    updater();
-    fs.watch(p, updater);
-  }, []);
+  const { serverOrigin, serverName, serverIp } = useServerConfig();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const serverUrl = `${serverOrigin}/transfer`;
+  const debugUrl = `http://${serverIp}:1213/transfer`;
+
+  const { colorScheme } = useMantineTheme();
+
   useEffect(() => {
-    if (!config?.serverHost) return;
+    if (!serverName) return;
     qrcode.toCanvas(
       canvasRef.current,
-      config.serverHost,
+      serverUrl,
       {
         width: 250,
         scale: 0,
         margin: 0,
+        color:
+          colorScheme === 'dark'
+            ? {
+                dark: '#ffffff',
+                light: '#1a1b1e',
+              }
+            : {
+                light: '#ffffff',
+                dark: '#1a1b1e',
+              },
       },
       (error) => {
         if (error) console.error(error);
-        console.log('success!');
+        else console.log('success!');
       }
     );
-  }, [config?.serverHost]);
-  if (!config) {
+  }, [colorScheme, serverName, serverUrl]);
+
+  if (!serverName) {
     return null;
   }
+
   return (
-    <Stack tokens={{ childrenGap: 12 }} styles={{ root: { flex: 1 } }}>
-      <MessageBar messageBarType={MessageBarType.success}>
-        Start transfer server in {config.serverName} success, scan the qrcode to
-        transfer files.
-        <Link
-          href={config.serverHost}
-          target="_blank"
-          onClick={(event) => {
-            event.preventDefault();
-            shell.openExternal(config.serverHost);
-          }}
-        >
-          Open transfer page
-        </Link>
-      </MessageBar>
-      <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <Stack tokens={{ childrenGap: 12 }}>
-          <Stack>
-            <Label>Qrcode</Label>
-            <canvas
-              ref={canvasRef}
-              style={{ cursor: 'pointer' }}
-              onClick={() => clipboard.writeText(config.serverHost)}
-            />
-          </Stack>
+    <Stack spacing='xs'>
+      <Alert
+        color='green'
+        icon={<IconCircleCheck size={16} />}
+        styles={{
+          root: {
+            padding: '6px 12px',
+          },
+        }}
+      >
+        <Text size='sm'>
+          Start transfer server in {serverName} success, scan the qrcode to
+          transfer files.&nbsp;
+          <Anchor
+            onClick={() => {
+              shell.openExternal(serverUrl);
+            }}
+          >
+            Open transfer page
+          </Anchor>
+          {process.env.NODE_ENV === 'development' && (
+            <Anchor
+              onClick={() => {
+                shell.openExternal(debugUrl);
+              }}
+            >
+              &nbsp;Open debug transfer page
+            </Anchor>
+          )}
+        </Text>
+      </Alert>
+      <Group align='flex-start' noWrap>
+        <Stack spacing='sm'>
+          <Input.Wrapper label='Qrcode'>
+            <Tooltip label='Click to copy url'>
+              <canvas
+                ref={canvasRef}
+                style={{
+                  cursor: 'pointer',
+                  width: 250,
+                  height: 250,
+                  borderRadius: 4,
+                }}
+                onClick={() => {
+                  clipboard.writeText(serverUrl);
+                }}
+              />
+            </Tooltip>
+          </Input.Wrapper>
           {bottomSlot}
         </Stack>
         {rightSlot}
-      </Stack>
+      </Group>
     </Stack>
   );
 }

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es2021",
-    "module": "commonjs",
+    "module": "CommonJS",
     "lib": ["dom", "es2021"],
     "declaration": true,
     "declarationMap": true,
@@ -15,13 +15,14 @@
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": "release/app/dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "exclude": [
     "test",
@@ -33,5 +34,8 @@
   "paths": {
     "*": ["./src/*"],
     "@assets/*": ["./assets/*"]
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }

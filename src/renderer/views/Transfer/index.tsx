@@ -1,21 +1,25 @@
-import { Stack } from 'renderer/components';
+import { FC } from 'react';
+import { Stack } from '@mantine/core';
+
+import { Clipboard } from './Clipboard';
 import { ConnectedDevices } from './ConnectedDevices';
 import { HostServer } from './HostServer';
 import { SendFiles } from './SendFiles';
-import { Clipboard } from './Clipboard';
 
-export function Transfer() {
+const Transfer: FC = () => {
   return (
-    <Stack horizontal tokens={{ childrenGap: 12 }}>
-      <HostServer
-        bottomSlot={<ConnectedDevices />}
-        rightSlot={
-          <Stack tokens={{ childrenGap: 12 }}>
-            <SendFiles />
-            <Clipboard />
-          </Stack>
-        }
-      />
-    </Stack>
+    <HostServer
+      bottomSlot={<ConnectedDevices />}
+      rightSlot={
+        <Stack spacing='sm' style={{ flex: 1, height: '100%' }}>
+          <SendFiles />
+          <Clipboard />
+        </Stack>
+      }
+    />
   );
-}
+};
+
+Transfer.displayName = 'Transfer';
+
+export default Transfer;

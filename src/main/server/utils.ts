@@ -1,6 +1,7 @@
+import os from 'os';
+
 import address from 'address';
 import detectPort from 'detect-port';
-import os from 'os';
 
 let port = 1236;
 
@@ -19,11 +20,11 @@ export async function getServerPort(): Promise<number> {
   });
 }
 
-export async function getServerHost() {
+export async function getServerOrigin() {
   const port = await getServerPort();
   return `http://${address.ip()}:${port}`;
 }
 
 export function getServerName() {
-  return `${os.userInfo().username}@${os.hostname}`;
+  return `${os.userInfo().username}@${os.hostname()}`;
 }

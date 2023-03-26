@@ -1,9 +1,11 @@
-import { TextField } from 'renderer/components';
+import { useState } from 'react';
+import { useAsync } from 'react-use';
+import { ipcRenderer } from 'electron';
+import { TextInput } from '@mantine/core';
+import { IconFolder } from '@tabler/icons';
+
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
-import { ipcRenderer } from 'electron';
-import { useState } from 'react';
-import { useAsync } from 'renderer/hooks';
 
 const TTSDownloadsDirectory = () => {
   const [path, setPath] = useState('');
@@ -16,10 +18,7 @@ const TTSDownloadsDirectory = () => {
     );
     if (filePaths?.[0]) {
       setPath(filePaths[0]);
-      await ConfigCache.writeConfig(
-        ConfigCache.ConfigKey.downloadsDir,
-        filePaths[0]
-      );
+      await ConfigCache.write(ConfigCache.Key.downloadsDir, filePaths[0]);
     }
   };
   useAsync(async () => {
@@ -27,11 +26,12 @@ const TTSDownloadsDirectory = () => {
     setPath(downloadsDir);
   }, []);
   return (
-    <TextField
-      label="TTS Downloads directory"
-      type="button"
+    <TextInput
+      label='TTS Downloads directory'
+      type='button'
       value={path}
       onClick={handleSetFilePath}
+      icon={<IconFolder size={14} />}
       style={{ textAlign: 'left' }}
     />
   );

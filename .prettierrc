@@ -1,0 +1,15 @@
+{
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": [
+        ".prettierrc",
+        ".eslintrc"
+      ],
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}

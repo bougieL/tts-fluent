@@ -1,14 +1,10 @@
-import {
-  DefaultButton,
-  Label,
-  PrimaryButton,
-  Stack,
-  TextField,
-} from 'renderer/components';
+import { useState } from 'react';
+import { clipboard, ipcRenderer } from 'electron';
+import { Button, Group, Input, Space, TextInput } from '@mantine/core';
+import { IconDownload, IconSend } from '@tabler/icons';
+
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { clipboard, ipcRenderer } from 'electron';
-import { useState } from 'react';
 
 export function Clipboard() {
   const [value, setValue] = useState('');
@@ -28,28 +24,30 @@ export function Clipboard() {
     });
   };
   return (
-    <Stack>
-      <Label>Text</Label>
-      <Stack tokens={{ childrenGap: 12 }}>
-        <TextField
-          value={value}
-          onChange={(_, newValue = '') => setValue(newValue)}
-        />
-        <Stack horizontal tokens={{ childrenGap: 12 }} horizontalAlign="end">
-          <DefaultButton
-            iconProps={{ iconName: 'download' }}
-            onClick={handleGetClick}
-          >
-            Get text
-          </DefaultButton>
-          <PrimaryButton
-            iconProps={{ iconName: 'send' }}
-            onClick={handleSendClick}
-          >
-            Send {value.length > 0 ? 'text' : 'clipboard'}
-          </PrimaryButton>
-        </Stack>
-      </Stack>
-    </Stack>
+    <Input.Wrapper label='Text'>
+      <TextInput
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+      />
+      <Space h='sm' />
+      <Group spacing='sm' position='right'>
+        <Button
+          leftIcon={<IconDownload size={14} />}
+          variant='default'
+          size='xs'
+          onClick={handleGetClick}
+        >
+          Get text
+        </Button>
+        <Button
+          leftIcon={<IconSend size={14} />}
+          variant='default'
+          size='xs'
+          onClick={handleSendClick}
+        >
+          Send {value.length > 0 ? 'text' : 'clipboard'}
+        </Button>
+      </Group>
+    </Input.Wrapper>
   );
 }

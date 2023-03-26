@@ -1,0 +1,64 @@
+@import '../../styles';
+
+.danmu-list {
+  flex: 1;
+  overflow: auto;
+
+  .danmu-item {
+    &:first-child {
+      margin-top: 100vh;
+    }
+
+    font-size: r(16);
+    text-shadow: r(1) r(1) r(1) rgba(0, 0, 0, 0.2);
+    padding-bottom: r(10);
+    &-connect {
+      color: green;
+    }
+    &-disconnectManually {
+      color: gray;
+    }
+    &-disconnectUnexpect,
+    &-error {
+      color: red;
+    }
+    &-enter {
+      color: #ccc;
+    }
+    &-comment,
+    &-gift,
+    &-follow {
+      .avatar {
+        width: r(30);
+        height: r(30);
+        min-width: auto;
+        border-radius: 50%;
+      }
+      .text {
+        color: #fff;
+      }
+      .username {
+        font-size: r(14);
+        margin-bottom: r(2);
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .content {
+        border-radius: r(8);
+        border: r(1) solid #fff;
+        padding: r(4) r(12);
+        background-color: rgba(0, 0, 0, 0.2);
+        width: fit-content;
+      }
+      .image {
+        max-width: r(64);
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+    background-color: transparent;
+  }
+}

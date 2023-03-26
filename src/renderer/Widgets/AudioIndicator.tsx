@@ -1,53 +1,47 @@
-import { IconButton, TooltipHost } from 'renderer/components';
-import { useLayoutEffect, useState } from 'react';
-import { useAudio } from 'renderer/hooks';
+import { useContext, useLayoutEffect, useState } from 'react';
+import { ActionIcon, Tooltip, useMantineTheme } from '@mantine/core';
+import { IconPlayerPlay, IconPlayerStop } from '@tabler/icons';
+
+import { audioContext } from 'renderer/hooks/audio';
 import { AudioStatus } from 'renderer/lib/Audio/types';
 
 export function AudioIndicator() {
-  const { audio, streamAudio, isStreamAudio } = useAudio();
+  const audio = useContext(audioContext);
   const [status, setStatus] = useState(AudioStatus.empty);
-  const currentAudio = isStreamAudio ? streamAudio : audio;
-  useLayoutEffect(() => {
-    if (isStreamAudio) {
-      audio.stop();
-    } else {
-      streamAudio.stop();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isStreamAudio]);
 
   useLayoutEffect(() => {
-    const s = currentAudio.addStatusChangeListener((status) => {
+    const s = audio.addStatusChangeListener((status) => {
       setStatus(status);
     });
     return s.remove;
-  }, [currentAudio]);
+  }, [audio]);
 
   const handleClick = () => {
     if (status !== AudioStatus.playing) {
-      currentAudio.play();
+      audio.play();
     } else {
-      currentAudio.stop();
+      audio.stop();
     }
   };
+
+  const { primaryColor } = useMantineTheme();
 
   if (status === AudioStatus.empty) {
     return null;
   }
 
   return (
-    <TooltipHost
-      content={status === AudioStatus.stopped ? 'Play' : 'Stop'}
-      setAriaDescribedBy={false}
-    >
-      <IconButton
-        onClick={handleClick}
-        iconProps={{
-          iconName: status === AudioStatus.stopped ? 'Play' : 'Stop',
-          styles: { root: { fontSize: 24 } },
-        }}
-        size={24}
-      />
-    </TooltipHost>
+    <Tooltip label={status === AudioStatus.stopped ? 'Play' : 'Stop'}>
+      <ActionIcon color={primaryColor} onClick={handleClick}>
+        {(() => {
+          switch (status) {
+            case AudioStatus.stopped:
+              return <IconPlayerPlay />;
+            default:
+              return <IconPlayerStop />;
+          }
+        })()}
+      </ActionIcon>
+    </Tooltip>
   );
 }

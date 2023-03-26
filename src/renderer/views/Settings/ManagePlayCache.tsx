@@ -1,54 +1,70 @@
-import { DefaultButton, Label, Stack } from 'renderer/components';
-import { PlayCache } from 'caches';
-import { shell } from 'electron';
 import { useRef, useState } from 'react';
-import { useAsync } from 'renderer/hooks';
+import { useAsync } from 'react-use';
+import { shell } from 'electron';
+import { Button, Group, Input, Switch } from '@mantine/core';
 import fs from 'fs-extra';
+
+import { ConfigCache, PlayCache } from 'caches';
 import { getSize } from 'lib/getSize';
 
 const ManagePlayCache = () => {
-  const cacheDirRef = useRef('');
+  const cachePathRef = useRef('');
   const [size, setSize] = useState('0 B');
+  const [disabled, setDisabled] = useState(false);
+
   const handleClearCache = async () => {
     const sure = confirm(
       'Are you sure to clear cache? This operation can not revoke'
     );
+    const cachePath = await PlayCache.getCachePath();
     if (sure) {
-      fs.remove(cacheDirRef.current);
+      await fs.remove(cachePath);
+      await updateSize();
     }
   };
-  const handleOpenCache = () => {
-    shell.showItemInFolder(cacheDirRef.current);
+  const handleOpenCache = async () => {
+    await fs.ensureDir(cachePathRef.current);
+    shell.openPath(cachePathRef.current);
+  };
+  const updateSize = async () => {
+    await fs.ensureDir(cachePathRef.current);
+    const size = await getSize(cachePathRef.current);
+    setSize(size);
   };
   useAsync(async () => {
-    const cacheDir = await PlayCache.getCachePath();
-    await fs.ensureDir(cacheDir);
-    cacheDirRef.current = cacheDir;
-    const size = await getSize(cacheDir);
-    setSize(size);
-    const watcher = fs.watch(cacheDir, { recursive: true }, async () => {
-      const size = await getSize(cacheDir);
-      setSize(size);
-    });
+    const disabled = await ConfigCache.get(ConfigCache.Key.playCacheDisabled);
+    setDisabled(!!disabled);
+  }, []);
+  useAsync(async () => {
+    const cachePath = await PlayCache.getCachePath();
+    cachePathRef.current = cachePath;
+    await updateSize();
+    const watcher = fs.watch(cachePath, updateSize);
     return watcher.close;
   }, []);
   return (
-    <>
-      <Label>Manage play cache</Label>
-      <Stack
-        horizontal
-        horizontalAlign="start"
-        tokens={{ childrenGap: 12 }}
-        styles={{ root: { marginTop: '0 !important' } }}
-      >
-        <DefaultButton onClick={handleClearCache}>
+    <Input.Wrapper label='Manage play cache'>
+      <Group spacing='xs' align='center'>
+        <Button variant='default' size='xs' onClick={handleClearCache}>
           Clear cache ({size})
-        </DefaultButton>
-        <DefaultButton onClick={handleOpenCache}>
+        </Button>
+        <Button variant='default' size='xs' onClick={handleOpenCache}>
           Open cache directory
-        </DefaultButton>
-      </Stack>
-    </>
+        </Button>
+        <Switch
+          checked={disabled}
+          label='Disable play cache'
+          style={{
+            display: 'flex',
+          }}
+          onChange={(event) => {
+            const { checked } = event.target;
+            setDisabled(checked);
+            ConfigCache.write(ConfigCache.Key.playCacheDisabled, checked);
+          }}
+        />
+      </Group>
+    </Input.Wrapper>
   );
 };
 

@@ -1,5 +1,6 @@
-import { IpcEvents } from 'const';
 import { app, ipcMain } from 'electron';
+
+import { IpcEvents } from 'const';
 
 ipcMain.handle(IpcEvents.electronAppGetPath, (_, args) => app.getPath(args));
 

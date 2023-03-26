@@ -1,9 +1,12 @@
-import { ssmlToText, textToSsml } from '@bougiel/tts-node/lib/ssml';
-import { Pivot, PivotItem, Stack, TextField } from 'renderer/components';
 import { useEffect, useState } from 'react';
+import { ssmlToText, textToSsml } from '@bougiel/tts-node';
+import { Tabs, Textarea } from '@mantine/core';
+import { IconBlockquote, IconCode, IconFile } from '@tabler/icons';
+
 import { useFn } from 'renderer/hooks';
+
 import { Dropzone } from './Dropzone';
-import { SsmlConfig } from './Options';
+import { SsmlConfig } from './SsmlDistributor';
 
 export enum InputType {
   text = 'text',
@@ -33,6 +36,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
   const [file, setFile] = useState(globalState.file);
   const [type, setType] = useState(globalState.type);
   const isText = type === InputType.text;
+
   const setRText = useFn((text: string) => {
     setText(text);
     const ssml = textToSsml(text, ssmlConfig);
@@ -40,6 +44,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
     globalState.text = text;
     globalState.ssml = ssml;
   });
+
   const setRSsml = useFn((ssml: string) => {
     setSsml(ssml);
     const text = ssmlToText(ssml);
@@ -47,9 +52,11 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
     globalState.text = text;
     globalState.ssml = ssml;
   });
+
   useEffect(() => {
     onChange(ssml, !text.trim());
   }, [onChange, ssml, text]);
+
   useEffect(() => {
     if (isText) {
       setRText(text);
@@ -57,6 +64,7 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
       setRSsml(ssml);
     }
   }, [isText, setRSsml, setRText, ssml, ssmlConfig, text]);
+
   const handleFileChange = async (file: File) => {
     const fileReader = new FileReader();
     fileReader.readAsText(file);
@@ -69,48 +77,52 @@ export function Inputs({ ssmlConfig, onChange }: Props) {
       alert('Not a valid text file');
     };
   };
+
+  const renderTextArea = (text: string, onChange: (text: string) => void) => {
+    return (
+      <Textarea
+        minRows={6}
+        maxRows={6}
+        styles={{ input: { height: 'calc(100vh - 352px)' } }}
+        value={text}
+        placeholder='Type something here (max 25000 characters, 200 requests per day)...'
+        maxLength={25000}
+        onChange={(event) => {
+          onChange(event.target.value);
+        }}
+      />
+    );
+  };
+
   return (
-    <Stack tokens={{ childrenGap: 18 }}>
-      <Pivot
-        styles={{
-          text: { fontSize: 14 },
-          link: { height: 26 },
-        }}
-        // linkFormat="tabs"
-        selectedKey={type}
-        onLinkClick={(item) => {
-          const type = item?.props.itemKey as InputType;
-          setType(type);
-          globalState.type = type;
-        }}
-      >
-        <PivotItem headerText="Text" itemKey={InputType.text} />
-        <PivotItem headerText="File" itemKey={InputType.file} />
-        <PivotItem headerText="SSML" itemKey={InputType.ssml} />
-      </Pivot>
-      {type !== InputType.file ? (
-        <TextField
-          multiline
-          rows={6}
-          resizable={false}
-          styles={{
-            root: { width: '100%' },
-            field: { height: 'calc(100vh - 348px)' },
-          }}
-          value={isText ? text : ssml}
-          placeholder="Type something here (max 25000 characters)..."
-          maxLength={25000}
-          onChange={(_, value = '') => {
-            if (isText) {
-              setRText(value);
-            } else {
-              setRSsml(value);
-            }
-          }}
-        />
-      ) : (
+    <Tabs
+      value={type}
+      inverted
+      onTabChange={(type: InputType) => {
+        setType(type);
+        globalState.type = type;
+      }}
+    >
+      <Tabs.Panel value={InputType.text} pb='xs'>
+        {renderTextArea(text, setRText)}
+      </Tabs.Panel>
+      <Tabs.Panel value={InputType.file} pb='xs'>
         <Dropzone value={file} onChange={handleFileChange} />
-      )}
-    </Stack>
+      </Tabs.Panel>
+      <Tabs.Panel value={InputType.ssml} pb='xs'>
+        {renderTextArea(ssml, setRSsml)}
+      </Tabs.Panel>
+      <Tabs.List>
+        <Tabs.Tab value={InputType.text} icon={<IconBlockquote size={14} />}>
+          Text
+        </Tabs.Tab>
+        <Tabs.Tab value={InputType.file} icon={<IconFile size={14} />}>
+          File
+        </Tabs.Tab>
+        <Tabs.Tab value={InputType.ssml} icon={<IconCode size={14} />}>
+          SSML
+        </Tabs.Tab>
+      </Tabs.List>
+    </Tabs>
   );
 }

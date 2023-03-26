@@ -1,14 +1,13 @@
-import {
-  DefaultButton,
-  Label,
-  PrimaryButton,
-  Stack,
-} from 'renderer/components';
+import { useState } from 'react';
+import { ipcRenderer, shell } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
+import { IconClearAll, IconFolder, IconSend } from '@tabler/icons';
+import fs from 'fs-extra';
+
+import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
 import { TransferType } from 'const/Transfer';
-import { ipcRenderer } from 'electron';
-import { useState } from 'react';
-import fs from 'fs-extra';
+
 import { Dropzone, File } from './Dropzone';
 
 const globalState: {
@@ -24,7 +23,6 @@ export function SendFiles() {
     globalState.files = files;
   };
   const sendFiles = () => {
-    // console.log('files', files);
     ipcRenderer.send(IpcEvents.transferSSEData, {
       type: TransferType.sendFiles,
       payload: files.map((item) => {
@@ -35,30 +33,45 @@ export function SendFiles() {
       }),
     });
   };
+  const openDir = async () => {
+    const dir = await ConfigCache.getTransferDir();
+    shell.openPath(dir);
+  };
+
   return (
-    <Stack horizontal>
-      <Stack horizontalAlign="end" tokens={{ childrenGap: 12 }}>
-        <Stack>
-          <Label>Transfer files</Label>
-          <Dropzone value={files} onChange={setFiles} />
-        </Stack>
-        <Stack horizontal tokens={{ childrenGap: 12 }}>
-          <DefaultButton
-            iconProps={{ iconName: 'delete' }}
-            disabled={files.length === 0}
-            onClick={() => setFiles([])}
-          >
-            Clear Files
-          </DefaultButton>
-          <PrimaryButton
-            iconProps={{ iconName: 'send' }}
-            disabled={files.length === 0}
-            onClick={sendFiles}
-          >
-            Send Files
-          </PrimaryButton>
-        </Stack>
-      </Stack>
-    </Stack>
+    <Group position='right' spacing='sm'>
+      <Input.Wrapper label='Transfer files' style={{ width: '100%' }}>
+        {/* <MDropzone value={files} onChange={setFiles} /> */}
+        <Dropzone value={files} onChange={setFiles} />
+      </Input.Wrapper>
+      <Group spacing='xs'>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconClearAll size={14} />}
+          disabled={files.length === 0}
+          onClick={() => setFiles([])}
+        >
+          Clear Files
+        </Button>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconSend size={14} />}
+          disabled={files.length === 0}
+          onClick={sendFiles}
+        >
+          Send Files
+        </Button>
+        <Button
+          variant='default'
+          size='xs'
+          leftIcon={<IconFolder size={14} />}
+          onClick={openDir}
+        >
+          Open directory
+        </Button>
+      </Group>
+    </Group>
   );
 }

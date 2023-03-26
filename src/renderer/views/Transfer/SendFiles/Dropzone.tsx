@@ -1,6 +1,9 @@
+import path from 'path';
+
 import { useDropzone } from 'react-dropzone';
-import { Text } from 'renderer/components';
 import { ipcRenderer } from 'electron';
+import { Box, Text, useMantineTheme } from '@mantine/core';
+
 import { IpcEvents } from 'const';
 
 export interface File {
@@ -31,26 +34,31 @@ export function Dropzone({ value = [], onChange }: Props) {
       const files = filePaths.map((item: string) => {
         return {
           path: item,
-          name: item.split('/').pop(),
+          name: item.split(path.sep).pop(),
         };
       });
       onChange?.(files);
     } catch (error) {}
   };
+  const { colors, colorScheme } = useMantineTheme();
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
+    <Box
       {...getRootProps()}
       style={{
-        width: 'calc(100vw - 286px)',
-        height: 'calc(100vh - 326px)',
+        width: 'calc(100vw - 290px)',
+        height: 'calc(100vh - 340px)',
         border: '1px solid #ccc',
+        borderColor: colorScheme === 'light' ? colors.gray[4] : colors.gray[8],
+        backgroundColor: colorScheme === 'light' ? undefined : colors.dark[6],
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 12,
         textAlign: 'left',
+        borderRadius: 4,
       }}
       onClick={handleClick}
     >
@@ -94,6 +102,6 @@ export function Dropzone({ value = [], onChange }: Props) {
           })()}
         </>
       )}
-    </div>
+    </Box>
   );
 }

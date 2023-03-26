@@ -1,15 +1,10 @@
-import {
-  ActivityItem,
-  Icon,
-  Label,
-  Separator,
-  Stack,
-  Text,
-} from 'renderer/components';
-import { TransferCache } from 'caches/transfer';
+import { useState } from 'react';
+import { useAsync } from 'react-use';
+import { Input, List, Stack, Text } from '@mantine/core';
+import { IconDevices2 } from '@tabler/icons';
 import fs from 'fs-extra';
-import { Fragment, useState } from 'react';
-import { useAsync } from 'renderer/hooks';
+
+import { TransferCache } from 'caches';
 
 export function ConnectedDevices() {
   const [devices, setDevices] = useState<TransferCache.Device[]>([]);
@@ -23,9 +18,8 @@ export function ConnectedDevices() {
     fs.watch(p, updater);
   }, []);
   return (
-    <Stack>
-      <Label>Connected devices</Label>
-      <Stack
+    <Input.Wrapper label='Connected devices'>
+      <List
         styles={{
           // @ts-ignore
           root: {
@@ -39,23 +33,20 @@ export function ConnectedDevices() {
       >
         {devices.filter(Boolean).map((item) => {
           return (
-            <Fragment key={item.deviceId}>
-              <ActivityItem
-                activityIcon={<Icon iconName="Devices3" />}
-                activityDescription={item.deviceId}
-                comments={<Text>{item.deviceName}</Text>}
-                timeStamp={item.deviceHost}
-                styles={{
-                  root: {
-                    width: 250,
-                  },
-                }}
-              />
-              <Separator />
-            </Fragment>
+            <List.Item icon={<IconDevices2 size={16} />}>
+              <Stack spacing={0}>
+                <Text size='sm'>{item.deviceName}</Text>
+                <Text size='xs' color='dimmed'>
+                  {item.deviceHost}
+                </Text>
+                <Text size='xs' color='dimmed'>
+                  {item.deviceId}
+                </Text>
+              </Stack>
+            </List.Item>
           );
         })}
-      </Stack>
-    </Stack>
+      </List>
+    </Input.Wrapper>
   );
 }

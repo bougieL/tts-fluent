@@ -1,5 +1,7 @@
-import fs from 'fs-extra';
 import path from 'path';
+
+import fs from 'fs-extra';
+
 import { getCachesDir } from './_utils';
 
 export namespace TransferCache {
@@ -20,7 +22,7 @@ export namespace TransferCache {
 
   export interface ServerConfig {
     serverName: string;
-    serverHost: string;
+    serverPort: number;
   }
 
   export interface Device {

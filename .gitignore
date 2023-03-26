@@ -29,3 +29,7 @@ npm-debug.log.*
 *.scss.d.ts
 
 release/cert
+assets/transfer
+assets/badanmu
+assets/h5
+.erb-js

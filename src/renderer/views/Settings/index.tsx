@@ -1,15 +1,19 @@
+import { FC } from 'react';
+
 import AppVersion from './AppVersion';
 import CheckUpdate from './CheckUpdate';
-import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 import Feedback from './FeedBack';
 import ManagePlayCache from './ManagePlayCache';
+import ThemePrefer from './ThemePrefer';
 import TransferDirectory from './TransferDirectory';
+import TTSDownloadsDirectory from './TTSDownloadsDirectory';
 
-const Settings = () => {
+const Settings: FC = () => {
   return (
     <>
       <TTSDownloadsDirectory />
       <TransferDirectory />
+      <ThemePrefer />
       <ManagePlayCache />
       <AppVersion />
       <Feedback />
@@ -17,5 +21,7 @@ const Settings = () => {
     </>
   );
 };
+
+Settings.displayName = 'Settings';
 
 export default Settings;

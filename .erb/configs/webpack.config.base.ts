@@ -2,10 +2,14 @@
  * Base webpack config used across other specific configs
  */
 
-import webpack from 'webpack';
+import path from 'path';
+
 import address from 'address';
-import webpackPaths from './webpack.paths';
+import webpack from 'webpack';
+
 import { dependencies as externals } from '../../release/app/package.json';
+
+import webpackPaths from './webpack.paths';
 
 const configuration: webpack.Configuration = {
   externals: [...Object.keys(externals || {})],
@@ -22,6 +26,7 @@ const configuration: webpack.Configuration = {
           options: {
             // Remove this line to enable type checking in webpack builds
             transpileOnly: true,
+            configFile: path.resolve(__dirname, '../../tsconfig.prod.json'),
           },
         },
       },
@@ -51,6 +56,7 @@ const configuration: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.env.HOST_IP': JSON.stringify(address.ip()),
     }),
+    new webpack.ProgressPlugin(),
   ],
 };
 

@@ -1,6 +1,8 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
-import { URL } from 'url';
 import path from 'path';
+import { URL } from 'url';
+
+import { app } from 'electron';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
@@ -16,3 +18,11 @@ if (process.env.NODE_ENV === 'development') {
     return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
   };
 }
+
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+export const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};

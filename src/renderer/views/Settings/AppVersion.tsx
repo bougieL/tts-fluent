@@ -1,13 +1,18 @@
-import { TextField } from 'renderer/components';
-import { version } from '../../../../release/app/package.json';
+import { TextInput } from '@mantine/core';
+import { IconGitMerge } from '@tabler/icons';
+
+import { useVersion } from 'renderer/hooks';
 
 const AppVersion = () => {
+  const { localVersion } = useVersion();
+
   return (
-    <TextField
-      label="Version"
+    <TextInput
+      label='Version'
       readOnly
-      value={version}
-      style={{ textAlign: 'left' }}
+      value={localVersion}
+      icon={<IconGitMerge size={14} />}
+      // style={{ textAlign: 'left' }}
     />
   );
 };

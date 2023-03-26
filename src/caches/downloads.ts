@@ -1,5 +1,7 @@
-import fs from 'fs-extra';
 import path from 'path';
+
+import fs from 'fs-extra';
+
 import { getCachesDir } from './_utils';
 
 export namespace DownloadsCache {
@@ -47,7 +49,7 @@ export namespace DownloadsCache {
       }
       await fs.writeFile(cachePath, JSON.stringify(list));
     } catch (error) {
-      // console.error(error);
+      console.error(error);
     }
   }
 
@@ -57,7 +59,9 @@ export namespace DownloadsCache {
       let list = await getList();
       list = list.filter((item) => item.id !== id);
       await fs.writeFile(cachePath, JSON.stringify(list));
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   export async function updateItem(id: string, data: Partial<Item>) {

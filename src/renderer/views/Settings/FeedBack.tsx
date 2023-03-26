@@ -1,17 +1,13 @@
-import { DefaultButton, Label, Stack } from 'renderer/components';
 import { shell } from 'electron';
+import { Button, Group, Input } from '@mantine/core';
 
 const Feedback = () => {
   return (
-    <>
-      <Label>Feedback</Label>
-      <Stack
-        horizontal
-        horizontalAlign="start"
-        tokens={{ childrenGap: 12 }}
-        styles={{ root: { marginTop: '0 !important' } }}
-      >
-        <DefaultButton
+    <Input.Wrapper label='Feedback'>
+      <Group spacing='sm'>
+        <Button
+          size='xs'
+          variant='default'
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
@@ -19,8 +15,10 @@ const Feedback = () => {
           }}
         >
           Report a bug 🐛
-        </DefaultButton>
-        <DefaultButton
+        </Button>
+        <Button
+          size='xs'
+          variant='default'
           onClick={() => {
             shell.openExternal(
               'https://github.com/bougieL/tts-fluent/issues/new?assignees=&labels=enhancement&template=3-Feature_request.md'
@@ -28,9 +26,9 @@ const Feedback = () => {
           }}
         >
           Give a suggesstion 💻
-        </DefaultButton>
-      </Stack>
-    </>
+        </Button>
+      </Group>
+    </Input.Wrapper>
   );
 };
 

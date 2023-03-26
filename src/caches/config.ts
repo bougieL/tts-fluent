@@ -1,11 +1,19 @@
-import fs from 'fs-extra';
 import path from 'path';
+
+import { NativeTheme } from 'electron';
+import fs from 'fs-extra';
+
+import { ThemeVariant } from 'const';
+
 import { getCachesDir, getDownloadsDir } from './_utils';
 
 export namespace ConfigCache {
-  export enum ConfigKey {
+  export enum Key {
     downloadsDir = 'downloadsDir',
     transferDir = 'transferDir',
+    theme = 'theme',
+    route = 'route',
+    playCacheDisabled = 'playCacheDisabled',
   }
 
   const getConfigPath = async () => {
@@ -14,7 +22,7 @@ export namespace ConfigCache {
     return p;
   };
 
-  export async function writeConfig(key: ConfigKey, value: string | number) {
+  export async function write(key: Key, value: string | number | boolean) {
     const configPath = await getConfigPath();
     let config: any = {};
     try {
@@ -27,7 +35,7 @@ export namespace ConfigCache {
     } catch (error) {}
   }
 
-  export async function getConfig(key: ConfigKey) {
+  export async function get(key: Key) {
     let config: any = {};
     try {
       config = JSON.parse(fs.readFileSync(await getConfigPath(), 'utf-8'));
@@ -37,7 +45,7 @@ export namespace ConfigCache {
 
   export async function getTTSDownloadsDir(): Promise<string> {
     const downloadsDir = await getDownloadsDir();
-    const configDir = await getConfig(ConfigKey.downloadsDir);
+    const configDir = await get(Key.downloadsDir);
     const p = configDir || downloadsDir;
     try {
       await fs.ensureDir(p);
@@ -49,7 +57,7 @@ export namespace ConfigCache {
 
   export async function getTransferDir(): Promise<string> {
     const downloadsDir = await getDownloadsDir();
-    const configDir = await getConfig(ConfigKey.transferDir);
+    const configDir = await get(Key.transferDir);
     const p = configDir || downloadsDir;
     try {
       await fs.ensureDir(p);
@@ -57,5 +65,17 @@ export namespace ConfigCache {
     } catch (error) {
       return downloadsDir;
     }
+  }
+
+  export async function getTheme(): Promise<NativeTheme['themeSource']> {
+    const theme = (await get(Key.theme)) || ThemeVariant.system;
+
+    return theme;
+  }
+
+  export async function getRoute(): Promise<string> {
+    const route = await get(Key.route);
+
+    return route || '';
   }
 }

@@ -10,36 +10,68 @@ body {
   /* padding-top: 32px; */
 }
 
+html,
+body {
+  background-color: transparent;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: none;
 }
 
 #root {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   // padding: 36px 12px 0;
 }
 
 .header {
+  height: 36px;
+  margin: 0;
+  width: 100%;
+  // padding-left: 80px;
   -webkit-app-region: drag;
+
+  // &:not(:first-child) {
+  //   margin-left: 12;
+  // }
+
+  // [data-platform='windows'] & {
+  //   padding-left: 0;
+  // }
+  // .title {
+  //   display: none;
+
+  // [data-platform='windows'] & {
+  //   display: block;
+  // }
+  // }
 }
 
 .main {
   padding: 0 12px 0;
+  overflow: overlay;
+  flex: 1;
 }
 
 * {
-  scrollbar-color: #eee transparent;
+  scrollbar-color: rgba(128, 128, 128, 0.2) transparent;
   scrollbar-width: thin;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar {
   height: 6px;
   width: 6px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 :hover::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 3px;
 }

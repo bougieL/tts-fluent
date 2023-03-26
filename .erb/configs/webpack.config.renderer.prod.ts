@@ -3,23 +3,26 @@
  */
 
 import path from 'path';
-import webpack from 'webpack';
+
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './webpack.config.base';
-import webpackPaths from './webpack.paths';
+import webpack from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { merge } from 'webpack-merge';
+
 import checkNodeEnv from '../scripts/check-node-env';
 import deleteSourceMaps from '../scripts/delete-source-maps';
+
+import baseConfig from './webpack.config.base';
+import webpackPaths from './webpack.paths';
 
 checkNodeEnv('production');
 deleteSourceMaps();
 
 const configuration: webpack.Configuration = {
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   mode: 'production',
 
@@ -31,7 +34,7 @@ const configuration: webpack.Configuration = {
   output: {
     path: webpackPaths.distRendererPath,
     publicPath: './',
-    filename: 'renderer.js',
+    filename: '[name].[contenthash].js',
     // library: {
     //   type: 'umd',
     // },
@@ -78,13 +81,43 @@ const configuration: webpack.Configuration = {
   },
 
   optimization: {
+    usedExports: true,
     minimize: true,
     minimizer: [
       new TerserPlugin({
         parallel: true,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
       }),
       new CssMinimizerPlugin(),
     ],
+    splitChunks: {
+      cacheGroups: {
+        react: {
+          test: /\/node_modules\/react/,
+          filename: 'react.[contenthash].js',
+          chunks: 'all',
+        },
+        fluent: {
+          test: /\/node_modules\/@mantine/,
+          filename: 'mantine.[contenthash].js',
+          chunks: 'all',
+        },
+        vendors: {
+          test: /\/node_modules\//,
+          filename: 'vendors.[contenthash].js',
+          chunks: 'initial',
+        },
+        async: {
+          chunks: 'async',
+          filename: '[name].[contenthash].js',
+        },
+      },
+    },
   },
 
   plugins: [
@@ -103,7 +136,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].[contenthash].css',
     }),
 
     new BundleAnalyzerPlugin({

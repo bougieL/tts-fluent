@@ -1,9 +1,11 @@
-import { TextField } from 'renderer/components';
+import { useState } from 'react';
+import { useAsync } from 'react-use';
+import { ipcRenderer } from 'electron';
+import { TextInput } from '@mantine/core';
+import { IconFolder } from '@tabler/icons';
+
 import { ConfigCache } from 'caches';
 import { IpcEvents } from 'const';
-import { ipcRenderer } from 'electron';
-import { useState } from 'react';
-import { useAsync } from 'renderer/hooks';
 
 const TransferDirectory = () => {
   const [path, setPath] = useState('');
@@ -16,10 +18,7 @@ const TransferDirectory = () => {
     );
     if (filePaths?.[0]) {
       setPath(filePaths[0]);
-      await ConfigCache.writeConfig(
-        ConfigCache.ConfigKey.transferDir,
-        filePaths[0]
-      );
+      await ConfigCache.write(ConfigCache.Key.transferDir, filePaths[0]);
     }
   };
   useAsync(async () => {
@@ -27,11 +26,12 @@ const TransferDirectory = () => {
     setPath(transferDir);
   }, []);
   return (
-    <TextField
-      label="Transfer files directory"
-      type="button"
+    <TextInput
+      label='Transfer files directory'
+      type='button'
       value={path}
       onClick={handleSetFilePath}
+      icon={<IconFolder size={14} />}
       style={{ textAlign: 'left' }}
     />
   );
