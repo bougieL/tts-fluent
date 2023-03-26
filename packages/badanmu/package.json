@@ -7,7 +7,6 @@
   "scripts": {
     "test": "cross-env NODE_ENV=developement nodemon ./src/test.ts",
     "cli": "ts-node ./src/cli.ts",
-    "build": "tsc",
     "dev": "cross-env NODE_ENV=developement nodemon ./src/server.ts",
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
@@ -15,7 +14,7 @@
     "prod-client": "cross-env NODE_ENV=production npx test-client",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "copy": "rsync -a --include '*.js' --include '*.d.ts' --exclude '*.ts' --exclude '*.json' src/",
-    "prepublish": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && yarn copy cjs/ && yarn copy esm/"
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && pnpm copy cjs/ && pnpm copy esm/"
   },
   "keywords": [],
   "author": "",

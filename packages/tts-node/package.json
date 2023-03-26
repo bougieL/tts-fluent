@@ -1,0 +1,27 @@
+{
+  "name": "@bougiel/tts-node",
+  "version": "1.6.1",
+  "main": "dist/index.js",
+  "module": "esm/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Bougie <bougie.liu@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "((rm -r dist || true) && yarn tsc) & ((rm -r esm || true) && yarn tsc -p tsconfig.esm.json)"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.0.3",
+    "@types/uuid": "^8.3.4",
+    "@types/ws": "^8.5.3",
+    "fs-extra": "^10.1.0",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "uuid": "^8.3.2",
+    "ws": "^8.8.0",
+    "xss": "^1.0.13"
+  }
+}
