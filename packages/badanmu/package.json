@@ -1,0 +1,54 @@
+{
+  "name": "@bougiel/badanmu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=developement nodemon ./src/test.ts",
+    "cli": "ts-node ./src/cli.ts",
+    "build": "tsc",
+    "dev": "cross-env NODE_ENV=developement nodemon ./src/server.ts",
+    "prestart": "npm run build",
+    "start": "cross-env NODE_ENV=production node ./dist/server.js",
+    "dev-client": "npx test-client",
+    "prod-client": "cross-env NODE_ENV=production npx test-client",
+    "lint": "eslint ./src --ext .js,.ts --fix",
+    "copy": "rsync -a --include '*.js' --include '*.d.ts' --exclude '*.ts' --exclude '*.json' src/",
+    "prepublish": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && yarn copy cjs/ && yarn copy esm/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tars/stream": "^2.0.3",
+    "@types/node-fetch": "^2.5.10",
+    "jsonwebtoken": "^8.5.1",
+    "log4js": "^6.3.0",
+    "node-fetch": "^2.6.1",
+    "pako": "^2.0.3",
+    "protobufjs": "^6.11.2",
+    "typescript": "^4.2.4",
+    "ws": "^7.4.5"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/node": "^15.0.2",
+    "@types/pako": "^1.0.1",
+    "@types/ws": "^7.4.2",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^4.22.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "test-client": "^1.0.0",
+    "ts-node": "^9.1.1"
+  },
+  "files": [
+    "cjs",
+    "esm",
+    "src"
+  ]
+}
